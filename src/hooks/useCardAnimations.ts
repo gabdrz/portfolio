@@ -8,7 +8,21 @@ export const useCardAnimations = (containerRef: RefObject<HTMLDivElement>) => {
 
   useEffect(() => {
     if (!containerRef.current) return;
-    const cardElements = gsap.utils.toArray('.card-item');
+
+    // Kill any existing animations first
+    const cardElements = containerRef.current.querySelectorAll('.card-item');
+    cardElements.forEach(element => {
+      gsap.killTweensOf(element);
+    });
+
+    // Start new animations
     animateCards(cardElements, containerRef.current);
+
+    return () => {
+      // Cleanup animations on unmount
+      cardElements.forEach(element => {
+        gsap.killTweensOf(element);
+      });
+    };
   }, [animateCards, containerRef]);
 };
