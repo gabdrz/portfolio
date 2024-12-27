@@ -152,10 +152,10 @@ const SideNav = ({ cards, containerRef, activeIndex }: SideNavProps) => {
   return (
     <nav 
       ref={navRef}
-      className="fixed right-6 top-1/2 -translate-y-1/2 z-50 select-none touch-none"
+      className="fixed right-0 md:right-6 top-1/2 -translate-y-1/2 z-50 select-none touch-none"
       onMouseLeave={handleMouseLeave}
     >
-      <div className="flex flex-col items-end gap-2">
+      <div className="flex flex-col items-end gap-0 md:gap-2">
         {cards.map((card, index) => (
           <div
             key={card.id}
