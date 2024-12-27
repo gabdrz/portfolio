@@ -1,0 +1,77 @@
+src/
+├── App.tsx
+├── assets
+│   ├── images
+│   │   ├── profile.jpg
+│   │   └── projects
+│   │       ├── icon_afb.png
+│   │       ├── icon_cm.png
+│   │       ├── icon_da.png
+│   │       ├── icon_mva.png
+│   │       ├── icon_mvw.png
+│   │       ├── icon_pw.png
+│   │       └── icon_rl.png
+│   └── react.svg
+├── claude
+├── claude.py
+├── components
+│   ├── CardContent.tsx
+│   ├── CardItem.tsx
+│   ├── Cards.tsx
+│   ├── DebugLines.tsx
+│   ├── cards
+│   │   ├── ContentCard.tsx
+│   │   ├── HeaderCard.tsx
+│   │   ├── LinksCard.tsx
+│   │   ├── ProjectCard.tsx
+│   │   └── index.ts
+│   ├── nav
+│   │   ├── NavDot.tsx
+│   │   ├── NavItem.tsx
+│   │   ├── NavLabel.tsx
+│   │   └── SideNav.tsx
+│   └── project
+│       ├── ProjectContent.tsx
+│       ├── ProjectHeader.tsx
+│       ├── ProjectView.tsx
+│       └── blocks
+│           ├── ProjectGallery.tsx
+│           ├── ProjectHeading.tsx
+│           ├── ProjectImage.tsx
+│           ├── ProjectParagraph.tsx
+│           ├── ProjectQuote.tsx
+│           ├── ProjectSpacer.tsx
+│           ├── ProjectTitleBlock.tsx
+│           └── index.ts
+├── data
+│   ├── cards.ts
+│   └── projectsData.ts
+├── file_structure.txt
+├── hooks
+│   ├── animations
+│   │   └── useSharedAnimation.ts
+│   ├── useActiveCard.ts
+│   ├── useCardAnimations.ts
+│   ├── useCardsLayout.ts
+│   ├── useIsMobile.ts
+│   ├── useNavAnimation.ts
+│   ├── useNavItem.ts
+│   ├── useNavState.ts
+│   ├── useProjectAnimations.ts
+│   ├── useProjectBackground.ts
+│   ├── useScrollBehavior.ts
+│   ├── useSharedElement.ts
+│   ├── useSideNav.ts
+│   └── useViewportHeight.ts
+├── index.css
+├── main.tsx
+├── types
+│   ├── cards.ts
+│   ├── images.d.ts
+│   └── scroll.ts
+├── utils
+│   ├── eventHandlers.ts
+│   ├── navTouchUtils.ts
+│   ├── navUtils.ts
+│   └── scrollUtils.ts
+└── vite-env.d.ts
