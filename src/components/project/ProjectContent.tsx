@@ -20,7 +20,7 @@ export const ProjectContent: React.FC<ProjectContentProps> = ({
   // Handle title block
   if (isFirstBlock && block.type === 'heading') {
     return (
-      <div className="max-w-2xl mx-auto mb-12">
+      <div className="max-w-2xl mx-auto mb-8">
         <ProjectTitleBlock content={block.content} projectData={projectData} />
       </div>
     );
@@ -29,7 +29,7 @@ export const ProjectContent: React.FC<ProjectContentProps> = ({
   // Special handling for hero image
   if (block.type === 'image' && block.content === projectData.heroImage) {
     return (
-      <div className="max-w-2xl mx-auto mb-12">
+      <div className="max-w-2xl mx-auto mb-8">
         <img 
           src={block.content} 
           alt=""

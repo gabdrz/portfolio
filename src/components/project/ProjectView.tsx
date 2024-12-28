@@ -198,11 +198,11 @@ const ProjectView: React.FC = () => {
       }
     };
 
+    const content = contentRef.current;
+
     const handleScroll = () => {
-      if (!contentRef.current) return;
-      const titleBlock = contentRef.current.querySelector(
-        '[data-block="title"]'
-      );
+      if (!content) return;
+      const titleBlock = content.querySelector('[data-block="title"]');
       if (titleBlock) {
         const titleBottom = titleBlock.getBoundingClientRect().bottom;
         setShowHeaderTitle(titleBottom < headerHeight);
@@ -211,11 +211,16 @@ const ProjectView: React.FC = () => {
 
     updateHeaderHeight();
     window.addEventListener("resize", updateHeaderHeight);
-    contentRef.current?.addEventListener("scroll", handleScroll);
+    
+    if (content) {
+      content.addEventListener("scroll", handleScroll);
+    }
 
     return () => {
       window.removeEventListener("resize", updateHeaderHeight);
-      contentRef.current?.removeEventListener("scroll", handleScroll);
+      if (content) {
+        content.removeEventListener("scroll", handleScroll);
+      }
     };
   }, [headerHeight]);
 
@@ -238,11 +243,10 @@ const ProjectView: React.FC = () => {
           showTitle={showHeaderTitle}
         />
       </div>
-      // Update the content div in ProjectView.tsx return statement
       <div
         ref={contentRef}
         className="h-full overflow-y-auto px-4 md:px-8 scrollbar-hide"
-        style={{ paddingTop: `${headerHeight + 48}px`, opacity: 0 }} // Changed from 32px to 48px to match block spacing
+        style={{ paddingTop: `${headerHeight + 32}px`, opacity: 0 }}
       >
         {project.projectData.content.map((block, index) => (
           <ProjectContent
