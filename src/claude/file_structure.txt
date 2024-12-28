@@ -54,14 +54,11 @@ src/
 │   ├── useCardAnimations.ts
 │   ├── useCardsLayout.ts
 │   ├── useIsMobile.ts
-│   ├── useNavAnimation.ts
 │   ├── useNavItem.ts
-│   ├── useNavState.ts
 │   ├── useProjectAnimations.ts
 │   ├── useProjectBackground.ts
 │   ├── useScrollBehavior.ts
 │   ├── useSharedElement.ts
-│   ├── useSideNav.ts
 │   └── useViewportHeight.ts
 ├── index.css
 ├── main.tsx

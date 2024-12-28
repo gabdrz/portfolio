@@ -1,7 +1,6 @@
-import React, { useRef } from 'react';
-import { NavItem } from './NavItem';
-import { useNavAnimations } from '../../hooks/useNavAnimation';
-import { useNavState } from '../../hooks/useNavState';
+import React, { useRef, useEffect, useState, useCallback } from 'react';
+import { useIsMobile } from '../../hooks/useIsMobile';
+import gsap from 'gsap';
 
 interface SideNavProps {
   cards: Array<{
@@ -14,54 +13,171 @@ interface SideNavProps {
 }
 
 const SideNav = ({ cards, containerRef, activeIndex }: SideNavProps) => {
-  // Single ref array for nav items
+  const [isExpanded, setIsExpanded] = useState(false);
+  const isMobile = useIsMobile();
+  const navRef = useRef<HTMLDivElement>(null);
   const itemRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const labelWidthsRef = useRef<number[]>([]);
+  const touchStartRef = useRef<{ y: number; index: number } | null>(null);
+  const animationsRef = useRef<gsap.core.Tween[]>([]);
 
-  // Navigation state and handlers
-  const {
-    handleExpand,
-    handleItemHover,
-    handleItemClick
-  } = useNavState({ 
-    containerRef, 
-    activeIndex 
-  });
+  // Cleanup function for GSAP animations
+  const cleanupAnimations = useCallback(() => {
+    animationsRef.current.forEach(anim => anim.kill());
+    animationsRef.current = [];
+  }, []);
 
-  // Animation controls
-  const { animateItems } = useNavAnimations({
-    itemRefs,
-    activeIndex
-  });
+  // Store label widths on mount and resize
+  useEffect(() => {
+    const updateLabelWidths = () => {
+      itemRefs.current.forEach((item, index) => {
+        if (item) {
+          const label = item.querySelector('.nav-label');
+          if (label) {
+            labelWidthsRef.current[index] = label.getBoundingClientRect().width + 32;
+          }
+        }
+      });
+    };
 
-  const handleItemMouseEnter = (index: number) => {
-    handleExpand(true);
-    handleItemHover(index);
-    animateItems(true);
+    updateLabelWidths();
+    window.addEventListener('resize', updateLabelWidths);
+    return () => window.removeEventListener('resize', updateLabelWidths);
+  }, []);
+
+  // Animate nav items based on active index and expanded state
+  useEffect(() => {
+    cleanupAnimations();
+    
+    itemRefs.current.forEach((item, index) => {
+      if (!item) return;
+
+      const label = item.querySelector('.nav-label');
+      const dot = item.querySelector('.nav-dot');
+      if (!label || !dot) return;
+
+      const distance = Math.abs(index - activeIndex);
+      const delay = isExpanded ? distance * 0.02 : 0;
+      const labelWidth = isExpanded ? labelWidthsRef.current[index] || 32 : 32;
+
+      // Store animations for cleanup
+      animationsRef.current.push(
+        gsap.to(item, {
+          width: labelWidth,
+          duration: 0.2,
+          delay,
+          ease: "power2.out"
+        }),
+
+        gsap.to(label, {
+          opacity: isExpanded ? Math.max(0.3, 1 - (distance * 0.15)) : 0,
+          duration: 0.2,
+          delay,
+          ease: "power2.out"
+        }),
+
+        gsap.to(dot, {
+          scale: index === activeIndex ? 1.25 : 1,
+          opacity: index === activeIndex ? 1 : 0.5,
+          duration: 0.2,
+          ease: "power2.out"
+        })
+      );
+    });
+
+    return () => cleanupAnimations();
+  }, [activeIndex, isExpanded, cleanupAnimations]);
+
+  const scrollToCard = useCallback((index: number) => {
+    if (!containerRef.current) return;
+    const cardHeight = window.innerHeight / 3;
+    
+    gsap.killTweensOf(containerRef.current);
+    gsap.to(containerRef.current, {
+      scrollTo: { y: cardHeight * index },
+      duration: 0.3,
+      ease: "power2.out"
+    });
+  }, [containerRef]);
+
+  const handleTouchStart = (e: React.TouchEvent, index: number) => {
+    e.stopPropagation();
+    const touch = e.touches[0];
+    touchStartRef.current = { y: touch.clientY, index };
+    setIsExpanded(true);
+    scrollToCard(index);
   };
 
-  const handleItemMouseLeave = () => {
-    handleExpand(false);
-    animateItems(false);
+  const handleTouchMove = (e: React.TouchEvent) => {
+    e.stopPropagation();
+    if (!touchStartRef.current) return;
+    
+    const touch = e.touches[0];
+    const elementUnderTouch = document.elementFromPoint(touch.clientX, touch.clientY);
+    const navItem = elementUnderTouch?.closest('.nav-item');
+    
+    if (!navItem) {
+      // If touch moves outside nav, close it
+      setIsExpanded(false);
+      touchStartRef.current = null;
+      return;
+    }
+
+    const index = itemRefs.current.findIndex(ref => ref === navItem);
+    if (index !== -1 && index !== touchStartRef.current.index) {
+      touchStartRef.current.index = index;
+      scrollToCard(index);
+    }
   };
 
-  const handleItemClickEvent = (index: number) => {
-    handleItemClick(index);
-    animateItems(false);
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    e.stopPropagation();
+    setIsExpanded(false);
+    touchStartRef.current = null;
   };
+
+  const handleMouseEnter = useCallback((index: number) => {
+    if (!isMobile) {
+      setIsExpanded(true);
+      scrollToCard(index);
+    }
+  }, [isMobile, scrollToCard]);
+
+  const handleMouseLeave = useCallback(() => {
+    if (!isMobile) {
+      setIsExpanded(false);
+    }
+  }, [isMobile]);
 
   return (
-    <nav className="fixed right-6 top-1/2 -translate-y-1/2 z-50 select-none">
-      <div className="flex flex-col items-end">
+    <nav 
+      ref={navRef}
+      className="fixed right-0 md:right-6 top-1/2 -translate-y-1/2 z-50 select-none touch-none"
+      onMouseLeave={handleMouseLeave}
+    >
+      <div className="flex flex-col items-end gap-0 md:gap-2">
         {cards.map((card, index) => (
-          <NavItem
+          <div
             key={card.id}
-            title={card.title || (card.type === 'links' ? 'Links' : `Card ${index + 1}`)}
-            isActive={index === activeIndex}
-            itemRef={el => itemRefs.current[index] = el}
-            onMouseEnter={() => handleItemMouseEnter(index)}
-            onMouseLeave={handleItemMouseLeave}
-            onClick={() => handleItemClickEvent(index)}
-          />
+            ref={el => itemRefs.current[index] = el}
+            className="nav-item flex items-center justify-end h-8 cursor-pointer touch-none"
+            style={{ width: '32px' }}
+            onMouseEnter={() => handleMouseEnter(index)}
+            onTouchStart={e => handleTouchStart(e, index)}
+            onTouchMove={handleTouchMove}
+            onTouchEnd={handleTouchEnd}
+          >
+            <div 
+              className="nav-label mr-4 px-2 py-1 rounded text-sm whitespace-nowrap text-[#CCDAE5] pointer-events-none"
+              style={{ opacity: 0 }}
+            >
+              {card.title || (card.type === 'links' ? 'Links' : `Card ${index + 1}`)}
+            </div>
+            <div 
+              className="nav-dot w-2 h-2 md:w-3 md:h-3 rounded-full flex-shrink-0 mr-2 bg-[#CCDAE5] pointer-events-none"
+              style={{ opacity: 0.5 }}
+            />
+          </div>
         ))}
       </div>
     </nav>
