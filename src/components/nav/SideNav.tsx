@@ -57,28 +57,32 @@ const SideNav = ({ cards, containerRef, activeIndex }: SideNavProps) => {
       if (!label || !dot) return;
 
       const distance = Math.abs(index - activeIndex);
-      const delay = isExpanded ? distance * 0.02 : 0;
       const labelWidth = isExpanded ? labelWidthsRef.current[index] || 32 : 32;
+
+      // Calculate opacities based on distance from active item
+      const getOpacity = (distance: number) => {
+        if (distance === 0) return 1;
+        if (distance === 1) return 0.3;
+        return 0.1;
+      };
 
       // Store animations for cleanup
       animationsRef.current.push(
         gsap.to(item, {
           width: labelWidth,
           duration: 0.2,
-          delay,
           ease: "power2.out"
         }),
 
         gsap.to(label, {
-          opacity: isExpanded ? Math.max(0.3, 1 - (distance * 0.15)) : 0,
+          opacity: isExpanded ? getOpacity(distance) : 0,
           duration: 0.2,
-          delay,
           ease: "power2.out"
         }),
 
         gsap.to(dot, {
           scale: index === activeIndex ? 1.25 : 1,
-          opacity: index === activeIndex ? 1 : 0.5,
+          opacity: getOpacity(distance),
           duration: 0.2,
           ease: "power2.out"
         })
@@ -117,7 +121,6 @@ const SideNav = ({ cards, containerRef, activeIndex }: SideNavProps) => {
     const navItem = elementUnderTouch?.closest('.nav-item');
     
     if (!navItem) {
-      // If touch moves outside nav, close it
       setIsExpanded(false);
       touchStartRef.current = null;
       return;

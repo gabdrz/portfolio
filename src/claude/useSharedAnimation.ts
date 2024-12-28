@@ -1,5 +1,5 @@
 // src/hooks/animations/useSharedAnimation.ts
-import { useEffect, useRef } from 'react';
+import { useCallback } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
@@ -25,21 +25,8 @@ export interface ScrollConfig {
 }
 
 export const useSharedAnimation = () => {
-  const animationRef = useRef<gsap.Context>();
-
-  // Cleanup function for animations
-  const cleanup = () => {
-    if (animationRef.current) {
-      animationRef.current.revert();
-    }
-  };
-
-  useEffect(() => {
-    return () => cleanup();
-  }, []);
-
   // Core animation function
-  const animate = (
+  const animate = useCallback((
     target: AnimationTarget | AnimationTarget[],
     config: AnimationConfig,
     scrollConfig?: ScrollConfig
@@ -68,36 +55,36 @@ export const useSharedAnimation = () => {
             ease: config.ease || defaults.ease
           };
         case 'slide': {
-          const getSlideProps = () => {
-            const offset = 20;
-            const props: gsap.TweenVars = {
-              opacity: 0,
-              duration: config.duration || defaults.duration,
-              ease: config.ease || defaults.ease
-            };
-
-            switch (config.direction) {
-              case 'up':
-                props.y = offset;
-                break;
-              case 'down':
-                props.y = -offset;
-                break;
-              case 'left':
-                props.x = offset;
-                break;
-              case 'right':
-                props.x = -offset;
-                break;
-            }
-            return props;
+          const offset = 20;
+          const props: gsap.TweenVars = {
+            opacity: 0,
+            duration: config.duration || defaults.duration,
+            ease: config.ease || defaults.ease
           };
-          return getSlideProps();
+
+          switch (config.direction) {
+            case 'up':
+              props.y = offset;
+              break;
+            case 'down':
+              props.y = -offset;
+              break;
+            case 'left':
+              props.x = offset;
+              break;
+            case 'right':
+              props.x = -offset;
+              break;
+          }
+          return props;
         }
         default:
           return {};
       }
     };
+
+    // Kill any existing tweens on the target
+    gsap.killTweensOf(target);
 
     const animation = gsap.to(target, {
       ...getAnimationProps(),
@@ -119,14 +106,15 @@ export const useSharedAnimation = () => {
     }
 
     return animation;
-  };
+  }, []);
 
   // Helper method for card animations
-  const animateCards = (
+  const animateCards = useCallback((
     cards: NodeListOf<Element> | Element[],
     scroller: AnimationTarget
   ) => {
     cards.forEach((card) => {
+      gsap.killTweensOf(card);
       gsap.set(card, {
         scale: 0.8,
         opacity: 0.3
@@ -160,65 +148,10 @@ export const useSharedAnimation = () => {
         scrub: true
       });
     });
-  };
-
-  // Helper method for navigation animations
-  const animateNavItems = (
-    items: Element[],
-    activeIndex: number,
-    expanded: boolean
-  ) => {
-    items.forEach((item, index) => {
-      const label = item.querySelector('div:first-child');
-      if (!label) return;
-
-      const distance = Math.abs(index - activeIndex);
-      const delay = expanded ? distance * 0.02 : 0;
-      const labelWidth = expanded ? label.getBoundingClientRect().width + 32 : 32;
-
-      gsap.to(item, {
-        width: labelWidth,
-        duration: expanded ? 0.3 : 0.2,
-        delay,
-        ease: 'power2.inOut',
-        overwrite: true
-      });
-
-      gsap.to(label, {
-        opacity: expanded ? Math.max(0.3, 1 - (distance * 0.35)) : 0,
-        duration: expanded ? 0.3 : 0.2,
-        delay,
-        ease: expanded ? 'power2.out' : 'power2.inOut',
-        overwrite: true
-      });
-    });
-  };
+  }, []);
 
   return {
     animate,
-    animateCards,
-    animateNavItems,
-    cleanup
+    animateCards
   };
 };
-
-// Example usage:
-/*
-const MyComponent = () => {
-  const { animate, animateCards } = useSharedAnimation();
-  
-  useEffect(() => {
-    // Fade in animation
-    animate(elementRef.current, {
-      type: 'fade',
-      duration: 0.5
-    });
-    
-    // Card animations
-    const cards = document.querySelectorAll('.card');
-    animateCards(cards, containerRef.current);
-  }, []);
-
-  return <div>...</div>;
-};
-*/
