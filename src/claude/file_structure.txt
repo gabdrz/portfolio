@@ -57,6 +57,8 @@ src/
 │   ├── useNavItem.ts
 │   ├── useProjectAnimations.ts
 │   ├── useProjectBackground.ts
+│   ├── useProjectHeader.ts
+│   ├── useProjectTransition.ts
 │   ├── useScrollBehavior.ts
 │   ├── useSharedElement.ts
 │   └── useViewportHeight.ts
