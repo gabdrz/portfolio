@@ -172,7 +172,7 @@ const SideNav = ({ cards, containerRef, activeIndex }: SideNavProps) => {
         style={{ 
           opacity: 0,
           backdropFilter: 'blur(4px)',
-          backgroundColor: 'rgba(13, 17, 21, 0.4)',
+          backgroundColor: 'rgba(0, 0, 0, 0.4)',
         }}
         ref={backgroundRef}
       />
@@ -196,7 +196,7 @@ const SideNav = ({ cards, containerRef, activeIndex }: SideNavProps) => {
               onTouchEnd={handleTouchEnd}
             >
               <div 
-                className="nav-label mr-4 px-2 py-1 rounded text-sm whitespace-nowrap text-[#CCDAE5] pointer-events-none"
+                className="nav-label mr-4 px-2 py-1 rounded text-base whitespace-nowrap text-[#CCDAE5] pointer-events-none"
                 style={{ opacity: 0 }}
               >
                 {card.title || (card.type === 'links' ? 'Links' : `Card ${index + 1}`)}
