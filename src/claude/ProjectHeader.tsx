@@ -27,25 +27,25 @@ export const ProjectHeader: React.FC<ProjectHeaderProps> = ({
   }, [showTitle]);
 
   return (
-    <div className="w-full backdrop-blur-sm bg-[#0D1115]">
-      <div className="max-w-2xl mx-auto h-14 flex items-center justify-between">
-        {/* Close Button */}
+    <div className="w-full backdrop-blur-sm bg-[#0D1115]/90 h-14 flex items-center">
+      <div className="relative max-w-2xl w-full mx-auto h-full">
+        {/* Close Button - Absolute positioned */}
         <button
           onClick={onClose}
-          className="items-center justify-center hover:bg-white/10 transition-colors"
+          className="absolute left-0 top-1/2 -translate-y-1/2 p-1 hover:bg-white/10 rounded-lg transition-colors"
           aria-label="Close project"
         >
           <X size={24} />
         </button>
 
-        {/* Title */}
-        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+        {/* Title - Centered */}
+        <div className="flex items-center justify-center h-full">
           <p
             ref={titleRef}
             className="text-lg font-bold truncate"
             style={{
               opacity: 0,
-              transform: "translateY(10px)",
+              transform: "translateY(-10px)",
             }}
           >
             {title}

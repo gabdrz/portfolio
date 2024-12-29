@@ -7,26 +7,28 @@ interface UseProjectBackgroundProps {
   toColor: string;
   contentRef: React.RefObject<HTMLDivElement>;
   containerRef: React.RefObject<HTMLDivElement>;
+  backgroundRef: React.RefObject<HTMLDivElement>;
 }
 
 export const useProjectBackground = ({
   fromColor,
   toColor,
   contentRef,
-  containerRef
+  containerRef,
+  backgroundRef,
 }: UseProjectBackgroundProps) => {
   // Store the last animation frame request
   const animationFrame = useRef<number>();
   
   useEffect(() => {
-    if (!contentRef.current || !containerRef.current) return;
+    if (!contentRef.current || !containerRef.current || !backgroundRef.current) return;
     
     const content = contentRef.current;
-    const container = containerRef.current;
+    const background = backgroundRef.current;
 
     // Set initial gradient
-    container.style.setProperty('--gradient-stop', '50%');
-    container.style.background = `linear-gradient(to bottom, ${fromColor} 0%, ${toColor} var(--gradient-stop), ${toColor} 100%)`;
+    background.style.setProperty('--gradient-stop', '50%');
+    background.style.background = `linear-gradient(to bottom, ${fromColor} 0%, ${toColor} var(--gradient-stop), ${toColor} 100%)`;
 
     const updateGradient = () => {
       // Calculate how far we've scrolled as a percentage
@@ -36,7 +38,7 @@ export const useProjectBackground = ({
       const gradientStop = Math.min(50, Math.max(0, 50 - (scrollPercent * 1.5)));
       
       // Update the gradient
-      gsap.to(container, {
+      gsap.to(background, {
         duration: 0.2,
         '--gradient-stop': `${gradientStop}%`,
         overwrite: true
@@ -52,11 +54,14 @@ export const useProjectBackground = ({
 
     content.addEventListener('scroll', onScroll);
     
+    // Initial update
+    updateGradient();
+    
     return () => {
       if (animationFrame.current) {
         cancelAnimationFrame(animationFrame.current);
       }
       content.removeEventListener('scroll', onScroll);
     };
-  }, [fromColor, toColor, contentRef, containerRef]);
+  }, [fromColor, toColor, contentRef, containerRef, backgroundRef]);
 };

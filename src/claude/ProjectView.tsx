@@ -25,11 +25,9 @@ const ProjectView: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
-  const heroImageRef = useRef<HTMLImageElement>(null);
   const [headerHeight, setHeaderHeight] = useState<number>(0);
   const [showHeaderTitle, setShowHeaderTitle] = useState(false);
 
-  // Find the project data
   const project = cards.find(
     (card) => "projectData" in card && card.id.toString() === id
   );
@@ -37,115 +35,146 @@ const ProjectView: React.FC = () => {
   const state = location.state as LocationState;
 
   useEffect(() => {
-    if (!project || !state?.transitionId || !state?.sourceMetrics) return;
+    if (!project || !state?.transitionId) return;
 
     const sourceImage = document.getElementById(state.transitionId);
-    const targetImage = heroImageRef.current;
-    
-    if (!sourceImage || !targetImage) return;
+    if (!sourceImage) return;
 
-    // Clone the source image for transition
-    const clone = sourceImage.cloneNode(true) as HTMLImageElement;
-    clone.style.position = 'fixed';
-    clone.style.zIndex = '100';
-    clone.style.transformOrigin = 'top left';
+    // Add blocks to the beginning of content if they don't exist
+    if (
+      !project.projectData.content.some((block) => block.type === "heading")
+    ) {
+      project.projectData.content.unshift({
+        type: "heading",
+        content: project.title,
+        layout: "contained",
+      });
+    }
+
+    if (
+      !project.projectData.content.some(
+        (block) => block.type === "image" && block.content === project.image
+      )
+    ) {
+      project.projectData.content.splice(1, 0, {
+        type: "image",
+        content: project.image,
+        layout: "contained",
+      });
+    }
+
+    // Create transition clone
+    const clone = sourceImage.cloneNode(true) as HTMLElement;
+    clone.style.position = "fixed";
+    clone.style.zIndex = "100";
+    clone.style.transform = "translateZ(0)";
     clone.style.top = `${state.sourceMetrics.top}px`;
     clone.style.left = `${state.sourceMetrics.left}px`;
     clone.style.width = `${state.sourceMetrics.width}px`;
     clone.style.height = `${state.sourceMetrics.height}px`;
     clone.style.borderRadius = state.sourceMetrics.borderRadius;
-    clone.style.willChange = 'transform, width, height';
-    
+    clone.style.transformOrigin = "top left";
+    clone.style.transition = "none";
     document.body.appendChild(clone);
 
-    // Get target metrics
-    const targetMetrics = targetImage.getBoundingClientRect();
+    // Calculate target position
+    const targetWidth = Math.min(window.innerWidth * 0.8, 896); // max-w-4xl equivalent
+    const targetHeight =
+      (targetWidth * state.sourceMetrics.height) / state.sourceMetrics.width;
+    const targetLeft = (window.innerWidth - targetWidth) / 2;
+    const targetTop = headerHeight + 48; // Account for header and some padding
 
-    // Animate clone to target position using GSAP
+    // Animate with GSAP
     gsap.to(clone, {
-      top: targetMetrics.top,
-      left: targetMetrics.left,
-      width: targetMetrics.width,
-      height: targetMetrics.height,
-      borderRadius: 8,
+      top: targetTop,
+      left: targetLeft,
+      width: targetWidth,
+      height: targetHeight,
+      borderRadius: "0.5rem",
       duration: 0.5,
       ease: "power2.inOut",
       onComplete: () => {
         clone.remove();
-        if (targetImage) {
-          gsap.to(targetImage, {
-            opacity: 1,
-            duration: 0.2
-          });
+        if (contentRef.current) {
+          contentRef.current.style.opacity = "1";
         }
-      }
+      },
     });
 
-    return () => {
-      clone.remove();
-    };
-  }, [project, state]);
+    // Fade in content
+    if (contentRef.current) {
+      gsap.fromTo(
+        contentRef.current,
+        { opacity: 0 },
+        { opacity: 1, duration: 0.3, delay: 0.4 }
+      );
+    }
+  }, [project, state, headerHeight]);
 
   const handleClose = () => {
-    if (!containerRef.current || !contentRef.current || !headerRef.current || !heroImageRef.current) {
+    if (!containerRef.current || !contentRef.current || !headerRef.current) {
       navigate("/");
       return;
     }
 
     const targetId = state?.transitionId;
     const targetElement = targetId ? document.getElementById(targetId) : null;
+    const sourceImage = contentRef.current.querySelector("img") as HTMLElement;
 
-    if (targetElement) {
-      const targetMetrics = targetElement.getBoundingClientRect();
-      const sourceMetrics = heroImageRef.current.getBoundingClientRect();
-      
-      // Clone the current hero image
-      const clone = heroImageRef.current.cloneNode(true) as HTMLImageElement;
-      clone.style.position = 'fixed';
-      clone.style.zIndex = '100';
-      clone.style.top = `${sourceMetrics.top}px`;
-      clone.style.left = `${sourceMetrics.left}px`;
-      clone.style.width = `${sourceMetrics.width}px`;
-      clone.style.height = `${sourceMetrics.height}px`;
-      clone.style.borderRadius = '8px';
-      clone.style.transformOrigin = 'top left';
-      clone.style.willChange = 'transform, width, height';
-      
+    if (targetElement && sourceImage) {
+      const sourceRect = sourceImage.getBoundingClientRect();
+      const targetRect = targetElement.getBoundingClientRect();
+
+      // Create transition clone
+      const clone = sourceImage.cloneNode(true) as HTMLElement;
+      clone.style.position = "fixed";
+      clone.style.zIndex = "100";
+      clone.style.transform = "translateZ(0)";
+      clone.style.top = `${sourceRect.top}px`;
+      clone.style.left = `${sourceRect.left}px`;
+      clone.style.width = `${sourceRect.width}px`;
+      clone.style.height = `${sourceRect.height}px`;
+      clone.style.borderRadius = "0.5rem";
+      clone.style.transformOrigin = "top left";
+      clone.style.transition = "none";
       document.body.appendChild(clone);
 
-      // Hide original elements
-      heroImageRef.current.style.opacity = '0';
-      
-      // Animate other elements out
+      // Hide original image
+      sourceImage.style.opacity = "0";
+
+      // Create timeline for smooth exit
       const tl = gsap.timeline({
         onComplete: () => {
           navigate("/");
           clone.remove();
-        }
+        },
       });
 
       tl.to([contentRef.current, headerRef.current], {
         opacity: 0,
         duration: 0.3,
-        ease: "power2.inOut"
-      })
-      .to(clone, {
-        top: targetMetrics.top,
-        left: targetMetrics.left,
-        width: targetMetrics.width,
-        height: targetMetrics.height,
-        borderRadius: state?.sourceMetrics?.borderRadius || '0px',
-        duration: 0.5,
-        ease: "power2.inOut"
-      }, "-=0.2");
+        ease: "power2.out",
+      }).to(
+        clone,
+        {
+          top: targetRect.top,
+          left: targetRect.left,
+          width: targetRect.width,
+          height: targetRect.height,
+          borderRadius: state?.sourceMetrics?.borderRadius || "0px",
+          duration: 0.5,
+          ease: "power2.inOut",
+        },
+        "-=0.2"
+      );
     } else {
-      // Fallback animation if target element is not found
+      // Fallback animation
       gsap.to([contentRef.current, headerRef.current], {
-        y: 20,
         opacity: 0,
+        y: 20,
         duration: 0.3,
-        ease: "power2.inOut",
-        onComplete: () => navigate("/")
+        ease: "power2.out",
+        onComplete: () => navigate("/"),
       });
     }
   };
@@ -153,26 +182,27 @@ const ProjectView: React.FC = () => {
   // Use background hook
   const theme = project?.projectData.theme;
   useProjectBackground({
-    fromColor: theme?.gradient?.from || '#0D1115',
-    toColor: theme?.gradient?.to || '#0D1115',
+    fromColor: theme?.gradient?.from || "#0D1115",
+    toColor: theme?.gradient?.to || "#0D1115",
     contentRef,
-    containerRef
+    containerRef,
   });
 
   // Handle scroll for header title
   useEffect(() => {
     if (!headerRef.current) return;
-    
+
     const updateHeaderHeight = () => {
       if (headerRef.current) {
         setHeaderHeight(headerRef.current.getBoundingClientRect().height);
       }
     };
 
+    const content = contentRef.current;
+
     const handleScroll = () => {
-      if (!contentRef.current) return;
-      
-      const titleBlock = contentRef.current.querySelector('[data-block="title"]');
+      if (!content) return;
+      const titleBlock = content.querySelector('[data-block="title"]');
       if (titleBlock) {
         const titleBottom = titleBlock.getBoundingClientRect().bottom;
         setShowHeaderTitle(titleBottom < headerHeight);
@@ -180,13 +210,17 @@ const ProjectView: React.FC = () => {
     };
 
     updateHeaderHeight();
-    window.addEventListener('resize', updateHeaderHeight);
-    contentRef.current?.addEventListener('scroll', handleScroll);
+    window.addEventListener("resize", updateHeaderHeight);
+    
+    if (content) {
+      content.addEventListener("scroll", handleScroll);
+    }
 
     return () => {
-      window.removeEventListener('resize', updateHeaderHeight);
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-      contentRef.current?.removeEventListener('scroll', handleScroll);
+      window.removeEventListener("resize", updateHeaderHeight);
+      if (content) {
+        content.removeEventListener("scroll", handleScroll);
+      }
     };
   }, [headerHeight]);
 
@@ -209,27 +243,17 @@ const ProjectView: React.FC = () => {
           showTitle={showHeaderTitle}
         />
       </div>
-
       <div
         ref={contentRef}
-        className="h-full overflow-y-auto px-8 scrollbar-hide"
-        style={{ paddingTop: `${headerHeight + 32}px` }}
+        className="h-full overflow-y-auto px-4 md:px-8 scrollbar-hide"
+        style={{ paddingTop: `${headerHeight + 32}px`, opacity: 0 }}
       >
-        <div className="max-w-2xl mx-auto mb-12">
-          <img
-            ref={heroImageRef}
-            src={project.image}
-            alt={project.title}
-            className="w-full h-auto rounded-lg opacity-0"
-            style={{ opacity: 0 }}
-          />
-        </div>
-
         {project.projectData.content.map((block, index) => (
           <ProjectContent
             key={index}
             block={block}
             isFirstBlock={index === 0}
+            projectData={project.projectData}
           />
         ))}
       </div>

@@ -1,4 +1,4 @@
-// src/components/project/ProjectView.tsx
+// src/components/project/ProjectView.tsx 
 import React, { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams, useLocation } from "react-router-dom";
 import gsap from "gsap";
@@ -25,6 +25,7 @@ const ProjectView: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
+  const backgroundRef = useRef<HTMLDivElement>(null);
   const [headerHeight, setHeaderHeight] = useState<number>(0);
   const [showHeaderTitle, setShowHeaderTitle] = useState(false);
 
@@ -78,14 +79,17 @@ const ProjectView: React.FC = () => {
     document.body.appendChild(clone);
 
     // Calculate target position
-    const targetWidth = Math.min(window.innerWidth * 0.8, 896); // max-w-4xl equivalent
+    const targetWidth = Math.min(window.innerWidth * 0.8, 896);
     const targetHeight =
       (targetWidth * state.sourceMetrics.height) / state.sourceMetrics.width;
     const targetLeft = (window.innerWidth - targetWidth) / 2;
-    const targetTop = headerHeight + 48; // Account for header and some padding
+    const targetTop = headerHeight + 48;
 
-    // Animate with GSAP
-    gsap.to(clone, {
+    // Create a GSAP timeline for coordinated animations
+    const tl = gsap.timeline();
+
+    // Animate the clone
+    tl.to(clone, {
       top: targetTop,
       left: targetLeft,
       width: targetWidth,
@@ -99,14 +103,21 @@ const ProjectView: React.FC = () => {
           contentRef.current.style.opacity = "1";
         }
       },
-    });
+    })
+    // Fade in the gradient background
+    .to(backgroundRef.current, {
+      opacity: 1,
+      duration: 0.3,
+      ease: "power2.inOut",
+    }, "-=0.2"); // Start slightly before the clone animation finishes
 
     // Fade in content
     if (contentRef.current) {
-      gsap.fromTo(
+      tl.fromTo(
         contentRef.current,
         { opacity: 0 },
-        { opacity: 1, duration: 0.3, delay: 0.4 }
+        { opacity: 1, duration: 0.3 },
+        "-=0.2"
       );
     }
   }, [project, state, headerHeight]);
@@ -150,11 +161,13 @@ const ProjectView: React.FC = () => {
         },
       });
 
-      tl.to([contentRef.current, headerRef.current], {
+      // Fade out content and background together
+      tl.to([contentRef.current, headerRef.current, backgroundRef.current], {
         opacity: 0,
         duration: 0.3,
         ease: "power2.out",
-      }).to(
+      })
+      .to(
         clone,
         {
           top: targetRect.top,
@@ -169,7 +182,7 @@ const ProjectView: React.FC = () => {
       );
     } else {
       // Fallback animation
-      gsap.to([contentRef.current, headerRef.current], {
+      gsap.to([contentRef.current, headerRef.current, backgroundRef.current], {
         opacity: 0,
         y: 20,
         duration: 0.3,
@@ -186,6 +199,7 @@ const ProjectView: React.FC = () => {
     toColor: theme?.gradient?.to || "#0D1115",
     contentRef,
     containerRef,
+    backgroundRef,
   });
 
   // Handle scroll for header title
@@ -233,10 +247,17 @@ const ProjectView: React.FC = () => {
   return (
     <div
       ref={containerRef}
-      className="fixed inset-0 overflow-hidden z-50 bg-[#0D1115]"
+      className="fixed inset-0 overflow-hidden z-50"
       style={{ color: textColor }}
     >
-      <div ref={headerRef} className="fixed top-0 left-0 right-0 z-10">
+      {/* Gradient Background */}
+      <div
+        ref={backgroundRef}
+        className="fixed inset-0 z-0 pointer-events-none"
+        style={{ opacity: 0 }}
+      />
+
+      <div ref={headerRef} className="fixed top-0 left-0 right-0 z-20">
         <ProjectHeader
           title={project.title}
           onClose={handleClose}
@@ -245,7 +266,7 @@ const ProjectView: React.FC = () => {
       </div>
       <div
         ref={contentRef}
-        className="h-full overflow-y-auto px-4 md:px-8 scrollbar-hide"
+        className="relative h-full overflow-y-auto px-4 md:px-8 scrollbar-hide z-10"
         style={{ paddingTop: `${headerHeight + 32}px`, opacity: 0 }}
       >
         {project.projectData.content.map((block, index) => (
