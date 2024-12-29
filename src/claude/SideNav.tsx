@@ -16,6 +16,7 @@ const SideNav = ({ cards, containerRef, activeIndex }: SideNavProps) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const isMobile = useIsMobile();
   const navRef = useRef<HTMLDivElement>(null);
+  const backgroundRef = useRef<HTMLDivElement>(null);
   const itemRefs = useRef<(HTMLDivElement | null)[]>([]);
   const labelWidthsRef = useRef<number[]>([]);
   const touchStartRef = useRef<{ y: number; index: number } | null>(null);
@@ -48,6 +49,17 @@ const SideNav = ({ cards, containerRef, activeIndex }: SideNavProps) => {
   // Animate nav items based on active index and expanded state
   useEffect(() => {
     cleanupAnimations();
+
+    // Background overlay animation
+    if (backgroundRef.current) {
+      animationsRef.current.push(
+        gsap.to(backgroundRef.current, {
+          opacity: isExpanded ? 1 : 0,
+          duration: 0.2,
+          ease: "power2.out"
+        })
+      );
+    }
     
     itemRefs.current.forEach((item, index) => {
       if (!item) return;
@@ -57,28 +69,32 @@ const SideNav = ({ cards, containerRef, activeIndex }: SideNavProps) => {
       if (!label || !dot) return;
 
       const distance = Math.abs(index - activeIndex);
-      const delay = isExpanded ? distance * 0.02 : 0;
       const labelWidth = isExpanded ? labelWidthsRef.current[index] || 32 : 32;
+
+      // Calculate opacities based on distance from active item
+      const getOpacity = (distance: number) => {
+        if (distance === 0) return 1;
+        if (distance === 1) return 0.3;
+        return 0.1;
+      };
 
       // Store animations for cleanup
       animationsRef.current.push(
         gsap.to(item, {
           width: labelWidth,
           duration: 0.2,
-          delay,
           ease: "power2.out"
         }),
 
         gsap.to(label, {
-          opacity: isExpanded ? Math.max(0.3, 1 - (distance * 0.15)) : 0,
+          opacity: isExpanded ? getOpacity(distance) : 0,
           duration: 0.2,
-          delay,
           ease: "power2.out"
         }),
 
         gsap.to(dot, {
           scale: index === activeIndex ? 1.25 : 1,
-          opacity: index === activeIndex ? 1 : 0.5,
+          opacity: getOpacity(distance),
           duration: 0.2,
           ease: "power2.out"
         })
@@ -117,7 +133,6 @@ const SideNav = ({ cards, containerRef, activeIndex }: SideNavProps) => {
     const navItem = elementUnderTouch?.closest('.nav-item');
     
     if (!navItem) {
-      // If touch moves outside nav, close it
       setIsExpanded(false);
       touchStartRef.current = null;
       return;
@@ -150,37 +165,51 @@ const SideNav = ({ cards, containerRef, activeIndex }: SideNavProps) => {
   }, [isMobile]);
 
   return (
-    <nav 
-      ref={navRef}
-      className="fixed right-0 md:right-6 top-1/2 -translate-y-1/2 z-50 select-none touch-none"
-      onMouseLeave={handleMouseLeave}
-    >
-      <div className="flex flex-col items-end gap-0 md:gap-2">
-        {cards.map((card, index) => (
-          <div
-            key={card.id}
-            ref={el => itemRefs.current[index] = el}
-            className="nav-item flex items-center justify-end h-8 cursor-pointer touch-none"
-            style={{ width: '32px' }}
-            onMouseEnter={() => handleMouseEnter(index)}
-            onTouchStart={e => handleTouchStart(e, index)}
-            onTouchMove={handleTouchMove}
-            onTouchEnd={handleTouchEnd}
-          >
-            <div 
-              className="nav-label mr-4 px-2 py-1 rounded text-sm whitespace-nowrap text-[#CCDAE5] pointer-events-none"
-              style={{ opacity: 0 }}
+    <>
+      {/* Background Overlay */}
+      <div 
+        className="fixed inset-0 pointer-events-none z-40"
+        style={{ 
+          opacity: 0,
+          backdropFilter: 'blur(4px)',
+          backgroundColor: 'rgba(0, 0, 0, 0.4)',
+        }}
+        ref={backgroundRef}
+      />
+
+      {/* Navigation */}
+      <nav 
+        ref={navRef}
+        className="fixed right-0 md:right-6 top-1/2 -translate-y-1/2 z-50 select-none touch-none"
+        onMouseLeave={handleMouseLeave}
+      >
+        <div className="flex flex-col items-end gap-0 md:gap-2">
+          {cards.map((card, index) => (
+            <div
+              key={card.id}
+              ref={el => itemRefs.current[index] = el}
+              className="nav-item flex items-center justify-end h-8 cursor-pointer touch-none"
+              style={{ width: '32px' }}
+              onMouseEnter={() => handleMouseEnter(index)}
+              onTouchStart={e => handleTouchStart(e, index)}
+              onTouchMove={handleTouchMove}
+              onTouchEnd={handleTouchEnd}
             >
-              {card.title || (card.type === 'links' ? 'Links' : `Card ${index + 1}`)}
+              <div 
+                className="nav-label mr-4 px-2 py-1 rounded text-base whitespace-nowrap text-[#CCDAE5] pointer-events-none"
+                style={{ opacity: 0 }}
+              >
+                {card.title || (card.type === 'links' ? 'Links' : `Card ${index + 1}`)}
+              </div>
+              <div 
+                className="nav-dot w-2 h-2 md:w-3 md:h-3 rounded-full flex-shrink-0 mr-2 bg-[#CCDAE5] pointer-events-none"
+                style={{ opacity: 0.5 }}
+              />
             </div>
-            <div 
-              className="nav-dot w-2 h-2 md:w-3 md:h-3 rounded-full flex-shrink-0 mr-2 bg-[#CCDAE5] pointer-events-none"
-              style={{ opacity: 0.5 }}
-            />
-          </div>
-        ))}
-      </div>
-    </nav>
+          ))}
+        </div>
+      </nav>
+    </>
   );
 };
 

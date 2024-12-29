@@ -51,7 +51,7 @@ export const projectsData: ProjectsData = {
       content: [
         {
           type: 'heading',
-          content: 'Reimagining Rocket League Sideswipe\'s User Experience',
+          content: 'RL Sideswipe UX Refresh',
           layout: 'contained'
         },
         {
@@ -214,7 +214,7 @@ export const projectsData: ProjectsData = {
       content: [
         {
           type: 'heading',
-          content: 'Revolutionizing Medical Scheduling',
+          content: 'Doctors Appointment App Design',
           layout: 'contained'
         },
         {
@@ -252,7 +252,7 @@ export const projectsData: ProjectsData = {
       content: [
         {
           type: 'heading',
-          content: 'Simplifying Seat Selection',
+          content: 'Seat Reservation Website Design',
           layout: 'contained'
         },
         {
@@ -290,7 +290,7 @@ export const projectsData: ProjectsData = {
       content: [
         {
           type: 'heading',
-          content: 'Problem Space',
+          content: 'Seat Reservation App Design',
           layout: 'contained'
         },
         {
@@ -400,7 +400,7 @@ export const projectsData: ProjectsData = {
       content: [
         {
           type: 'heading',
-          content: 'Building a Digital Identity',
+          content: 'Portfolio Website Redesign',
           layout: 'contained'
         },
         {
@@ -444,7 +444,7 @@ export const projectsData: ProjectsData = {
       content: [
         {
           type: 'heading',
-          content: 'Keeping Cars Running Smoothly',
+          content: 'Car Maintenance App',
           layout: 'contained'
         },
         {
@@ -487,7 +487,7 @@ export const projectsData: ProjectsData = {
       content: [
         {
           type: 'heading',
-          content: 'Automating Social Media',
+          content: 'Automated Freedom Board',
           layout: 'contained'
         },
         {
