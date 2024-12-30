@@ -53,6 +53,7 @@ src/
 │   ├── useActiveCard.ts
 │   ├── useCardAnimations.ts
 │   ├── useCardsLayout.ts
+│   ├── useHoverAnimation.ts
 │   ├── useIsMobile.ts
 │   ├── useNavItem.ts
 │   ├── useProjectAnimations.ts

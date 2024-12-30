@@ -1,38 +1,98 @@
 // src/hooks/useSharedElement.ts
-import { useEffect, useRef } from 'react';
-import gsap from 'gsap';
-import { Flip } from 'gsap/Flip';
+import { useCallback } from "react";
+import gsap from "gsap";
+import { Flip } from "gsap/Flip";
 
 gsap.registerPlugin(Flip);
 
-interface UseSharedElementProps {
-  elementId: string;
-  isExpanded: boolean;
+interface TransitionOptions {
+  duration?: number;
+  ease?: string;
+  absolute?: boolean;
   onComplete?: () => void;
 }
 
-export const useSharedElement = ({ elementId, isExpanded, onComplete }: UseSharedElementProps) => {
-  const flipStateRef = useRef<ReturnType<typeof Flip.getState> | null>(null);
+export const useSharedElement = () => {
+  const createFlipTransition = useCallback(
+    (
+      element: HTMLElement,
+      state: Flip.FlipState,
+      options: TransitionOptions = {}
+    ) => {
+      const {
+        duration = 0.5,
+        ease = "power2.inOut",
+        absolute = true,
+        onComplete,
+      } = options;
 
-  useEffect(() => {
-    const element = document.getElementById(elementId);
-    if (!element) return;
+      return Flip.from(state, {
+        duration,
+        ease,
+        absolute,
+        onComplete,
+        nested: true,
+        spin: false,
+        preserveScroll: true,
+        prune: true,
+        simple: true,
+      });
+    },
+    []
+  );
 
-    // Capture initial state
-    flipStateRef.current = Flip.getState(element, { props: "className" });
+  const captureFlipState = useCallback(
+    (element: HTMLElement) => {
+      const flipState = Flip.getState(element, {
+        props: ["position", "size", "scale", "rotation"],
+        simple: true,
+      });
 
-    // Toggle expanded class for proper sizing
-    element.classList.toggle('project-hero', isExpanded);
-    element.classList.toggle('card-thumbnail', !isExpanded);
+      // Extract only serializable properties
+      const serializableState = {
+        positions: flipState.positions,
+        props: flipState.props,
+        other: flipState.other, // Include only required serializable properties
+      };
 
-    // Animate from the previous state to the new state
-    Flip.from(flipStateRef.current, {
-      duration: 0.6,
-      ease: "power2.inOut",
-      absolute: true,
-      onComplete: () => {
-        if (onComplete) onComplete();
-      }
-    });
-  }, [elementId, isExpanded, onComplete]);
+      return serializableState;
+    },
+    []
+  );
+
+  const transition = useCallback(
+    (
+      fromElement: HTMLElement,
+      toElement: HTMLElement,
+      options: TransitionOptions = {}
+    ) => {
+      const state = captureFlipState(fromElement);
+
+      const tl = gsap.timeline();
+      tl.add(() => {
+        createFlipTransition(toElement, state, options);
+      });
+
+      return tl;
+    },
+    [captureFlipState, createFlipTransition]
+  );
+
+  const getSharedElements = useCallback((fromId: string, toId: string) => {
+    const fromElement = document.getElementById(fromId);
+    const toElement = document.getElementById(toId);
+
+    return {
+      fromElement,
+      toElement,
+      canTransition: !!(fromElement && toElement),
+    };
+  }, []);
+
+  return {
+    transition,
+    captureFlipState,
+    createFlipTransition,
+    getSharedElements,
+  };
 };

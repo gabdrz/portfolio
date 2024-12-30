@@ -2,43 +2,43 @@
 import React, { useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { ProjectCard as ProjectCardType } from "../../types/cards";
+import { useSharedElement } from "../../hooks/useSharedElement";
 
 interface ProjectCardProps {
   card: ProjectCardType;
   onTransitionStart?: () => void;
 }
 
-const ProjectCard: React.FC<ProjectCardProps> = ({ card, onTransitionStart }) => {
+const ProjectCard: React.FC<ProjectCardProps> = ({
+  card,
+  onTransitionStart,
+}) => {
   const navigate = useNavigate();
+  const { captureFlipState } = useSharedElement();
   const transitionId = `project-image-${card.id}`;
 
   const handleClick = useCallback(() => {
+    const sourceImage = document.getElementById(transitionId);
+    if (!sourceImage) {
+      navigate(`/project/${card.id}`);
+      return;
+    }
+
+    // Capture Flip state and sanitize it
+    const flipState = captureFlipState(sourceImage);
+
     if (onTransitionStart) {
       onTransitionStart();
     }
-    
-    // Get the current card element metrics before navigation
-    const element = document.getElementById(transitionId);
-    if (!element) return;
-    
-    const metrics = element.getBoundingClientRect();
-    
-    navigate(`/project/${card.id}`, { 
-      state: { 
-        transitionId,
-        sourceMetrics: {
-          top: metrics.top,
-          left: metrics.left,
-          width: metrics.width,
-          height: metrics.height,
-          borderRadius: getComputedStyle(element).borderRadius
-        }
-      }
+
+    // Navigate with sanitized state
+    navigate(`/project/${card.id}`, {
+      state: { transitionId, flipState },
     });
-  }, [card.id, navigate, onTransitionStart, transitionId]);
+  }, [card.id, navigate, onTransitionStart, captureFlipState, transitionId]);
 
   return (
-    <div 
+    <div
       className="flex w-full items-start gap-4 md:px-8 cursor-pointer"
       onClick={handleClick}
     >
