@@ -30,14 +30,6 @@ h1, h2, h3, h4, h5, h6 {
   scrollbar-width: none;  /* Firefox */
 }
 
-/* Base styles for shared element transitions */
-.card-thumbnail,
-.project-hero {
-  transform-origin: center center;
-  will-change: transform;
-  backface-visibility: hidden;
-}
-
 .card-thumbnail {
   width: 100%;
   height: 100%;
