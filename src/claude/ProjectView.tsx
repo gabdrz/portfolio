@@ -48,12 +48,17 @@ const ProjectView: React.FC = () => {
     // Initial states
     gsap.set([contentRef.current, headerRef.current], { opacity: 0 });
     gsap.set(backgroundRef.current, { opacity: 0 });
+    // Line 77:
+    gsap.set([contentRef.current, headerRef.current, backgroundRef.current], {
+      opacity: 0,
+    });
 
     // Background fade-in
     tl.to(backgroundRef.current, {
       opacity: 1,
       duration: 0.3,
       ease: "power2.out",
+      overwrite: false
     });
 
     // Flip transition if state exists
@@ -119,10 +124,10 @@ const ProjectView: React.FC = () => {
           backgroundRef.current,
           {
             opacity: 0,
-            duration: 0.3,
+            duration: 0.4,
             ease: "power2.out",
           },
-          "-=0.3"
+          "-=0.2"
         );
 
         return;
@@ -162,7 +167,6 @@ const ProjectView: React.FC = () => {
         ref={backgroundRef}
         className="fixed inset-0 z-0 pointer-events-none"
         style={{
-          opacity: 0,
           backgroundColor: theme?.gradient?.from || "#0D1115",
         }}
       />
