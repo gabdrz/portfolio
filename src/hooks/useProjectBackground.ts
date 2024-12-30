@@ -68,7 +68,7 @@ export const useProjectBackground = ({
       gsap.to(background, {
         duration: 0.2,
         '--gradient-stop': `${gradientStop}%`,
-        overwrite: true
+        overwrite: 'auto'
       });
     };
 

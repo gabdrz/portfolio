@@ -24,15 +24,16 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
       return;
     }
 
-    // Capture the state before navigation
+    // Capture Flip state and sanitize it
     const flipState = captureFlipState(sourceImage);
 
     if (onTransitionStart) {
       onTransitionStart();
     }
 
+    // Navigate with sanitized state
     navigate(`/project/${card.id}`, {
-      state: { flipState },
+      state: { transitionId, flipState },
     });
   }, [card.id, navigate, onTransitionStart, captureFlipState, transitionId]);
 

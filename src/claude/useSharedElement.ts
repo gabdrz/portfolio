@@ -1,7 +1,7 @@
 // src/hooks/useSharedElement.ts
-import { useCallback } from 'react';
-import gsap from 'gsap';
-import { Flip } from 'gsap/Flip';
+import { useCallback } from "react";
+import gsap from "gsap";
+import { Flip } from "gsap/Flip";
 
 gsap.registerPlugin(Flip);
 
@@ -13,72 +13,79 @@ interface TransitionOptions {
 }
 
 export const useSharedElement = () => {
-  // Helper to create consistent flip animations
-  const createFlipTransition = useCallback((
-    element: HTMLElement,
-    state: Flip.FlipState,
-    options: TransitionOptions = {}
-  ) => {
-    const {
-      duration = 0.5,
-      ease = 'power2.inOut',
-      absolute = true,
-      onComplete
-    } = options;
+  const createFlipTransition = useCallback(
+    (
+      element: HTMLElement,
+      state: Flip.FlipState,
+      options: TransitionOptions = {}
+    ) => {
+      const {
+        duration = 0.5,
+        ease = "power2.inOut",
+        absolute = true,
+        onComplete,
+      } = options;
 
-    return Flip.from(state, {
-      duration,
-      ease,
-      absolute,
-      onComplete,
-      nested: true, // Better handling of nested elements
-      spin: false, // Prevent unwanted rotations
-      preserveScroll: true, // Maintain scroll positions
-      prune: true, // Remove unused properties
-      simple: true, // Optimize performance
-    });
-  }, []);
+      return Flip.from(state, {
+        duration,
+        ease,
+        absolute,
+        onComplete,
+        nested: true,
+        spin: false,
+        preserveScroll: true,
+        prune: true,
+        simple: true,
+      });
+    },
+    []
+  );
 
-  // Helper for capturing flip states
-  const captureFlipState = useCallback((
-    element: HTMLElement,
-    props: string[] = ['position', 'size', 'scale', 'rotation']
-  ) => {
-    return Flip.getState(element, {
-      props,
-      simple: true,
-    });
-  }, []);
+  const captureFlipState = useCallback(
+    (element: HTMLElement) => {
+      const flipState = Flip.getState(element, {
+        props: ["position", "size", "scale", "rotation"],
+        simple: true,
+      });
 
-  // Main transition handler
-  const transition = useCallback((
-    fromElement: HTMLElement,
-    toElement: HTMLElement,
-    options: TransitionOptions = {}
-  ) => {
-    // Capture initial state
-    const state = captureFlipState(fromElement);
-    
-    // Create timeline for coordinated animations
-    const tl = gsap.timeline();
+      // Extract only serializable properties
+      const serializableState = {
+        positions: flipState.positions,
+        props: flipState.props,
+        other: flipState.other, // Include only required serializable properties
+      };
 
-    // Add the flip animation to the timeline
-    tl.add(() => {
-      createFlipTransition(toElement, state, options);
-    });
+      return serializableState;
+    },
+    []
+  );
 
-    return tl;
-  }, [captureFlipState, createFlipTransition]);
+  const transition = useCallback(
+    (
+      fromElement: HTMLElement,
+      toElement: HTMLElement,
+      options: TransitionOptions = {}
+    ) => {
+      const state = captureFlipState(fromElement);
 
-  // Helper for finding shared elements by ID
+      const tl = gsap.timeline();
+      tl.add(() => {
+        createFlipTransition(toElement, state, options);
+      });
+
+      return tl;
+    },
+    [captureFlipState, createFlipTransition]
+  );
+
   const getSharedElements = useCallback((fromId: string, toId: string) => {
     const fromElement = document.getElementById(fromId);
     const toElement = document.getElementById(toId);
-    
+
     return {
       fromElement,
       toElement,
-      canTransition: !!(fromElement && toElement)
+      canTransition: !!(fromElement && toElement),
     };
   }, []);
 
@@ -86,6 +93,6 @@ export const useSharedElement = () => {
     transition,
     captureFlipState,
     createFlipTransition,
-    getSharedElements
+    getSharedElements,
   };
 };
