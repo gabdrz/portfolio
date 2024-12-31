@@ -60,7 +60,7 @@ export const ProjectHeader: React.FC<ProjectHeaderProps> = ({
   }, []);
 
   return (
-    <div className="w-full backdrop-blur-sm bg-[#0D1115]/90 h-14 flex items-center fixed top-0 right-0 z-50 px-4 md:px-0">
+    <div className="w-full backdrop-blur-xl bg-[#0D1115]/30 h-14 flex items-center fixed top-0 right-0 z-50 px-4 md:px-0">
       <div className="relative max-w-2xl w-full mx-auto h-full px-4 md:px-8">
         <button
           ref={closeButtonRef}
