@@ -16,7 +16,7 @@ const ContentCard: React.FC<ContentCardProps> = ({ card }) => {
   };
 
   return (
-    <div className="flex w-full items-center gap-4 md:px-8">
+    <div className="flex w-full items-center gap-4 md:px-8 select-none touch-none">
       <div className="w-32 h-32 md:w-36 md:h-36 flex-shrink-0 rounded-lg overflow-hidden">
         <img
           src={card.image}

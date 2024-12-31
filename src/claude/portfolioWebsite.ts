@@ -39,11 +39,6 @@ export const portfolioWebsite: Project = {
       className: "rounded-xl shadow-lg",
     },
     {
-      type: "quote",
-      content: "Performance and aesthetics should never be a compromise.",
-      backgroundColor: "#1F2937",
-    },
-    {
       type: "paragraph",
       content:
         "Using React and GSAP, I built a custom scrolling system that provides smooth animations while maintaining responsive performance across all devices.",

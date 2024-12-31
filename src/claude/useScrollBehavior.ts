@@ -1,7 +1,8 @@
 // src/hooks/useScrollBehavior.ts
+
 import { RefObject, useEffect, useRef } from "react";
 import gsap from "gsap";
-import { useTouchDevice } from './useTouchDevice';
+import { useTouchDevice } from "./useTouchDevice";
 
 export const useScrollBehavior = (containerRef: RefObject<HTMLDivElement>) => {
   const isTouchDevice = useTouchDevice();

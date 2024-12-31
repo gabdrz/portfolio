@@ -31,21 +31,5 @@ export const carMaintenance: Project = {
         content: 'Car maintenance shouldn\'t be a mystery. We built an app that makes tracking and maintaining your vehicle as simple as checking your social media.',
         layout: 'contained'
       },
-      {
-        type: 'quote',
-        content: 'Your car should tell you what it needs.',
-        backgroundColor: '#065F46'
-      },
-      {
-        type: 'heading',
-        content: 'Technical Architecture',
-        layout: 'contained'
-      },
-      {
-        type: 'image',
-        content: '/path/to/architecture.jpg',
-        layout: 'wide',
-        className: 'rounded-xl shadow-lg'
-      }
     ]
 };

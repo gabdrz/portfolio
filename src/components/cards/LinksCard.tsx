@@ -28,7 +28,7 @@ const LinksCard: React.FC<LinksCardProps> = ({ card }) => {
   });
 
   return (
-    <div className="flex w-full h-full items-center justify-center p-8">
+    <div className="flex w-full h-full items-center justify-center p-8 select-none touch-none">
       <div
         className={`flex ${
           layout === "vertical"

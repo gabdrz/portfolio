@@ -1,6 +1,7 @@
 src/
 ├── App.tsx
 ├── assets
+│   ├── GabrielZafra_Resume.pdf
 │   ├── images
 │   │   ├── profile.jpg
 │   │   └── projects

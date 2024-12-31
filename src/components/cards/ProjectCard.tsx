@@ -39,7 +39,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
 
   return (
     <div
-      className="flex w-full items-start gap-4 md:px-8 cursor-pointer"
+      className="flex w-full items-start gap-4 md:px-8 cursor-pointer select-none touch-none"
       onClick={handleClick}
     >
       <div className="w-32 h-32 md:w-40 md:h-40 flex-shrink-0 rounded-lg overflow-hidden">

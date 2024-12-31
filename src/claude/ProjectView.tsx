@@ -177,7 +177,7 @@ const ProjectView: React.FC = () => {
       </div>
       <div
         ref={contentRef}
-        className="relative h-full overflow-y-auto px-4 md:px-8 scrollbar-hide z-10"
+        className="relative h-full overflow-y-auto px-9 md:px-9 scrollbar-hide z-10"
         style={{ paddingTop: "80px", opacity: 0 }}
       >
         {project.projectData.content.map((block, index) => (

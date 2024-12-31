@@ -3,6 +3,7 @@ import { Card } from '../types/cards';
 import { projectsData } from './projects';
 import profileImage from '../assets/images/profile.jpg';
 import { getProjectImage } from '../utils/imageUtils';  // We'll create this
+import resume from '../assets/GabrielZafra_Resume.pdf';
 
 export const cards: Card[] = [
   {
@@ -17,10 +18,10 @@ export const cards: Card[] = [
     type: 'links',
     layout: 'vertical',
     links: {
-      email: 'your.email@example.com',
-      github: 'https://github.com/yourusername',
-      linkedin: 'https://linkedin.com/in/yourusername',
-      resume: '/path/to/your/resume.pdf'
+      email: 'gabrieljohn.drz@gmail.com',
+      github: 'https://github.com/gabdrz',
+      linkedin: 'https://linkedin.com/in/gabriel-zafra',
+      resume: resume,
     }
   },
   {
@@ -64,10 +65,10 @@ export const cards: Card[] = [
     type: 'links',
     layout: 'horizontal',
     links: {
-      email: 'your.email@example.com',
-      github: 'https://github.com/yourusername',
-      linkedin: 'https://linkedin.com/in/yourusername',
-      resume: '/path/to/your/resume.pdf'
+      email: 'gabrieljohn.drz@gmail.com',
+      github: 'https://github.com/gabdrz',
+      linkedin: 'https://linkedin.com/in/gabriel-zafra',
+      resume: resume,
     }
   }
 ];
