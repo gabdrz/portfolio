@@ -63,6 +63,7 @@ src/
 │   ├── useProjectTransition.ts
 │   ├── useScrollBehavior.ts
 │   ├── useSharedElement.ts
+│   ├── useTouchDevice.ts
 │   └── useViewportHeight.ts
 ├── index.css
 ├── main.tsx

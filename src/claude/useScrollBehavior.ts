@@ -1,10 +1,10 @@
 // src/hooks/useScrollBehavior.ts
 import { RefObject, useEffect, useRef } from "react";
 import gsap from "gsap";
-import { useIsMobile } from "./useIsMobile";
+import { useTouchDevice } from './useTouchDevice';
 
 export const useScrollBehavior = (containerRef: RefObject<HTMLDivElement>) => {
-  const isMobile = useIsMobile();
+  const isTouchDevice = useTouchDevice();
   const scrollState = useRef({
     isDragging: false,
     startY: 0,
@@ -95,25 +95,25 @@ export const useScrollBehavior = (containerRef: RefObject<HTMLDivElement>) => {
     };
 
     const handleMouseDown = (e: MouseEvent) => {
-      if (isMobile) return;
+      if (isTouchDevice) return;
       handleStart(e.pageY);
       container.style.cursor = "grabbing";
     };
 
     const handleMouseMove = (e: MouseEvent) => {
-      if (isMobile) return;
+      if (isTouchDevice) return;
       if (!state.isDragging) return;
       handleMove(e.pageY);
     };
 
     const handleMouseUp = () => {
-      if (isMobile) return;
+      if (isTouchDevice) return;
       handleEnd();
       container.style.cursor = "grab";
     };
 
     const handleWheel = (e: WheelEvent) => {
-      if (isMobile) return;
+      if (isTouchDevice) return;
       e.preventDefault();
 
       const now = Date.now();
@@ -124,7 +124,7 @@ export const useScrollBehavior = (containerRef: RefObject<HTMLDivElement>) => {
       snapToCard(snapIndex);
     };
 
-    if (!isMobile) {
+    if (!isTouchDevice) {
       container.style.cursor = "grab";
     }
 
@@ -133,7 +133,7 @@ export const useScrollBehavior = (containerRef: RefObject<HTMLDivElement>) => {
     container.addEventListener("touchend", handleTouchEnd);
     container.addEventListener("wheel", handleWheel, { passive: false });
 
-    if (!isMobile) {
+    if (!isTouchDevice) {
       container.addEventListener("mousedown", handleMouseDown);
       window.addEventListener("mousemove", handleMouseMove);
       window.addEventListener("mouseup", handleMouseUp);
@@ -146,12 +146,12 @@ export const useScrollBehavior = (containerRef: RefObject<HTMLDivElement>) => {
       container.removeEventListener("touchend", handleTouchEnd);
       container.removeEventListener("wheel", handleWheel);
 
-      if (!isMobile) {
+      if (!isTouchDevice) {
         container.removeEventListener("mousedown", handleMouseDown);
         window.removeEventListener("mousemove", handleMouseMove);
         window.removeEventListener("mouseup", handleMouseUp);
         window.removeEventListener("mouseleave", handleMouseUp);
       }
     };
-  }, [containerRef, isMobile]);
+  }, [containerRef, isTouchDevice]);
 };
