@@ -8,6 +8,7 @@ import { ProjectHeader } from "./ProjectHeader";
 import { ProjectContent } from "./ProjectContent";
 import { useProjectBackground } from "../../hooks/useProjectBackground";
 import { useSharedElement } from "../../hooks/useSharedElement";
+import { useProjectHeader } from "../../hooks/useProjectHeader";
 
 interface LocationState {
   flipState?: Flip.FlipState;
@@ -23,6 +24,7 @@ const ProjectView: React.FC = () => {
   const contentRef = useRef<HTMLDivElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
   const backgroundRef = useRef<HTMLDivElement>(null);
+  const { showHeaderTitle } = useProjectHeader(contentRef, headerRef);
 
   const project = cards.find(
     (card) => "projectData" in card && card.id.toString() === id
@@ -48,17 +50,13 @@ const ProjectView: React.FC = () => {
     // Initial states
     gsap.set([contentRef.current, headerRef.current], { opacity: 0 });
     gsap.set(backgroundRef.current, { opacity: 0 });
-    // Line 77:
-    gsap.set([contentRef.current, headerRef.current, backgroundRef.current], {
-      opacity: 0,
-    });
 
     // Background fade-in
     tl.to(backgroundRef.current, {
       opacity: 1,
       duration: 0.3,
       ease: "power2.out",
-      overwrite: false
+      overwrite: false,
     });
 
     // Flip transition if state exists
@@ -174,7 +172,7 @@ const ProjectView: React.FC = () => {
         <ProjectHeader
           title={project.title}
           onClose={onClose}
-          showTitle={false} // Assuming this comes from context
+          showTitle={showHeaderTitle}
         />
       </div>
       <div
