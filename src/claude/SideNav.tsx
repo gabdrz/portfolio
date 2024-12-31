@@ -190,10 +190,10 @@ const SideNav = ({ cards, containerRef, activeIndex }: SideNavProps) => {
       {/* Navigation */}
       <nav
         ref={navRef}
-        className="fixed right-0 md:right-6 top-1/2 -translate-y-1/2 z-50 select-none touch-none"
+        className="fixed right-0 md:right-6 top-1/2 -translate-y-1/2 z-50 select-none touch-none overflow-hidden"
         onMouseLeave={handleMouseLeave}
       >
-        <div className="flex flex-col items-end gap-0 md:gap-2">
+        <div className="flex flex-col items-end gap-0">
           {cards.map((card, index) => (
             <div
               key={card.id}
@@ -214,7 +214,7 @@ const SideNav = ({ cards, containerRef, activeIndex }: SideNavProps) => {
                   (card.type === "links" ? "Links" : `Card ${index + 1}`)}
               </div>
               <div
-                className="nav-dot w-2 h-2 md:w-3 md:h-3 rounded-full flex-shrink-0 mr-2 bg-[#CCDAE5] pointer-events-none"
+                className="nav-dot w-2 h-2 md:w-2 md:h-2 rounded-full flex-shrink-0 mr-2 bg-[#CCDAE5] pointer-events-none"
                 style={{ opacity: 0.5 }}
               />
             </div>
