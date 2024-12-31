@@ -31,16 +31,5 @@ export const freedomBoard: Project = {
         "The Freedom Board project automates the process of curating and publishing content from message boards to Instagram, while maintaining brand consistency and engagement.",
       layout: "contained",
     },
-    {
-      type: "image",
-      content: "/path/to/automation-flow.jpg",
-      layout: "wide",
-      className: "rounded-xl shadow-lg",
-    },
-    {
-      type: "quote",
-      content: "Automation should feel personal.",
-      backgroundColor: "#5B21B6",
-    },
   ],
 };

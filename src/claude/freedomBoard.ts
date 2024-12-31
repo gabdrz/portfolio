@@ -1,7 +1,7 @@
 import { Project } from "../types";
 import { freedomBoardIcon } from "../../../assets/images/projects";
 
-export const seatReservationWeb: Project = {
+export const freedomBoard: Project = {
   name: "Automated Freedom Board",
   type: "Software Development",
   timeline: "Apr 2024 - Ongoing",

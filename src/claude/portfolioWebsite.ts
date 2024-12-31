@@ -1,7 +1,7 @@
 import { Project } from "../types";
 import { portfolioIcon } from "../../../assets/images/projects";
 
-export const seatReservationWeb: Project = {
+export const portfolioWebsite: Project = {
   name: "Portfolio Website Redesign",
   type: "Software Development",
   timeline: "Jan 2024 - Feb 2024",

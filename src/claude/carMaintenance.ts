@@ -1,7 +1,7 @@
 import { Project } from "../types";
 import { carMaintenanceIcon } from "../../../assets/images/projects";
 
-export const seatReservationWeb: Project = {
+export const carMaintenance: Project = {
     name: 'Car Maintenance App',
     type: 'Software Development',
     timeline: 'Feb 2024 - Apr 2024',

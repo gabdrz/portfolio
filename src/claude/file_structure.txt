@@ -84,6 +84,7 @@ src/
 │   └── scroll.ts
 ├── utils
 │   ├── eventHandlers.ts
+│   ├── imageUtils.ts
 │   ├── navTouchUtils.ts
 │   ├── navUtils.ts
 │   └── scrollUtils.ts

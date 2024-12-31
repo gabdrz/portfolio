@@ -24,99 +24,129 @@ export const seatReservationApp: Project = {
     {
       type: "image",
       content: seatAppIcon,
+      layout: "contained",
     },
     {
       type: "paragraph",
       content:
-        "Event venues and theaters often struggle with mobile seat selection interfaces that fail to provide an intuitive booking experience. Users frequently abandon bookings due to complicated selection processes and unclear seat availability visualization on mobile devices.",
+        "The Seat Reservation App simplifies the process of reserving movie theater seats, offering an intuitive mobile platform where users can effortlessly select their preferred seats, book tickets, and even order concessions. With features like 3D seat viewing, saved seat preferences, and timely show notifications, this app enhances the cinema experience for movie enthusiasts looking for convenience and ease of use.",
       layout: "contained",
     },
     {
       type: "heading",
-      content: "Research Insights",
+      content: "Project Overview",
       layout: "contained",
     },
     {
       type: "paragraph",
       content:
-        "Through user interviews and competitive analysis, we discovered that 67% of users prefer booking tickets on mobile devices, yet 42% report difficulties with seat selection. Key pain points included pinch-to-zoom issues, accidental selections, and lack of clear section overviews.",
+        "This project was developed over a two-month period, from August 2023 to October 2023. It addresses common challenges faced by moviegoers, such as difficulty visualizing seating layouts and lengthy ticket booking processes, by providing an intuitive and efficient seat reservation system.",
+      layout: "contained",
+    },
+    {
+      type: "image",
+      content: "Preview of selected polished designs.",
       layout: "contained",
     },
     {
       type: "heading",
-      content: "Design Strategy",
+      content: "Understanding the User",
       layout: "contained",
     },
     {
       type: "paragraph",
       content:
-        "Our approach focused on progressive disclosure, breaking down the seat selection process into manageable steps. We implemented a section-first approach, allowing users to first select their preferred area before diving into specific seat choices.",
+        "Through user research, we identified frequent moviegoers as our primary user group. Their key challenges included complex seat selection, time-consuming ticket booking, and limited customization options. Our findings reaffirmed the need for a user-friendly app tailored to these pain points.",
+      layout: "contained",
+    },
+    {
+      type: "image",
+      content: "Visual representation of user personas or a user journey map.",
       layout: "contained",
     },
     {
       type: "heading",
-      content: "Key Features",
+      content: "Starting the Design",
       layout: "contained",
     },
     {
       type: "paragraph",
       content:
-        "The app introduces innovative features such as haptic feedback for seat selection, adaptive zoom levels based on venue sections, and a smart seat suggestion system that recommends optimal seats based on user preferences and group size.",
+        "The design process began with paper wireframes to explore multiple concepts. After iterations and refinements, we transitioned to digital wireframes, ensuring the design addressed user pain points effectively.",
+      layout: "contained",
+    },
+    {
+      type: "image",
+      content:
+        "Images of paper wireframes, including five different versions of the same screen and one refined version.",
+      layout: "contained",
+    },
+    {
+      type: "paragraph",
+      content:
+        "Low-fidelity prototypes connected primary user flows, enabling usability testing with real users to gather actionable feedback.",
+      layout: "contained",
+    },
+    {
+      type: "image",
+      content:
+        "Screenshot of the low-fidelity prototype or a GIF showing its key user flows.",
       layout: "contained",
     },
     {
       type: "heading",
-      content: "Technical Implementation",
+      content: "Refining the Design",
       layout: "contained",
     },
     {
       type: "paragraph",
       content:
-        "Built using React Native and WebGL for smooth rendering of complex seat maps, the application maintains 60fps performance even when displaying large venues with thousands of seats. Real-time seat status updates are handled through WebSocket connections.",
+        "In response to usability feedback, mockups were updated to enhance clarity and streamline navigation. Changes included refining the UI for a cleaner look, improving button visibility, and removing unnecessary features like the bookmark option.",
+      layout: "contained",
+    },
+    {
+      type: "image",
+      content:
+        "Before-and-after images of key screens showcasing usability improvements.",
+      layout: "contained",
+    },
+    {
+      type: "paragraph",
+      content:
+        "The high-fidelity prototype improved user flows for seat selection and booking, ensuring a seamless reservation experience. Accessibility features were also incorporated to make the app inclusive for all users.",
+      layout: "contained",
+    },
+    {
+      type: "image",
+      content:
+        "Screenshot of the high-fidelity prototype or a GIF highlighting user interactions.",
       layout: "contained",
     },
     {
       type: "heading",
-      content: "Accessibility Considerations",
+      content: "Takeaways",
       layout: "contained",
     },
     {
       type: "paragraph",
       content:
-        "The app features VoiceOver and TalkBack support, with semantic markup for screen readers. High contrast modes and customizable text sizing ensure the app is usable for people with various visual impairments.",
+        "The project underscored the importance of iterative design and user feedback. By tailoring the app to meet diverse user needs, we significantly enhanced the moviegoing experience.",
+      layout: "contained",
+    },
+    {
+      type: "image",
+      content: "Quote or user testimonial about the app's impact.",
       layout: "contained",
     },
     {
       type: "heading",
-      content: "Testing & Iteration",
+      content: "Next Steps",
       layout: "contained",
     },
     {
       type: "paragraph",
       content:
-        "Usability testing with 50 participants across different age groups led to several iterations. We improved the contrast of seat availability indicators and simplified the section navigation based on user feedback.",
-      layout: "contained",
-    },
-    {
-      type: "heading",
-      content: "Results & Impact",
-      layout: "contained",
-    },
-    {
-      type: "paragraph",
-      content:
-        "After launch, mobile booking completion rates improved by 48%, and average booking time decreased from 4.5 minutes to 2.3 minutes. User satisfaction scores increased from 6.8 to 8.9 out of 10.",
-      layout: "contained",
-    },
-    {
-      type: "heading",
-      content: "Future Developments",
-      layout: "contained",
-    },
-    {
-      type: "paragraph",
-      content:
-        "Upcoming features include AR venue preview, social group booking coordination, and integration with virtual queue systems for high-demand events.",
+        "Future plans include conducting additional usability testing, performing a comprehensive accessibility audit, and refining the prototype to further optimize user flows and app usability.",
       layout: "contained",
     },
   ],
