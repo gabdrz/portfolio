@@ -34,7 +34,6 @@ export const useScrollBehavior = (containerRef: RefObject<HTMLDivElement>) => {
 
     const snapToCard = (index: number) => {
       const targetY = index * cardHeight;
-      const distance = Math.abs(container.scrollTop - targetY);
       const duration = 0.3; // Fixed duration for snappiness
 
       gsap.to(container, {
