@@ -59,6 +59,7 @@ export type ProjectCard = BaseCard & {
   title: string;
   subtitle: string;
   projectData: ProjectData;
+  heroImage: string;
 };
 
 

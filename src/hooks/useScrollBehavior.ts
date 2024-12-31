@@ -1,7 +1,7 @@
 // src/hooks/useScrollBehavior.ts
-import { RefObject, useEffect, useRef } from 'react';
-import gsap from 'gsap';
-import { useIsMobile } from './useIsMobile';
+import { RefObject, useEffect, useRef } from "react";
+import gsap from "gsap";
+import { useIsMobile } from "./useIsMobile";
 
 export const useScrollBehavior = (containerRef: RefObject<HTMLDivElement>) => {
   const isMobile = useIsMobile();
@@ -10,147 +10,148 @@ export const useScrollBehavior = (containerRef: RefObject<HTMLDivElement>) => {
     startY: 0,
     startScroll: 0,
     lastY: 0,
+    lastTime: 0,
     velocity: 0,
-    lastTime: 0
+    isTap: false,
   });
-  
+
   useEffect(() => {
     if (!containerRef.current) return;
     const container = containerRef.current;
     const state = scrollState.current;
     const cardHeight = window.innerHeight / 3;
+    let lastSnapTime = 0;
 
-    const getSnapTarget = (velocity: number) => {
-      const currentScroll = container.scrollTop;
-      let index = Math.round(currentScroll / cardHeight);
-      
-      // Add momentum-based card skipping
-      if (Math.abs(velocity) > 1.5) {
-        index += velocity > 0 ? 1 : -1;
-      }
-      
-      // Clamp to valid range
+    /**
+     * Snap to the closest card index.
+     */
+    const getSnapIndex = (scrollTop: number, delta: number) => {
+      const currentIndex = Math.round(scrollTop / cardHeight);
+      const nextIndex = currentIndex + Math.sign(delta);
       const maxIndex = Math.floor(container.scrollHeight / cardHeight) - 3;
-      return Math.max(0, Math.min(index, maxIndex)) * cardHeight;
+      return Math.max(0, Math.min(nextIndex, maxIndex));
     };
 
-    const snapToPosition = (targetY: number) => {
+    const snapToCard = (index: number) => {
+      const targetY = index * cardHeight;
+      const distance = Math.abs(container.scrollTop - targetY);
+      const duration = 0.3; // Fixed duration for snappiness
+
       gsap.to(container, {
         scrollTo: { y: targetY },
-        duration: 0.3,
-        ease: 'power2.out',
-        onComplete: () => {
-          state.velocity = 0;
-        }
+        duration,
+        ease: "power2.out",
+        overwrite: "auto",
       });
     };
 
-    const updateVelocity = (currentY: number) => {
-      const now = Date.now();
-      const deltaTime = now - state.lastTime;
-      if (deltaTime > 0) {
-        const deltaY = currentY - state.lastY;
-        state.velocity = deltaY / deltaTime;
-      }
-      state.lastY = currentY;
-      state.lastTime = now;
-    };
-
-    const handleStart = (y: number) => {
+    const handleStart = (startY: number) => {
+      state.isTap = true; // Assume a tap initially
+      gsap.killTweensOf(container);
       state.isDragging = true;
-      state.startY = y;
-      state.lastY = y;
+      state.startY = startY;
       state.startScroll = container.scrollTop;
+      state.lastY = startY;
       state.lastTime = Date.now();
       state.velocity = 0;
-      gsap.killTweensOf(container);
     };
 
-    const handleMove = (y: number) => {
+    const handleMove = (currentY: number, e?: Event) => {
       if (!state.isDragging) return;
-      
-      const delta = y - state.lastY;
-      container.scrollTop -= delta;
-      updateVelocity(y);
+      e?.preventDefault();
+
+      const dragDist = Math.abs(currentY - state.startY);
+      if (dragDist > 10) {
+        state.isTap = false; // If the user drags more than a small threshold, it's not a tap
+      }
+
+      const newScrollTop = state.startScroll - (currentY - state.startY);
+      container.scrollTop = newScrollTop;
     };
 
     const handleEnd = () => {
       if (!state.isDragging) return;
       state.isDragging = false;
-      const targetY = getSnapTarget(state.velocity);
-      snapToPosition(targetY);
+      if (!state.isTap) {
+        const snapIndex = Math.round(container.scrollTop / cardHeight);
+        snapToCard(snapIndex);
+      }
     };
 
-    // Touch handlers
     const handleTouchStart = (e: TouchEvent) => {
       handleStart(e.touches[0].clientY);
     };
 
     const handleTouchMove = (e: TouchEvent) => {
-      handleMove(e.touches[0].clientY);
+      handleMove(e.touches[0].clientY, e);
     };
 
-    // Mouse handlers (desktop only)
+    const handleTouchEnd = (e: TouchEvent) => {
+      handleEnd();
+      if (state.isTap) {
+        // If it was a tap, let it propagate to handle clicks
+        const target = e.target as HTMLElement;
+        if (target) target.click();
+      }
+    };
+
     const handleMouseDown = (e: MouseEvent) => {
       if (isMobile) return;
       handleStart(e.pageY);
-      container.style.cursor = 'grabbing';
+      container.style.cursor = "grabbing";
     };
 
     const handleMouseMove = (e: MouseEvent) => {
       if (isMobile) return;
+      if (!state.isDragging) return;
       handleMove(e.pageY);
     };
 
     const handleMouseUp = () => {
       if (isMobile) return;
       handleEnd();
-      container.style.cursor = 'grab';
+      container.style.cursor = "grab";
     };
 
-    // Wheel handler (desktop only)
     const handleWheel = (e: WheelEvent) => {
       if (isMobile) return;
       e.preventDefault();
-      
-      const direction = Math.sign(e.deltaY);
-      const currentScroll = container.scrollTop;
-      const currentCard = Math.round(currentScroll / cardHeight);
-      const targetCard = currentCard + direction;
-      const targetY = targetCard * cardHeight;
-      
-      snapToPosition(targetY);
+
+      const now = Date.now();
+      if (now - lastSnapTime < 300) return; // Throttle snaps to avoid overriding animations
+      lastSnapTime = now;
+
+      const snapIndex = getSnapIndex(container.scrollTop, e.deltaY);
+      snapToCard(snapIndex);
     };
 
-    // Set initial styles
     if (!isMobile) {
-      container.style.cursor = 'grab';
+      container.style.cursor = "grab";
     }
 
-    // Add event listeners
-    container.addEventListener('touchstart', handleTouchStart, { passive: true });
-    container.addEventListener('touchmove', handleTouchMove, { passive: true });
-    container.addEventListener('touchend', handleEnd);
-    container.addEventListener('wheel', handleWheel, { passive: false });
-    
+    container.addEventListener("touchstart", handleTouchStart, { passive: false });
+    container.addEventListener("touchmove", handleTouchMove, { passive: false });
+    container.addEventListener("touchend", handleTouchEnd);
+    container.addEventListener("wheel", handleWheel, { passive: false });
+
     if (!isMobile) {
-      container.addEventListener('mousedown', handleMouseDown);
-      window.addEventListener('mousemove', handleMouseMove);
-      window.addEventListener('mouseup', handleMouseUp);
-      window.addEventListener('mouseleave', handleMouseUp);
+      container.addEventListener("mousedown", handleMouseDown);
+      window.addEventListener("mousemove", handleMouseMove);
+      window.addEventListener("mouseup", handleMouseUp);
+      window.addEventListener("mouseleave", handleMouseUp);
     }
 
     return () => {
-      container.removeEventListener('touchstart', handleTouchStart);
-      container.removeEventListener('touchmove', handleTouchMove);
-      container.removeEventListener('touchend', handleEnd);
-      container.removeEventListener('wheel', handleWheel);
-      
+      container.removeEventListener("touchstart", handleTouchStart);
+      container.removeEventListener("touchmove", handleTouchMove);
+      container.removeEventListener("touchend", handleTouchEnd);
+      container.removeEventListener("wheel", handleWheel);
+
       if (!isMobile) {
-        container.removeEventListener('mousedown', handleMouseDown);
-        window.removeEventListener('mousemove', handleMouseMove);
-        window.removeEventListener('mouseup', handleMouseUp);
-        window.removeEventListener('mouseleave', handleMouseUp);
+        container.removeEventListener("mousedown", handleMouseDown);
+        window.removeEventListener("mousemove", handleMouseMove);
+        window.removeEventListener("mouseup", handleMouseUp);
+        window.removeEventListener("mouseleave", handleMouseUp);
       }
     };
   }, [containerRef, isMobile]);
