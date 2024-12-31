@@ -46,7 +46,18 @@ src/
 │           └── index.ts
 ├── data
 │   ├── cards.ts
-│   └── projectsData.ts
+│   └── projects
+│       ├── index.ts
+│       ├── softwareDev
+│       │   ├── carMaintenance.ts
+│       │   ├── freedomBoard.ts
+│       │   └── portfolioWebsite.ts
+│       ├── types.ts
+│       └── uxDesign
+│           ├── doctorsAppointment.ts
+│           ├── rocketLeagueSideswipe.ts
+│           ├── seatReservationApp.ts
+│           └── seatReservationWeb.ts
 ├── file_structure.txt
 ├── hooks
 │   ├── animations
