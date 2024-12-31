@@ -1,5 +1,15 @@
 // src/data/projectsData.ts
 
+import { 
+  rocketLeagueIcon,
+  doctorAppIcon,
+  seatWebIcon,
+  seatAppIcon,
+  portfolioIcon,
+  carMaintenanceIcon,
+  freedomBoardIcon 
+} from '../assets/images/projects';
+
 interface Block {
   type: 'heading' | 'paragraph' | 'image' | 'gallery' | 'quote' | 'spacer';
   content: string;
@@ -41,6 +51,7 @@ export const projectsData: ProjectsData = {
       status: 'Completed',
       liveUrl: 'https://example.com/rocket-league',
       cardOverview: "Enhanced interface and feature expansion.",
+      heroImage: rocketLeagueIcon,
       theme: {
         gradient: {
           from: '#0A1B37',
@@ -53,6 +64,10 @@ export const projectsData: ProjectsData = {
           type: 'heading',
           content: 'RL Sideswipe UX Refresh',
           layout: 'contained'
+        },
+        {
+          type: 'image',
+          content: rocketLeagueIcon,
         },
         {
           type: 'paragraph',
@@ -218,6 +233,10 @@ export const projectsData: ProjectsData = {
           layout: 'contained'
         },
         {
+          type: 'image',
+          content: doctorAppIcon,
+        },
+        {
           type: 'paragraph',
           content: 'The healthcare industry has long struggled with efficient appointment scheduling. We set out to create a mobile application that would make booking and managing medical appointments as simple as ordering food delivery.',
           layout: 'contained'
@@ -256,6 +275,10 @@ export const projectsData: ProjectsData = {
           layout: 'contained'
         },
         {
+          type: 'image',
+          content: seatWebIcon,
+        },
+        {
           type: 'paragraph',
           content: 'Seat selection is often the most frustrating part of booking an event or travel. We created a real-time, interactive seat selection interface that makes choosing the perfect spot a breeze.',
           layout: 'contained'
@@ -292,6 +315,10 @@ export const projectsData: ProjectsData = {
           type: 'heading',
           content: 'Seat Reservation App Design',
           layout: 'contained'
+        },
+        {
+          type: 'image',
+          content: seatAppIcon,
         },
         {
           type: 'paragraph',
@@ -404,6 +431,10 @@ export const projectsData: ProjectsData = {
           layout: 'contained'
         },
         {
+          type: 'image',
+          content: portfolioIcon,
+        },
+        {
           type: 'paragraph',
           content: 'When approaching my portfolio redesign, I wanted to create something that wasn\'t just a showcase of my work, but an experience that demonstrates my approach to design and development.',
           layout: 'contained'
@@ -448,6 +479,10 @@ export const projectsData: ProjectsData = {
           layout: 'contained'
         },
         {
+          type: 'image',
+          content: carMaintenanceIcon,
+        },
+        {
           type: 'paragraph',
           content: 'Car maintenance shouldn\'t be a mystery. We built an app that makes tracking and maintaining your vehicle as simple as checking your social media.',
           layout: 'contained'
@@ -489,6 +524,10 @@ export const projectsData: ProjectsData = {
           type: 'heading',
           content: 'Automated Freedom Board',
           layout: 'contained'
+        },
+        {
+          type: 'image',
+          content: freedomBoardIcon,
         },
         {
           type: 'paragraph',

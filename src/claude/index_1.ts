@@ -1,8 +1,5 @@
-// src/components/project/blocks/index.ts
-export * from './ProjectHeading';
-export * from './ProjectParagraph';
-export * from './ProjectImage';
-export * from './ProjectGallery';
-export * from './ProjectQuote';
-export * from './ProjectSpacer';
-export * from './ProjectTitleBlock';
+// src/components/cards/index.ts
+export { LinksCard } from './LinksCard';
+export { HeaderCard } from './HeaderCard';
+export { ContentCard } from './ContentCard';
+export { ProjectCard } from './ProjectCard';

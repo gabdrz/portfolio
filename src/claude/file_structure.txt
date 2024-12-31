@@ -10,7 +10,8 @@ src/
 │   │       ├── icon_mva.png
 │   │       ├── icon_mvw.png
 │   │       ├── icon_pw.png
-│   │       └── icon_rl.png
+│   │       ├── icon_rl.png
+│   │       └── index.ts
 │   └── react.svg
 ├── claude
 ├── claude.py
