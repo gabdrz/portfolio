@@ -7,7 +7,7 @@ interface ProjectImageProps {
 export const ProjectImage: React.FC<ProjectImageProps> = ({ content }) => (
   <div className={`
     mb-12 
-    max-w-3xl mx-auto
+    max-w-2xl mx-auto
     w-full
   `}>
     <div className="relative overflow-hidden rounded-lg shadow-lg">

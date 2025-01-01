@@ -25,7 +25,7 @@ export const ProjectTitleBlock: React.FC<ProjectTitleBlockProps> = ({
   });
 
   return (
-    <div className="mb-8" data-block="title">
+    <div className="mb-8 pt-4" data-block="title">
       <p className="text-3xl md:text-4xl font-bold mb-4 text-center">{content}</p>
       <div className="flex flex-col items-center">
         <div className="flex flex-wrap gap-x-4 gap-y-2 text-sm opacity-75 mb-4">

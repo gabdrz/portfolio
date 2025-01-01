@@ -1,21 +1,24 @@
 // src/components/project/ProjectHeader.tsx
 import React, { useEffect, useRef } from "react";
-import { X } from "lucide-react";
+import { X, ArrowUp } from "lucide-react";
 import gsap from "gsap";
 
 interface ProjectHeaderProps {
   title: string;
   onClose: () => void;
+  onScrollToTop: () => void;
   showTitle: boolean;
 }
 
 export const ProjectHeader: React.FC<ProjectHeaderProps> = ({
   title,
   onClose,
+  onScrollToTop,
   showTitle,
 }) => {
   const titleRef = useRef<HTMLHeadingElement>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
+  const scrollTopButtonRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     if (titleRef.current) {
@@ -29,9 +32,9 @@ export const ProjectHeader: React.FC<ProjectHeaderProps> = ({
     }
   }, [showTitle]);
 
-  useEffect(() => {
-    if (closeButtonRef.current) {
-      const button = closeButtonRef.current;
+  const setupButtonAnimation = (buttonRef: React.RefObject<HTMLButtonElement>) => {
+    if (buttonRef.current) {
+      const button = buttonRef.current;
 
       const handleHover = () => {
         gsap.to(button, {
@@ -57,6 +60,16 @@ export const ProjectHeader: React.FC<ProjectHeaderProps> = ({
         button.removeEventListener("mouseleave", handleLeave);
       };
     }
+  };
+
+  useEffect(() => {
+    const cleanupClose = setupButtonAnimation(closeButtonRef);
+    const cleanupScroll = setupButtonAnimation(scrollTopButtonRef);
+
+    return () => {
+      cleanupClose?.();
+      cleanupScroll?.();
+    };
   }, []);
 
   return (
@@ -80,6 +93,15 @@ export const ProjectHeader: React.FC<ProjectHeaderProps> = ({
             {title}
           </p>
         </div>
+
+        <button
+          ref={scrollTopButtonRef}
+          onClick={onScrollToTop}
+          className="absolute right-0 top-1/2 -translate-y-1/2 p-1 rounded-lg"
+          aria-label="Scroll to top"
+        >
+          <ArrowUp size={24} />
+        </button>
       </div>
     </div>
   );

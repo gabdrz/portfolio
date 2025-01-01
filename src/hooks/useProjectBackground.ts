@@ -1,6 +1,5 @@
 // src/hooks/useProjectBackground.ts
 import { useEffect, useRef } from 'react';
-import gsap from 'gsap';
 
 interface UseProjectBackgroundProps {
   fromColor: string;
@@ -17,59 +16,43 @@ export const useProjectBackground = ({
   containerRef,
   backgroundRef,
 }: UseProjectBackgroundProps) => {
-  console.log('Background Hook Props:', { fromColor, toColor });
-
-  // Store the last animation frame request
   const animationFrame = useRef<number>();
   
   useEffect(() => {
     if (!contentRef.current || !containerRef.current || !backgroundRef.current) return;
     
-    console.log('Background Refs:', { 
-      content: !!contentRef.current, 
-      container: !!containerRef.current, 
-      background: !!backgroundRef.current 
-    });
-
     const content = contentRef.current;
     const background = backgroundRef.current;
 
-    // Set initial gradient
-    background.style.setProperty('--gradient-stop', '50%');
-    background.style.background = `linear-gradient(to bottom, ${fromColor} 0%, ${toColor} var(--gradient-stop), ${toColor} 100%)`;
+    // Set initial gradient stops
+    background.style.setProperty('--gradient-top', '20%');
+    background.style.setProperty('--gradient-bottom', '80%');
     
-    console.log('Initial Background Style:', {
-      gradientStop: background.style.getPropertyValue('--gradient-stop'),
-      background: background.style.background
-    });
-
     const updateGradient = () => {
-      // Add safety checks for dimensions
       const scrollHeight = content.scrollHeight || 0;
       const clientHeight = content.clientHeight || 0;
       const heightDiff = scrollHeight - clientHeight;
       
-      // Avoid division by zero and ensure valid calculations
+      // Calculate scroll percentage (0 to 100)
       const scrollPercent = heightDiff > 0 ? (content.scrollTop / heightDiff) * 100 : 0;
       
-      // As we scroll down, the gradient stop should move up, transitioning to the bottom color
-      const gradientStop = Math.min(50, Math.max(0, 50 - (scrollPercent * 1.5)));
+      // Calculate gradient positions
+      // Top gradient disappears as we scroll down (0-20%)
+      const topGradientEnd = Math.max(0, 20 - scrollPercent);
       
-      console.log('Gradient Update:', {
-        scrollHeight,
-        clientHeight,
-        heightDiff,
-        scrollPercent,
-        gradientStop,
-        background: background.style.background
-      });
+      // Bottom gradient appears as we approach the end (80-100%)
+      const bottomGradientStart = Math.min(100, 80 + (scrollPercent - 80));
 
-      // Update the gradient
-      gsap.to(background, {
-        duration: 0.2,
-        '--gradient-stop': `${gradientStop}%`,
-        overwrite: 'auto'
-      });
+      // Update the background gradient
+      background.style.background = `
+        linear-gradient(
+          to bottom,
+          ${fromColor} 0%,
+          ${toColor} ${topGradientEnd}%,
+          ${toColor} ${bottomGradientStart}%,
+          ${fromColor} 100%
+        )
+      `;
     };
 
     const onScroll = () => {
@@ -81,7 +64,7 @@ export const useProjectBackground = ({
 
     content.addEventListener('scroll', onScroll);
     
-    // Initial update with a small delay to ensure content is rendered
+    // Initial update
     setTimeout(updateGradient, 50);
     
     return () => {

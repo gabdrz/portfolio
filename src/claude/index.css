@@ -26,3 +26,31 @@ h1, h2, h3, h4, h5, h6 {
  -ms-overflow-style: none;
  scrollbar-width: none;
 }
+
+/* Add to src/index.css */
+
+.project-background {
+    transition: background 0.3s ease;
+  }
+  
+  .project-background.at-top {
+    background: linear-gradient(
+      to bottom,
+      var(--from-color) 0%,
+      var(--to-color) 30%,
+      var(--to-color) 100%
+    );
+  }
+  
+  .project-background.in-middle {
+    background: var(--to-color);
+  }
+  
+  .project-background.at-bottom {
+    background: linear-gradient(
+      to bottom,
+      var(--to-color) 0%,
+      var(--to-color) 70%,
+      var(--from-color) 100%
+    );
+  }

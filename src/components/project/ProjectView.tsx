@@ -9,6 +9,7 @@ import { ProjectContent } from "./ProjectContent";
 import { useProjectBackground } from "../../hooks/useProjectBackground";
 import { useSharedElement } from "../../hooks/useSharedElement";
 import { useProjectHeader } from "../../hooks/useProjectHeader";
+import { useScrollToTop } from "../../hooks/useScrollToTop";
 
 interface LocationState {
   flipState?: Flip.FlipState;
@@ -25,6 +26,7 @@ const ProjectView: React.FC = () => {
   const headerRef = useRef<HTMLDivElement>(null);
   const backgroundRef = useRef<HTMLDivElement>(null);
   const { showHeaderTitle } = useProjectHeader(contentRef, headerRef);
+  const scrollToTop = useScrollToTop(contentRef);
 
   const project = cards.find(
     (card) => "projectData" in card && card.id.toString() === id
@@ -172,13 +174,14 @@ const ProjectView: React.FC = () => {
         <ProjectHeader
           title={project.title}
           onClose={onClose}
+          onScrollToTop={scrollToTop}
           showTitle={showHeaderTitle}
         />
       </div>
       <div
         ref={contentRef}
         className="relative h-full overflow-y-auto px-9 md:px-9 scrollbar-hide z-10"
-        style={{ paddingTop: "80px", opacity: 0 }}
+        style={{ paddingTop: "80px", paddingBottom: "120px", opacity: 0 }}
       >
         {project.projectData.content.map((block, index) => (
           <ProjectContent

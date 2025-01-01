@@ -8,7 +8,7 @@ export const seatReservationWeb: Project = {
   status: "Completed",
   liveUrl: "https://example.com/seat-reservation",
   cardOverview: "Web-based seat booking interface.",
-  image: seatWebIcon,
+  image: workInProgressIcon,
   theme: {
     gradient: {
       from: "#0D1E2A",
