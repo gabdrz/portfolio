@@ -8,17 +8,16 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ScrollToPlugin } from 'gsap/ScrollToPlugin';
 import { Flip } from 'gsap/Flip';
 
-// Register all GSAP plugins in one place
+// Register all GSAP plugins
 gsap.registerPlugin(ScrollTrigger, ScrollToPlugin, Flip);
 
 function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename={import.meta.env.DEV ? '/' : '/portfolio'}>
       <main className="min-h-screen w-full">
         <Routes>
-          <Route path="/" element={<Cards />}>
-            <Route path="project/:id" element={<ProjectView />} />
-          </Route>
+          <Route path="/" element={<Cards />} />
+          <Route path="project/:id" element={<ProjectView />} />
         </Routes>
       </main>
     </BrowserRouter>

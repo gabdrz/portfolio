@@ -7,7 +7,7 @@ interface ProjectHeadingProps {
 }
 
 export const ProjectHeading: React.FC<ProjectHeadingProps> = ({ content, layout }) => (
-  <div className={`mb-8 ${layout === "contained" ? "max-w-2xl mx-auto" : "w-full"}`}>
+  <div className={`mb-8 pt-8 ${layout === "contained" ? "max-w-2xl mx-auto" : "w-full"}`}>
     <p className="text-2xl md:text-2xl font-bold">{content}</p>
   </div>
 );

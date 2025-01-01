@@ -5,6 +5,7 @@ export { default as seatAppIcon } from './icon_mva.png';
 export { default as portfolioIcon } from './icon_pw.png';
 export { default as carMaintenanceIcon } from './icon_cm.png';
 export { default as freedomBoardIcon } from './icon_afb.png';
+export { default as workInProgressIcon } from './icon_wip.png';
 
 
 export { default as rlChallenges } from './rocket-league/challenges-summary.png';

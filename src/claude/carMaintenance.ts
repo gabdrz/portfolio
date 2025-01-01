@@ -1,5 +1,5 @@
 import { Project } from "../types";
-import { carMaintenanceIcon } from "../../../assets/images/projects";
+import { workInProgressIcon } from "../../../assets/images/projects";
 
 export const carMaintenance: Project = {
     name: 'Car Maintenance App',
@@ -18,18 +18,18 @@ export const carMaintenance: Project = {
     },
     content: [
       {
-        type: 'heading',
-        content: 'Car Maintenance App',
-        layout: 'contained'
+        type: "heading",
+        content: "Work In Progress",
+        layout: "contained",
       },
       {
-        type: 'image',
-        content: carMaintenanceIcon,
+        type: "image",
+        content: workInProgressIcon,
       },
       {
-        type: 'paragraph',
-        content: 'Car maintenance shouldn\'t be a mystery. We built an app that makes tracking and maintaining your vehicle as simple as checking your social media.',
-        layout: 'contained'
-      },
-    ]
+        type: "paragraph",
+        content: "This page is currently being developed. Check back soon for a detailed breakdown of the project, including research findings, design process, and final outcomes.",
+        layout: "contained"
+      }
+    ],
 };

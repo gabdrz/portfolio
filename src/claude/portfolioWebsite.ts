@@ -1,5 +1,5 @@
 import { Project } from "../types";
-import { portfolioIcon } from "../../../assets/images/projects";
+import { workInProgressIcon } from "../../../assets/images/projects";
 
 export const portfolioWebsite: Project = {
   name: "Portfolio Website Redesign",
@@ -19,30 +19,17 @@ export const portfolioWebsite: Project = {
   content: [
     {
       type: "heading",
-      content: "Portfolio Website Redesign",
+      content: "Work In Progress",
       layout: "contained",
     },
     {
       type: "image",
-      content: portfolioIcon,
+      content: workInProgressIcon,
     },
     {
       type: "paragraph",
-      content:
-        "When approaching my portfolio redesign, I wanted to create something that wasn't just a showcase of my work, but an experience that demonstrates my approach to design and development.",
-      layout: "contained",
-    },
-    {
-      type: "image",
-      content: "/path/to/performance-metrics.jpg",
-      layout: "wide",
-      className: "rounded-xl shadow-lg",
-    },
-    {
-      type: "paragraph",
-      content:
-        "Using React and GSAP, I built a custom scrolling system that provides smooth animations while maintaining responsive performance across all devices.",
-      layout: "contained",
-    },
+      content: "This page is currently being developed. Check back soon for a detailed breakdown of the project, including research findings, design process, and final outcomes.",
+      layout: "contained"
+    }
   ],
 };

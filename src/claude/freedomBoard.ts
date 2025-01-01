@@ -1,5 +1,5 @@
 import { Project } from "../types";
-import { freedomBoardIcon } from "../../../assets/images/projects";
+import { workInProgressIcon } from "../../../assets/images/projects";
 
 export const freedomBoard: Project = {
   name: "Automated Freedom Board",
@@ -18,18 +18,17 @@ export const freedomBoard: Project = {
   content: [
     {
       type: "heading",
-      content: "Automated Freedom Board",
+      content: "Work In Progress",
       layout: "contained",
     },
     {
       type: "image",
-      content: freedomBoardIcon,
+      content: workInProgressIcon,
     },
     {
       type: "paragraph",
-      content:
-        "The Freedom Board project automates the process of curating and publishing content from message boards to Instagram, while maintaining brand consistency and engagement.",
-      layout: "contained",
-    },
+      content: "This page is currently being developed. Check back soon for a detailed breakdown of the project, including research findings, design process, and final outcomes.",
+      layout: "contained"
+    }
   ],
 };

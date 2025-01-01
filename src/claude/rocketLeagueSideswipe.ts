@@ -165,5 +165,11 @@ export const rocketLeagueSideswipe: Project = {
       content: "",
       layout: "contained",
     },
+    {
+      type: "paragraph",
+      content: "Want to see how it would work? **[View the high-fidelity prototype on Figma](https://www.figma.com/file/rocket-league)**",
+      layout: "contained",
+      className: "text-start"
+    }
   ],
 };
