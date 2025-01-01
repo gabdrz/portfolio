@@ -6,7 +6,7 @@ interface ProjectImageProps {
 
 export const ProjectImage: React.FC<ProjectImageProps> = ({ content }) => (
   <div className={`
-    mb-12 
+    mb-10 
     max-w-2xl mx-auto
     w-full
   `}>
