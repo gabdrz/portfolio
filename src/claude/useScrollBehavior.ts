@@ -1,10 +1,27 @@
 // src/hooks/useScrollBehavior.ts
-
 import { RefObject, useEffect, useRef } from "react";
 import gsap from "gsap";
 import { useTouchDevice } from "./useTouchDevice";
 
-export const useScrollBehavior = (containerRef: RefObject<HTMLDivElement>) => {
+interface ScrollConfig {
+  // Higher values make scrolling less sensitive (require more drag)
+  mobileDragThreshold: number;
+  // Minimum distance needed to consider a drag vs a tap
+  tapThreshold: number;
+  // Animation duration for snap
+  snapDuration: number;
+}
+
+const defaultConfig: ScrollConfig = {
+  mobileDragThreshold: 30, // Pixels needed to trigger a scroll on mobile
+  tapThreshold: 10,       // Pixels to differentiate tap from drag
+  snapDuration: 0.3       // Seconds for snap animation
+};
+
+export const useScrollBehavior = (
+  containerRef: RefObject<HTMLDivElement>,
+  config: Partial<ScrollConfig> = {}
+) => {
   const isTouchDevice = useTouchDevice();
   const scrollState = useRef({
     isDragging: false,
@@ -14,6 +31,7 @@ export const useScrollBehavior = (containerRef: RefObject<HTMLDivElement>) => {
     lastTime: 0,
     velocity: 0,
     isTap: false,
+    accumulatedDrag: 0 // Track total drag distance
   });
 
   useEffect(() => {
@@ -23,9 +41,9 @@ export const useScrollBehavior = (containerRef: RefObject<HTMLDivElement>) => {
     const cardHeight = window.innerHeight / 3;
     let lastSnapTime = 0;
 
-    /**
-     * Snap to the closest card index.
-     */
+    // Merge provided config with defaults
+    const scrollConfig = { ...defaultConfig, ...config };
+
     const getSnapIndex = (scrollTop: number, delta: number) => {
       const currentIndex = Math.round(scrollTop / cardHeight);
       const nextIndex = currentIndex + Math.sign(delta);
@@ -35,18 +53,17 @@ export const useScrollBehavior = (containerRef: RefObject<HTMLDivElement>) => {
 
     const snapToCard = (index: number) => {
       const targetY = index * cardHeight;
-      const duration = 0.3; // Fixed duration for snappiness
-
       gsap.to(container, {
         scrollTo: { y: targetY },
-        duration,
+        duration: scrollConfig.snapDuration,
         ease: "power2.out",
         overwrite: "auto",
       });
     };
 
     const handleStart = (startY: number) => {
-      state.isTap = true; // Assume a tap initially
+      state.isTap = true;
+      state.accumulatedDrag = 0;
       gsap.killTweensOf(container);
       state.isDragging = true;
       state.startY = startY;
@@ -61,23 +78,38 @@ export const useScrollBehavior = (containerRef: RefObject<HTMLDivElement>) => {
       e?.preventDefault();
 
       const dragDist = Math.abs(currentY - state.startY);
-      if (dragDist > 10) {
-        state.isTap = false; // If the user drags more than a small threshold, it's not a tap
+      state.accumulatedDrag += Math.abs(currentY - state.lastY);
+      state.lastY = currentY;
+
+      // Check if this should be considered a drag rather than a tap
+      if (dragDist > scrollConfig.tapThreshold) {
+        state.isTap = false;
       }
 
-      const newScrollTop = state.startScroll - (currentY - state.startY);
-      container.scrollTop = newScrollTop;
+      // For touch devices, only update scroll after exceeding threshold
+      if (isTouchDevice) {
+        if (state.accumulatedDrag > scrollConfig.mobileDragThreshold) {
+          const newScrollTop = state.startScroll - (currentY - state.startY);
+          container.scrollTop = newScrollTop;
+        }
+      } else {
+        // For non-touch devices, update scroll immediately
+        const newScrollTop = state.startScroll - (currentY - state.startY);
+        container.scrollTop = newScrollTop;
+      }
     };
 
     const handleEnd = () => {
       if (!state.isDragging) return;
       state.isDragging = false;
+      
       if (!state.isTap) {
         const snapIndex = Math.round(container.scrollTop / cardHeight);
         snapToCard(snapIndex);
       }
     };
 
+    // Rest of the event handlers remain the same...
     const handleTouchStart = (e: TouchEvent) => {
       handleStart(e.touches[0].clientY);
     };
@@ -89,12 +121,12 @@ export const useScrollBehavior = (containerRef: RefObject<HTMLDivElement>) => {
     const handleTouchEnd = (e: TouchEvent) => {
       handleEnd();
       if (state.isTap) {
-        // If it was a tap, let it propagate to handle clicks
         const target = e.target as HTMLElement;
         if (target) target.click();
       }
     };
 
+    // Mouse event handlers...
     const handleMouseDown = (e: MouseEvent) => {
       if (isTouchDevice) return;
       handleStart(e.pageY);
@@ -118,13 +150,14 @@ export const useScrollBehavior = (containerRef: RefObject<HTMLDivElement>) => {
       e.preventDefault();
 
       const now = Date.now();
-      if (now - lastSnapTime < 300) return; // Throttle snaps to avoid overriding animations
+      if (now - lastSnapTime < 300) return;
       lastSnapTime = now;
 
       const snapIndex = getSnapIndex(container.scrollTop, e.deltaY);
       snapToCard(snapIndex);
     };
 
+    // Set up event listeners...
     if (!isTouchDevice) {
       container.style.cursor = "grab";
     }
@@ -154,5 +187,5 @@ export const useScrollBehavior = (containerRef: RefObject<HTMLDivElement>) => {
         window.removeEventListener("mouseleave", handleMouseUp);
       }
     };
-  }, [containerRef, isTouchDevice]);
+  }, [containerRef, isTouchDevice, config]);
 };

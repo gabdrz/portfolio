@@ -9,6 +9,8 @@ import { ProjectContent } from "./ProjectContent";
 import { useProjectBackground } from "../../hooks/useProjectBackground";
 import { useSharedElement } from "../../hooks/useSharedElement";
 import { useProjectHeader } from "../../hooks/useProjectHeader";
+import { useScrollToTop } from "../../hooks/useScrollToTop";
+import { useSmoothScroll } from "../../hooks/useSmoothScroll";
 
 interface LocationState {
   flipState?: Flip.FlipState;
@@ -25,6 +27,7 @@ const ProjectView: React.FC = () => {
   const headerRef = useRef<HTMLDivElement>(null);
   const backgroundRef = useRef<HTMLDivElement>(null);
   const { showHeaderTitle } = useProjectHeader(contentRef, headerRef);
+  const scrollToTop = useScrollToTop(contentRef);
 
   const project = cards.find(
     (card) => "projectData" in card && card.id.toString() === id
@@ -143,6 +146,14 @@ const ProjectView: React.FC = () => {
 
   const theme = project?.projectData.theme;
 
+  useSmoothScroll(contentRef, {
+    baseSpeed: 0.5,
+    maxSpeed: 450,
+    momentumDuration: 1.5,
+    momentumEase: "power4.out",
+    velocityThreshold: 100,
+  });
+
   useProjectBackground({
     fromColor: theme?.gradient?.from || "#0D1115",
     toColor: theme?.gradient?.to || "#0D1115",
@@ -172,6 +183,7 @@ const ProjectView: React.FC = () => {
         <ProjectHeader
           title={project.title}
           onClose={onClose}
+          onScrollToTop={scrollToTop}
           showTitle={showHeaderTitle}
         />
       </div>

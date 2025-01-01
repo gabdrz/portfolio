@@ -16,7 +16,11 @@ export const Cards: React.FC = () => {
   const location = useLocation();
   const isProjectView = location.pathname.startsWith('/project/');
   
-  useScrollBehavior(containerRef);
+  useScrollBehavior(containerRef, {
+    mobileDragThreshold: 5, 
+    tapThreshold: 3,        
+    snapDuration: 0.25     
+  });
   useCardAnimations(containerRef);
   const activeIndex = useActiveCard({ containerRef, cards, isMobile });
   
