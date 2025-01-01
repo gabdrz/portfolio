@@ -27,7 +27,7 @@ export const cards: Card[] = [
   {
     id: 3,
     type: 'header',
-    title: 'User Experience Design Projects.'
+    title: 'User Experience Design Projects'
   },
   ...projectsData.uxDesign.map((project, index) => ({
     id: 4 + index,
@@ -45,7 +45,7 @@ export const cards: Card[] = [
   {
     id: 10,
     type: 'header',
-    title: 'Software Development Projects.'
+    title: 'Software Development Projects'
   },
   ...projectsData.softwareDev.map((project, index) => ({
     id: 11 + index,

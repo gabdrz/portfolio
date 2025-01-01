@@ -15,10 +15,10 @@ interface ScrollState {
 }
 
 interface UseSmoothScrollOptions {
-  baseSpeed?: number;      // Base scrolling speed multiplier
-  maxSpeed?: number;       // Maximum scroll speed
-  momentumDuration?: number; // How long momentum continues
-  momentumEase?: string;   // Easing function for momentum
+  baseSpeed?: number;         // Base scrolling speed multiplier
+  maxSpeed?: number;          // Maximum scroll speed
+  momentumDuration?: number;  // How long momentum continues
+  momentumEase?: string;      // Easing function for momentum
   velocityThreshold?: number; // Minimum velocity to trigger momentum
 }
 
@@ -26,6 +26,9 @@ export const useSmoothScroll = (
   containerRef: React.RefObject<HTMLElement>,
   options: UseSmoothScrollOptions = {}
 ) => {
+  // Tracks if a scroll is currently happening
+  const isScrollingRef = useRef(false);
+
   const isTouchDevice = useTouchDevice();
   const scrollState = useRef<ScrollState>({
     velocity: 0,
@@ -99,15 +102,16 @@ export const useSmoothScroll = (
       const momentumDistance = velocity * direction * 50; // Scale factor for momentum distance
 
       gsap.to(container, {
-        scrollTo: { 
+        scrollTo: {
           y: currentScroll + momentumDistance,
-          autoKill: true 
+          autoKill: true
         },
         duration: momentumDuration,
         ease: momentumEase,
         overwrite: "auto"
       });
     };
+    
     let scrollTimeout: number;
 
     const handleWheel = (e: WheelEvent) => {
@@ -130,12 +134,12 @@ export const useSmoothScroll = (
         ease: "power1.out",
         overwrite: "auto",
         onStart: () => {
-          isScrolling = true;
+          isScrollingRef.current = true;
           window.clearTimeout(scrollTimeout);
         },
         onComplete: () => {
           scrollTimeout = window.setTimeout(() => {
-            isScrolling = false;
+            isScrollingRef.current = false;
             // Apply momentum when user stops scrolling
             applyMomentum(scrollState.current.velocity, container.scrollTop);
           }, 50);
@@ -157,4 +161,6 @@ export const useSmoothScroll = (
       debouncedWheel.cancel();
     };
   }, [containerRef, isTouchDevice, options]);
+
+  return isScrollingRef;
 };
