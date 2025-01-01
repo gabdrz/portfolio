@@ -13,12 +13,11 @@ gsap.registerPlugin(ScrollTrigger, ScrollToPlugin, Flip);
 
 function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename="/portfolio">
       <main className="min-h-screen w-full">
         <Routes>
-          <Route path="/" element={<Cards />}>
-            <Route path="project/:id" element={<ProjectView />} />
-          </Route>
+          <Route path="/" element={<Cards />} />
+          <Route path="/project/:id" element={<ProjectView />} />
         </Routes>
       </main>
     </BrowserRouter>
