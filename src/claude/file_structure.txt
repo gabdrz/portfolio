@@ -12,7 +12,14 @@ src/
 │   │       ├── icon_mvw.png
 │   │       ├── icon_pw.png
 │   │       ├── icon_rl.png
-│   │       └── index.ts
+│   │       ├── index.ts
+│   │       └── rocket-league
+│   │           ├── challenges-summary.png
+│   │           ├── friends-list-comparison.png
+│   │           ├── initial-user-flow.png
+│   │           ├── main-menu-comparison.png
+│   │           ├── revised-user-flow.png
+│   │           └── training-garage-features.png
 │   └── react.svg
 ├── claude
 ├── claude.py

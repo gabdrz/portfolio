@@ -1,6 +1,16 @@
 import { Project } from "../types";
 import { rocketLeagueIcon } from "../../../assets/images/projects";
 
+import {
+  rocketLeagueIcon,
+  rlChallenges,
+  rlInitialFlow,
+  rlRevisedFlow,
+  rlMenuComparison,
+  rlFriendsList,
+  rlTrainingGarage,
+} from "../../../assets/images/projects";
+
 export const rocketLeagueSideswipe: Project = {
   name: "RL Sideswipe UX Refresh",
   type: "UX Design",
@@ -38,20 +48,25 @@ export const rocketLeagueSideswipe: Project = {
       layout: "contained",
     },
     {
+      type: "image",
+      content: rlChallenges,
+      layout: "full-width",
+    },
+    {
       type: "paragraph",
       content:
         "Drawing from my experience as a player and UX designer, I identified key challenges hindering the game/'s usability. These included navigation inefficiencies, limited social interactions, and a lack of interactivity in key features like the garage and loadout. My objectives were to streamline user flows, enhance functionality, and improve the overall information architecture.",
       layout: "contained",
     },
     {
-      type: "image",
-      content: "challenges-summary.png", // Replace with your final annotated screenshot of challenges
-      layout: "full-width",
-    },
-    {
       type: "heading",
       content: "The Initial State: Challenges Identified",
       layout: "contained",
+    },
+    {
+      type: "image",
+      content: rlInitialFlow,
+      layout: "full-width",
     },
     {
       type: "paragraph",
@@ -60,14 +75,14 @@ export const rocketLeagueSideswipe: Project = {
       layout: "contained",
     },
     {
-      type: "image",
-      content: "initial-user-flow.png", // Replace with your flowchart of the initial user flow
-      layout: "full-width",
-    },
-    {
       type: "heading",
       content: "Streamlining User Flows",
       layout: "contained",
+    },
+    {
+      type: "image",
+      content: rlRevisedFlow,
+      layout: "full-width",
     },
     {
       type: "paragraph",
@@ -76,14 +91,14 @@ export const rocketLeagueSideswipe: Project = {
       layout: "contained",
     },
     {
-      type: "image",
-      content: "revised-user-flow.png", // Replace with your flowchart of the revised user flow
-      layout: "full-width",
-    },
-    {
       type: "heading",
       content: "A Cohesive and Intuitive Main Menu",
       layout: "contained",
+    },
+    {
+      type: "image",
+      content: rlMenuComparison,
+      layout: "half-width",
     },
     {
       type: "paragraph",
@@ -92,19 +107,14 @@ export const rocketLeagueSideswipe: Project = {
       layout: "contained",
     },
     {
-      type: "image",
-      content: "main-menu-before.png", // Replace with a screenshot of the original main menu
-      layout: "half-width",
-    },
-    {
-      type: "image",
-      content: "main-menu-after.png", // Replace with a screenshot of the redesigned main menu
-      layout: "half-width",
-    },
-    {
       type: "heading",
       content: "Fostering Community Engagement",
       layout: "contained",
+    },
+    {
+      type: "image",
+      content: rlFriendsList,
+      layout: "half-width",
     },
     {
       type: "paragraph",
@@ -113,35 +123,20 @@ export const rocketLeagueSideswipe: Project = {
       layout: "contained",
     },
     {
-      type: "image",
-      content: "friends-list-before.png", // Replace with a screenshot of the original friends list
-      layout: "half-width",
-    },
-    {
-      type: "image",
-      content: "friends-list-after.png", // Replace with a screenshot of the revised friends list
-      layout: "half-width",
-    },
-    {
       type: "heading",
       content: "Empowering Players Through Training and Customization",
       layout: "contained",
     },
     {
+        type: "image",
+        content: rlTrainingGarage,
+        layout: "half-width",
+      },
+    {
       type: "paragraph",
       content:
         "Training modules were redesigned to focus on specific skills, while the garage and loadout screens became more interactive and visually engaging.",
       layout: "contained",
-    },
-    {
-      type: "image",
-      content: "training-tutorial.png", // Replace with a screenshot of the redesigned training selection screen
-      layout: "half-width",
-    },
-    {
-      type: "image",
-      content: "garage-revamp.png", // Replace with a screenshot of the revamped garage
-      layout: "half-width",
     },
     {
       type: "heading",
@@ -153,11 +148,6 @@ export const rocketLeagueSideswipe: Project = {
       content:
         "The refresh resulted in a more intuitive and engaging user experience. Players could navigate features with fewer taps, social interactions were seamless, and the aesthetic enhancements added to the game's overall appeal.",
       layout: "contained",
-    },
-    {
-      type: "image",
-      content: "results-feedback.png", // Replace with mock user feedback visualization or results summary
-      layout: "full-width",
     },
     {
       type: "heading",
