@@ -13,7 +13,7 @@ gsap.registerPlugin(ScrollTrigger, ScrollToPlugin, Flip);
 
 function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename={import.meta.env.DEV ? '/' : '/your-repo-name'}>
       <main className="min-h-screen w-full">
         <Routes>
           <Route path="/" element={<Cards />}>
