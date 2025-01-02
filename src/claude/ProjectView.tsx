@@ -11,6 +11,7 @@ import { useSharedElement } from "../../hooks/useSharedElement";
 import { useProjectHeader } from "../../hooks/useProjectHeader";
 import { useScrollToTop } from "../../hooks/useScrollToTop";
 import { useSmoothScroll } from "../../hooks/useSmoothScroll";
+import ReadingProgress from "./ReadingProgress";
 
 interface LocationState {
   flipState?: Flip.FlipState;
@@ -172,6 +173,11 @@ const ProjectView: React.FC = () => {
       className="fixed inset-0 overflow-hidden z-50"
       style={{ color: theme?.textColor || "#CCDAE5" }}
     >
+      <ReadingProgress
+        targetRef={contentRef}
+        fromColor={theme?.gradient?.from || "#0D1115"}
+        toColor={theme?.gradient?.to || "#0D1115"}
+      />
       <div
         ref={backgroundRef}
         className="fixed inset-0 z-0 pointer-events-none"

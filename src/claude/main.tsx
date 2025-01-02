@@ -1,9 +1,12 @@
+console.log('main.tsx executing');
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import App from './App.tsx'
 import './index.css'
 
-createRoot(document.getElementById('root')!).render(
+const root = document.getElementById('root');
+
+createRoot(root!).render(
   <StrictMode>
     <App />
   </StrictMode>,

@@ -1,21 +1,19 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 // src/hooks/useScrollBehavior.ts
 import { RefObject, useEffect, useRef } from "react";
 import gsap from "gsap";
 import { useTouchDevice } from "./useTouchDevice";
 
 interface ScrollConfig {
-  // Higher values make scrolling less sensitive (require more drag)
   mobileDragThreshold: number;
-  // Minimum distance needed to consider a drag vs a tap
   tapThreshold: number;
-  // Animation duration for snap
   snapDuration: number;
 }
 
 const defaultConfig: ScrollConfig = {
-  mobileDragThreshold: 30, // Pixels needed to trigger a scroll on mobile
-  tapThreshold: 10,       // Pixels to differentiate tap from drag
-  snapDuration: 0.3       // Seconds for snap animation
+  mobileDragThreshold: 30,
+  tapThreshold: 15,
+  snapDuration: 0.4,
 };
 
 export const useScrollBehavior = (
@@ -31,7 +29,7 @@ export const useScrollBehavior = (
     lastTime: 0,
     velocity: 0,
     isTap: false,
-    accumulatedDrag: 0 // Track total drag distance
+    accumulatedDrag: 0,
   });
 
   useEffect(() => {
@@ -39,9 +37,6 @@ export const useScrollBehavior = (
     const container = containerRef.current;
     const state = scrollState.current;
     const cardHeight = window.innerHeight / 3;
-    let lastSnapTime = 0;
-
-    // Merge provided config with defaults
     const scrollConfig = { ...defaultConfig, ...config };
 
     const getSnapIndex = (scrollTop: number, delta: number) => {
@@ -52,9 +47,8 @@ export const useScrollBehavior = (
     };
 
     const snapToCard = (index: number) => {
-      const targetY = index * cardHeight;
       gsap.to(container, {
-        scrollTo: { y: targetY },
+        scrollTo: { y: index * cardHeight },
         duration: scrollConfig.snapDuration,
         ease: "power2.out",
         overwrite: "auto",
@@ -75,25 +69,18 @@ export const useScrollBehavior = (
 
     const handleMove = (currentY: number, e?: Event) => {
       if (!state.isDragging) return;
-      e?.preventDefault();
+      if (e) e.preventDefault();
 
       const dragDist = Math.abs(currentY - state.startY);
       state.accumulatedDrag += Math.abs(currentY - state.lastY);
       state.lastY = currentY;
 
-      // Check if this should be considered a drag rather than a tap
       if (dragDist > scrollConfig.tapThreshold) {
         state.isTap = false;
       }
 
-      // For touch devices, only update scroll after exceeding threshold
-      if (isTouchDevice) {
-        if (state.accumulatedDrag > scrollConfig.mobileDragThreshold) {
-          const newScrollTop = state.startScroll - (currentY - state.startY);
-          container.scrollTop = newScrollTop;
-        }
-      } else {
-        // For non-touch devices, update scroll immediately
+      const threshold = isTouchDevice ? scrollConfig.mobileDragThreshold : 0;
+      if (state.accumulatedDrag > threshold) {
         const newScrollTop = state.startScroll - (currentY - state.startY);
         container.scrollTop = newScrollTop;
       }
@@ -102,14 +89,14 @@ export const useScrollBehavior = (
     const handleEnd = () => {
       if (!state.isDragging) return;
       state.isDragging = false;
-      
+
       if (!state.isTap) {
         const snapIndex = Math.round(container.scrollTop / cardHeight);
         snapToCard(snapIndex);
       }
     };
 
-    // Rest of the event handlers remain the same...
+    // Touch event handlers
     const handleTouchStart = (e: TouchEvent) => {
       handleStart(e.touches[0].clientY);
     };
@@ -126,65 +113,71 @@ export const useScrollBehavior = (
       }
     };
 
-    // Mouse event handlers...
+    // Mouse event handlers
     const handleMouseDown = (e: MouseEvent) => {
       if (isTouchDevice) return;
+      e.preventDefault();
       handleStart(e.pageY);
       container.style.cursor = "grabbing";
     };
 
     const handleMouseMove = (e: MouseEvent) => {
       if (isTouchDevice) return;
-      if (!state.isDragging) return;
-      handleMove(e.pageY);
+      handleMove(e.pageY, e);
     };
 
-    const handleMouseUp = () => {
+    const handleMouseUp = (e: MouseEvent) => {
       if (isTouchDevice) return;
       handleEnd();
       container.style.cursor = "grab";
     };
 
-    const handleWheel = (e: WheelEvent) => {
+    const handleMouseLeave = (e: MouseEvent) => {
       if (isTouchDevice) return;
+      if (state.isDragging) {
+        handleEnd();
+        container.style.cursor = "grab";
+      }
+    };
+
+    // Wheel handler
+    const handleWheel = (e: WheelEvent) => {
       e.preventDefault();
-
-      const now = Date.now();
-      if (now - lastSnapTime < 300) return;
-      lastSnapTime = now;
-
       const snapIndex = getSnapIndex(container.scrollTop, e.deltaY);
       snapToCard(snapIndex);
     };
 
-    // Set up event listeners...
-    if (!isTouchDevice) {
-      container.style.cursor = "grab";
-    }
-
-    container.addEventListener("touchstart", handleTouchStart, { passive: false });
-    container.addEventListener("touchmove", handleTouchMove, { passive: false });
-    container.addEventListener("touchend", handleTouchEnd);
+    // Attach event listeners
     container.addEventListener("wheel", handleWheel, { passive: false });
 
-    if (!isTouchDevice) {
+    if (isTouchDevice) {
+      container.addEventListener("touchstart", handleTouchStart, {
+        passive: true,
+      });
+      container.addEventListener("touchmove", handleTouchMove, {
+        passive: false,
+      });
+      container.addEventListener("touchend", handleTouchEnd);
+    } else {
+      container.style.cursor = "grab";
       container.addEventListener("mousedown", handleMouseDown);
-      window.addEventListener("mousemove", handleMouseMove);
-      window.addEventListener("mouseup", handleMouseUp);
-      window.addEventListener("mouseleave", handleMouseUp);
+      container.addEventListener("mousemove", handleMouseMove);
+      container.addEventListener("mouseup", handleMouseUp);
+      container.addEventListener("mouseleave", handleMouseLeave);
     }
 
     return () => {
-      container.removeEventListener("touchstart", handleTouchStart);
-      container.removeEventListener("touchmove", handleTouchMove);
-      container.removeEventListener("touchend", handleTouchEnd);
       container.removeEventListener("wheel", handleWheel);
 
-      if (!isTouchDevice) {
+      if (isTouchDevice) {
+        container.removeEventListener("touchstart", handleTouchStart);
+        container.removeEventListener("touchmove", handleTouchMove);
+        container.removeEventListener("touchend", handleTouchEnd);
+      } else {
         container.removeEventListener("mousedown", handleMouseDown);
-        window.removeEventListener("mousemove", handleMouseMove);
-        window.removeEventListener("mouseup", handleMouseUp);
-        window.removeEventListener("mouseleave", handleMouseUp);
+        container.removeEventListener("mousemove", handleMouseMove);
+        container.removeEventListener("mouseup", handleMouseUp);
+        container.removeEventListener("mouseleave", handleMouseLeave);
       }
     };
   }, [containerRef, isTouchDevice, config]);

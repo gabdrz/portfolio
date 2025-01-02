@@ -17,40 +17,52 @@ export const useProjectBackground = ({
   backgroundRef,
 }: UseProjectBackgroundProps) => {
   const animationFrame = useRef<number>();
-  
+
   useEffect(() => {
     if (!contentRef.current || !containerRef.current || !backgroundRef.current) return;
-    
+
     const content = contentRef.current;
     const background = backgroundRef.current;
 
-    // Set initial gradient stops
-    background.style.setProperty('--gradient-top', '20%');
-    background.style.setProperty('--gradient-bottom', '80%');
-    
+    // Initial background (fully "fromColor")
+    background.style.background = `
+      linear-gradient(
+        to bottom,
+        ${fromColor} 0%,
+        ${fromColor} 100%
+      )
+    `;
+
     const updateGradient = () => {
       const scrollHeight = content.scrollHeight || 0;
       const clientHeight = content.clientHeight || 0;
-      const heightDiff = scrollHeight - clientHeight;
-      
-      // Calculate scroll percentage (0 to 100)
-      const scrollPercent = heightDiff > 0 ? (content.scrollTop / heightDiff) * 100 : 0;
-      
-      // Calculate gradient positions
-      // Top gradient disappears as we scroll down (0-20%)
-      const topGradientEnd = Math.max(0, 20 - scrollPercent);
-      
-      // Bottom gradient appears as we approach the end (80-100%)
-      const bottomGradientStart = Math.min(100, 80 + (scrollPercent - 80));
+      const maxScroll = scrollHeight - clientHeight;
+      const scrollTop = content.scrollTop;
 
-      // Update the background gradient
+      // scrollRatio: how far we've scrolled (0 at top, 1 at bottom)
+      const scrollRatio = maxScroll > 0 ? scrollTop / maxScroll : 0;
+
+      // Reverse the ratio so the gradient travels “up” as you scroll down
+      const reversedRatio = 1 - scrollRatio;
+
+      /**
+       * Choose a “midpoint” and define a larger blend region for a smoother, more modern feel.
+       * Example: offset of ~20% for a broad blend band.
+       */
+      const midpoint = reversedRatio * 100;
+      const offset = 20; // Increase for a bigger, smoother blend
+
+      const topStop = Math.max(0, midpoint - offset);
+      const bottomStop = Math.min(100, midpoint + offset);
+
+      // Set a smooth gradient from fromColor → toColor with wide transitions
       background.style.background = `
         linear-gradient(
           to bottom,
           ${fromColor} 0%,
-          ${toColor} ${topGradientEnd}%,
-          ${toColor} ${bottomGradientStart}%,
-          ${fromColor} 100%
+          ${fromColor} ${topStop}%,
+          ${toColor} ${bottomStop}%,
+          ${toColor} 100%
         )
       `;
     };
@@ -63,10 +75,10 @@ export const useProjectBackground = ({
     };
 
     content.addEventListener('scroll', onScroll);
-    
-    // Initial update
+
+    // Run an initial update
     setTimeout(updateGradient, 50);
-    
+
     return () => {
       if (animationFrame.current) {
         cancelAnimationFrame(animationFrame.current);

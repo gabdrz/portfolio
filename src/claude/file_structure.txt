@@ -44,6 +44,7 @@ src/
 │       ├── ProjectContent.tsx
 │       ├── ProjectHeader.tsx
 │       ├── ProjectView.tsx
+│       ├── ReadingProgress.tsx
 │       └── blocks
 │           ├── ProjectGallery.tsx
 │           ├── ProjectHeading.tsx
@@ -61,12 +62,12 @@ src/
 │       │   ├── carMaintenance.ts
 │       │   ├── freedomBoard.ts
 │       │   └── portfolioWebsite.ts
-│       ├── types.ts
-│       └── uxDesign
-│           ├── doctorsAppointment.ts
-│           ├── rocketLeagueSideswipe.ts
-│           ├── seatReservationApp.ts
-│           └── seatReservationWeb.ts
+│       ├── uxDesign
+│       │   ├── doctorsAppointment.ts
+│       │   ├── rocketLeagueSideswipe.ts
+│       │   ├── seatReservationApp.ts
+│       │   └── seatReservationWeb.ts
+│       └── workInProgress.ts
 ├── file_structure.txt
 ├── hooks
 │   ├── animations

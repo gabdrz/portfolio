@@ -19,7 +19,7 @@ export const portfolioWebsite: Project = {
   content: [
     {
       type: "heading",
-      content: "Work In Progress",
+      content: "Portfolio Website",
       layout: "contained",
     },
     {
