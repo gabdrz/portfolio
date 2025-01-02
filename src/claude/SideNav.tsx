@@ -22,13 +22,11 @@ const SideNav = ({ cards, containerRef, activeIndex }: SideNavProps) => {
   const animationsRef = useRef<gsap.core.Tween[]>([]);
   const isTouchDevice = useTouchDevice();
 
-  // Cleanup function for GSAP animations
   const cleanupAnimations = useCallback(() => {
     animationsRef.current.forEach((anim) => anim.kill());
     animationsRef.current = [];
   }, []);
 
-  // Store label widths on mount and resize
   useEffect(() => {
     const updateLabelWidths = () => {
       itemRefs.current.forEach((item, index) => {
@@ -47,11 +45,9 @@ const SideNav = ({ cards, containerRef, activeIndex }: SideNavProps) => {
     return () => window.removeEventListener("resize", updateLabelWidths);
   }, []);
 
-  // Animate nav items based on active index and expanded state
   useEffect(() => {
     cleanupAnimations();
 
-    // Background overlay animation
     if (backgroundRef.current) {
       animationsRef.current.push(
         gsap.to(backgroundRef.current, {
@@ -72,14 +68,12 @@ const SideNav = ({ cards, containerRef, activeIndex }: SideNavProps) => {
       const distance = Math.abs(index - activeIndex);
       const labelWidth = isExpanded ? labelWidthsRef.current[index] || 32 : 32;
 
-      // Calculate opacities based on distance from active item
       const getOpacity = (distance: number) => {
         if (distance === 0) return 1;
         if (distance === 1) return 0.3;
         return 0.1;
       };
 
-      // Store animations for cleanup
       animationsRef.current.push(
         gsap.to(item, {
           width: labelWidth,
@@ -121,6 +115,7 @@ const SideNav = ({ cards, containerRef, activeIndex }: SideNavProps) => {
   );
 
   const handleTouchStart = (e: React.TouchEvent, index: number) => {
+    if (!isTouchDevice) return;
     e.stopPropagation();
     const touch = e.touches[0];
     touchStartRef.current = { y: touch.clientY, index };
@@ -129,6 +124,7 @@ const SideNav = ({ cards, containerRef, activeIndex }: SideNavProps) => {
   };
 
   const handleTouchMove = (e: React.TouchEvent) => {
+    if (!isTouchDevice) return;
     e.stopPropagation();
     if (!touchStartRef.current) return;
 
@@ -153,6 +149,7 @@ const SideNav = ({ cards, containerRef, activeIndex }: SideNavProps) => {
   };
 
   const handleTouchEnd = (e: React.TouchEvent) => {
+    if (!isTouchDevice) return;
     e.stopPropagation();
     setIsExpanded(false);
     touchStartRef.current = null;
@@ -160,23 +157,18 @@ const SideNav = ({ cards, containerRef, activeIndex }: SideNavProps) => {
 
   const handleMouseEnter = useCallback(
     (index: number) => {
-      if (!isTouchDevice) {
-        setIsExpanded(true);
-        scrollToCard(index);
-      }
+      setIsExpanded(true);
+      scrollToCard(index);
     },
-    [isTouchDevice, scrollToCard]
+    [scrollToCard]
   );
 
   const handleMouseLeave = useCallback(() => {
-    if (!isTouchDevice) {
-      setIsExpanded(false);
-    }
-  }, [isTouchDevice]);
+    setIsExpanded(false);
+  }, []);
 
   return (
     <>
-      {/* Background Overlay */}
       <div
         className="fixed inset-0 pointer-events-none z-40"
         style={{
@@ -187,7 +179,6 @@ const SideNav = ({ cards, containerRef, activeIndex }: SideNavProps) => {
         ref={backgroundRef}
       />
 
-      {/* Navigation */}
       <nav
         ref={navRef}
         className="fixed right-0 md:right-6 top-1/2 -translate-y-1/2 z-50 select-none touch-none overflow-hidden"
@@ -200,8 +191,7 @@ const SideNav = ({ cards, containerRef, activeIndex }: SideNavProps) => {
               ref={(el) => (itemRefs.current[index] = el)}
               className="nav-item flex items-center justify-end h-8 cursor-pointer touch-none"
               style={{ width: "32px" }}
-              onMouseEnter={() => !isTouchDevice && handleMouseEnter(index)}
-              onMouseLeave={() => !isTouchDevice && handleMouseLeave()}
+              onMouseEnter={() => handleMouseEnter(index)}
               onTouchStart={(e) => handleTouchStart(e, index)}
               onTouchMove={handleTouchMove}
               onTouchEnd={handleTouchEnd}
@@ -214,8 +204,11 @@ const SideNav = ({ cards, containerRef, activeIndex }: SideNavProps) => {
                   (card.type === "links" ? "Links" : `Card ${index + 1}`)}
               </div>
               <div
-                className="nav-dot w-2 h-2 md:w-2 md:h-2 rounded-full flex-shrink-0 mr-2 bg-[#CCDAE5] pointer-events-none"
-                style={{ opacity: 0.5 }}
+                className="nav-dot w-2 h-2 md:w-2 md:h-2 rounded-full flex-shrink-0 mr-2 pointer-events-none"
+                style={{
+                  backgroundColor: '#CCDAE5',
+                  opacity: 0.5,
+                }}
               />
             </div>
           ))}
