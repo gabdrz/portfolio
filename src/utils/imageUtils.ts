@@ -1,4 +1,4 @@
-import { rocketLeagueIcon, doctorAppIcon, seatWebIcon, seatAppIcon, portfolioIcon, carMaintenanceIcon, freedomBoardIcon } from '../assets/images/projects';
+import { rocketLeagueIcon, doctorAppIcon, seatWebIcon, seatAppIcon, portfolioIcon, carMaintenanceIcon, freedomBoardIcon, workInProgressIcon } from '../assets/images/projects';
 
 export const getProjectImage = (projectName: string): string => {
   const imageMap: { [key: string]: string } = {
@@ -9,6 +9,7 @@ export const getProjectImage = (projectName: string): string => {
     'Portfolio Website Redesign': portfolioIcon,
     'Car Maintenance App': carMaintenanceIcon,
     'Automated Freedom Board': freedomBoardIcon,
+    'More Projects Soon': workInProgressIcon,
   };
 
   const image = imageMap[projectName];
