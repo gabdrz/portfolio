@@ -81,10 +81,8 @@ src/
 │   ├── useProjectAnimations.ts
 │   ├── useProjectBackground.ts
 │   ├── useProjectHeader.ts
-│   ├── useProjectTransition.ts
 │   ├── useScrollBehavior.ts
 │   ├── useScrollToTop.ts
-│   ├── useSharedElement.ts
 │   ├── useSmoothScroll.ts
 │   ├── useTouchDevice.ts
 │   └── useViewportHeight.ts

@@ -4,13 +4,27 @@ export const useTouchDevice = () => {
   const [isTouch, setIsTouch] = useState(false);
 
   useEffect(() => {
-    const checkTouch = () => {
-      setIsTouch('ontouchstart' in window || navigator.maxTouchPoints > 0);
+    let touchStarted = false;
+
+    const handleTouchStart = () => {
+      touchStarted = true;
+      setIsTouch(true);
     };
-    
-    checkTouch();
-    window.addEventListener('resize', checkTouch);
-    return () => window.removeEventListener('resize', checkTouch);
+
+    const handleMouseDown = () => {
+      if (!touchStarted) {
+        setIsTouch(false);
+      }
+      touchStarted = false;
+    };
+
+    window.addEventListener('touchstart', handleTouchStart);
+    window.addEventListener('mousedown', handleMouseDown);
+
+    return () => {
+      window.removeEventListener('touchstart', handleTouchStart);
+      window.removeEventListener('mousedown', handleMouseDown);
+    };
   }, []);
 
   return isTouch;

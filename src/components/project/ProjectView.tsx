@@ -26,7 +26,12 @@ const ProjectView: React.FC = () => {
   );
 
   useEffect(() => {
-    if (!project || !contentRef.current || !backgroundRef.current || !headerRef.current)
+    if (
+      !project ||
+      !contentRef.current ||
+      !backgroundRef.current ||
+      !headerRef.current
+    )
       return;
 
     const tl = gsap.timeline();
@@ -40,13 +45,15 @@ const ProjectView: React.FC = () => {
       opacity: 1,
       duration: 0.3,
       ease: "power2.out",
-    })
-    .to([contentRef.current, headerRef.current], {
-      opacity: 1,
-      duration: 0.3,
-      ease: "power2.out",
-    }, "-=0.1");
-
+    }).to(
+      [contentRef.current, headerRef.current],
+      {
+        opacity: 1,
+        duration: 0.3,
+        ease: "power2.out",
+      },
+      "-=0.1"
+    );
   }, [project]);
 
   const onClose = () => {
@@ -59,12 +66,15 @@ const ProjectView: React.FC = () => {
       opacity: 0,
       duration: 0.3,
       ease: "power2.out",
-    })
-    .to(backgroundRef.current, {
-      opacity: 0,
-      duration: 0.3,
-      ease: "power2.out",
-    }, "-=0.2");
+    }).to(
+      backgroundRef.current,
+      {
+        opacity: 0,
+        duration: 0.3,
+        ease: "power2.out",
+      },
+      "-=0.2"
+    );
   };
 
   const theme = project?.projectData.theme;
