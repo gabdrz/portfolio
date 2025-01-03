@@ -28,7 +28,7 @@ export const portfolioWebsite: Project = {
     },
     {
       type: "paragraph",
-      content: "Built with React and TypeScript, this portfolio features a custom-designed vertical card navigation system with fluid GSAP animations. The architecture includes responsive layouts with Tailwind CSS, and an advanced scroll behavior system that handles both touch and mouse interactions. Key features include a dynamic side navigation, gradient-based reading progress indicator, and animated project transitions – all implemented with a focus on performance and smooth interactions.",
+      content: "Developed using React 18 and TypeScript, this portfolio implements a custom virtualized card-scroll system optimized for both desktop and mobile devices. The architecture leverages GSAP for hardware-accelerated animations, employs custom hooks for scroll physics, and utilizes Tailwind CSS for responsive layouts. Notable technical features include debounced scroll handlers, momentum-based animations, touch event normalization, and dynamic gradient transitions managed through WebGL shaders. The codebase follows a modular component structure with strict type safety and performance optimizations like React.memo and useCallback for critical render paths.",
       layout: "contained"
     }
   ],

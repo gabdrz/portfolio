@@ -80,9 +80,11 @@ const ProjectView: React.FC = () => {
   const theme = project?.projectData.theme;
 
   useSmoothScroll(contentRef, {
-    friction: 0.92,
-    acceleration: 0.08,
-    velocityThreshold: 0.05,
+    baseSpeed: 0.5,
+    maxSpeed: 450,
+    momentumDuration: 1.5,
+    momentumEase: "power4.out",
+    velocityThreshold: 100,
   });
 
   useProjectBackground({
@@ -125,7 +127,7 @@ const ProjectView: React.FC = () => {
       </div>
       <div
         ref={contentRef}
-        className="relative h-full overflow-y-scroll px-9 md:px-9 scrollbar-hide z-10"
+        className="relative h-full overflow-y-auto px-9 md:px-9 scrollbar-hide z-10"
         style={{ paddingTop: "80px", paddingBottom: "120px", opacity: 0 }}
       >
         {project.projectData.content.map((block, index) => (
