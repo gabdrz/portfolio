@@ -1,4 +1,3 @@
-// src/components/Cards.tsx
 import React, { useRef } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
 import { useIsMobile } from '../hooks/useIsMobile';
@@ -8,7 +7,7 @@ import { useActiveCard } from '../hooks/useActiveCard';
 import { useCardsLayout } from '../hooks/useCardsLayout';
 import { CardContent } from './CardContent';
 import { cards } from '../data/cards';
-import SideNav from './nav/SideNav'; // Updated import
+import SideNav from './nav/SideNav';
 
 export const Cards: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);

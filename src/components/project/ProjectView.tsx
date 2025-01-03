@@ -1,27 +1,18 @@
-// src/components/project/ProjectView.tsx
 import React, { useEffect, useRef } from "react";
-import { useParams, useNavigate, useLocation } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import gsap from "gsap";
-import { Flip } from "gsap/Flip";
 import { cards } from "../../data/cards";
 import { ProjectHeader } from "./ProjectHeader";
 import { ProjectContent } from "./ProjectContent";
 import { useProjectBackground } from "../../hooks/useProjectBackground";
-import { useSharedElement } from "../../hooks/useSharedElement";
 import { useProjectHeader } from "../../hooks/useProjectHeader";
 import { useScrollToTop } from "../../hooks/useScrollToTop";
 import { useSmoothScroll } from "../../hooks/useSmoothScroll";
 import ReadingProgress from "./ReadingProgress";
 
-interface LocationState {
-  flipState?: Flip.FlipState;
-}
-
 const ProjectView: React.FC = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const location = useLocation();
-  const state = location.state as LocationState;
 
   const containerRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
@@ -34,20 +25,9 @@ const ProjectView: React.FC = () => {
     (card) => "projectData" in card && card.id.toString() === id
   );
 
-  const { createFlipTransition, getSharedElements, transition } =
-    useSharedElement();
-
   useEffect(() => {
-    if (
-      !project ||
-      !contentRef.current ||
-      !backgroundRef.current ||
-      !headerRef.current
-    )
+    if (!project || !contentRef.current || !backgroundRef.current || !headerRef.current)
       return;
-
-    const targetImage = contentRef.current.querySelector("img");
-    if (!targetImage) return;
 
     const tl = gsap.timeline();
 
@@ -55,94 +35,36 @@ const ProjectView: React.FC = () => {
     gsap.set([contentRef.current, headerRef.current], { opacity: 0 });
     gsap.set(backgroundRef.current, { opacity: 0 });
 
-    // Background fade-in
+    // Fade in animation sequence
     tl.to(backgroundRef.current, {
       opacity: 1,
       duration: 0.3,
       ease: "power2.out",
-      overwrite: false,
-    });
+    })
+    .to([contentRef.current, headerRef.current], {
+      opacity: 1,
+      duration: 0.3,
+      ease: "power2.out",
+    }, "-=0.1");
 
-    // Flip transition if state exists
-    if (state?.flipState) {
-      tl.add(() => {
-        createFlipTransition(targetImage as HTMLElement, state.flipState, {
-          duration: 0.5,
-          onComplete: () => {
-            targetImage.style.opacity = "1";
-          },
-        });
-      });
-    }
-
-    // Fade-in content and header
-    tl.to(
-      [contentRef.current, headerRef.current],
-      {
-        opacity: 1,
-        duration: 0.3,
-        ease: "power2.out",
-      },
-      "-=0.2"
-    );
-  }, [project, state, createFlipTransition]);
+  }, [project]);
 
   const onClose = () => {
-    const sourceId = `project-image-${project?.id}`;
-    const targetImage = contentRef.current?.querySelector("img") as HTMLElement;
+    const tl = gsap.timeline({
+      onComplete: () => navigate("/"),
+    });
 
-    if (targetImage) {
-      const { fromElement, canTransition } = getSharedElements(
-        sourceId,
-        targetImage.id
-      );
-
-      if (canTransition && fromElement) {
-        const tl = gsap.timeline({
-          onComplete: () => navigate("/"),
-        });
-
-        // Fade-out content and header
-        tl.to(
-          [contentRef.current, headerRef.current],
-          {
-            opacity: 0,
-            duration: 0.3,
-            ease: "power2.out",
-          },
-          0
-        );
-
-        // Flip transition
-        tl.add(() => {
-          transition(targetImage, fromElement, {
-            duration: 0.5,
-            ease: "power2.inOut",
-          });
-        }, "-=0.2");
-
-        // Fade-out background
-        tl.to(
-          backgroundRef.current,
-          {
-            opacity: 0,
-            duration: 0.4,
-            ease: "power2.out",
-          },
-          "-=0.2"
-        );
-
-        return;
-      }
-    }
-
-    // Fallback if no shared element
-    gsap.to([contentRef.current, headerRef.current, backgroundRef.current], {
+    // Fade out animation sequence
+    tl.to([contentRef.current, headerRef.current], {
       opacity: 0,
       duration: 0.3,
       ease: "power2.out",
-      onComplete: () => navigate("/"),
-    });
+    })
+    .to(backgroundRef.current, {
+      opacity: 0,
+      duration: 0.3,
+      ease: "power2.out",
+    }, "-=0.2");
   };
 
   const theme = project?.projectData.theme;

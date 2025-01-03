@@ -1,34 +1,24 @@
-// src/components/CardContent.tsx
-import React from 'react';
-import { Card } from '../types/cards';
-import { LinksCard } from './cards/LinksCard';
-import { HeaderCard } from './cards/HeaderCard';
-import { ContentCard } from './cards/ContentCard';
-import { ProjectCard } from './cards/ProjectCard';
-
-interface ImageMetrics {
-  top: number;
-  left: number;
-  width: number;
-  height: number;
-  borderRadius: number;
-}
+import React from "react";
+import { Card } from "../types/cards";
+import { LinksCard } from "./cards/LinksCard";
+import { HeaderCard } from "./cards/HeaderCard";
+import { ContentCard } from "./cards/ContentCard";
+import { ProjectCard } from "./cards/ProjectCard";
 
 interface CardContentProps {
   card: Card;
-  onTransitionStart?: (metrics: ImageMetrics, imageUrl: string) => void;
 }
 
-export const CardContent = ({ card, onTransitionStart }: CardContentProps) => {
+export const CardContent = ({ card }: CardContentProps) => {
   const renderCard = () => {
     switch (card.type) {
-      case 'links':
+      case "links":
         return <LinksCard card={card} />;
-      case 'header':
+      case "header":
         return <HeaderCard card={card} />;
-      case 'content':
-        if ('projectData' in card) {
-          return <ProjectCard card={card} onTransitionStart={onTransitionStart} />;
+      case "content":
+        if ("projectData" in card) {
+          return <ProjectCard card={card} />;
         }
         return <ContentCard card={card} />;
       default:
@@ -37,7 +27,7 @@ export const CardContent = ({ card, onTransitionStart }: CardContentProps) => {
   };
 
   return (
-    <div 
+    <div
       className={`
         relative
         w-full
@@ -50,7 +40,7 @@ export const CardContent = ({ card, onTransitionStart }: CardContentProps) => {
         lg:px-16
       `}
     >
-      <div 
+      <div
         className={`
           md:w-[503px]
           w-[365px]
