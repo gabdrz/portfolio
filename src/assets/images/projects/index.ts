@@ -14,3 +14,4 @@ export { default as rlRevisedFlow } from './rocket-league/revised-user-flow.png'
 export { default as rlMenuComparison } from './rocket-league/main-menu-comparison.png';
 export { default as rlFriendsList } from './rocket-league/friends-list-comparison.png';
 export { default as rlTrainingGarage } from './rocket-league/training-garage-features.png';
+export { default as finalScreens } from './rocket-league/final-screens.png';
