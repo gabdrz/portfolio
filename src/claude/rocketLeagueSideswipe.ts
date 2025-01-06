@@ -9,6 +9,7 @@ import {
   rlMenuComparison,
   rlFriendsList,
   rlTrainingGarage,
+  finalScreens,
 } from "../../../assets/images/projects";
 
 export const rocketLeagueSideswipe: Project = {
@@ -38,128 +39,130 @@ export const rocketLeagueSideswipe: Project = {
     },
     {
       type: "paragraph",
-      content:
-        "With its dynamic gameplay and thrilling mechanics, Rocket League Sideswipe had the potential to dominate mobile gaming. However, a lack of streamlined navigation, cohesive features, and engaging interfaces hindered its growth. My UX refresh aimed to tackle these challenges, balancing functionality and aesthetics to enhance player engagement.",
+      content: "Rocket League Sideswipe's dynamic gameplay and thrilling mechanics show strong potential in mobile gaming. However, complex navigation, disconnected features, and limited social tools create barriers to player retention. This UX refresh focuses on streamlining core interactions and enhancing social connectivity to match the game's exceptional gameplay quality.",
       layout: "contained",
     },
+
     {
       type: "heading",
-      content: "Background and Objectives",
+      content: "Understanding the Problem Space",
       layout: "contained",
     },
     {
       type: "image",
       content: rlChallenges,
-      layout: "full-width",
     },
     {
       type: "paragraph",
-      content:
-        "Drawing from my experience as a player and UX designer, I identified key challenges hindering the game/'s usability. These included navigation inefficiencies, limited social interactions, and a lack of interactivity in key features like the garage and loadout. My objectives were to streamline user flows, enhance functionality, and improve the overall information architecture.",
+      content: "Reaching Champion II rank provided direct insight into the game's usability challenges. The interface requires multiple taps for basic actions, with critical features buried in nested menus. Training modules lack clear skill progression, while garage and loadout screens serve as static displays rather than interactive hubs.",
       layout: "contained",
     },
     {
+      type: "paragraph",
+      content: "UX analysis revealed deeper structural issues. The separation of Rocket Pass and Challenges forces unnecessary context switching, while hidden social features limit player interactions. The bottom navigation creates ergonomic challenges on mobile devices, compounded by unclear iconography and labeling.",
+      layout: "contained",
+    },
+
+    {
       type: "heading",
-      content: "The Initial State: Challenges Identified",
+      content: "Mapping User Flows",
       layout: "contained",
     },
     {
       type: "image",
       content: rlInitialFlow,
-      layout: "full-width",
     },
     {
       type: "paragraph",
-      content:
-        "The original user flow had redundancies and inefficiencies. Features like inventory access required multiple taps, social features were buried, and the overall layout lacked cohesion. These issues made the experience less intuitive for players.",
+      content: "The initial user flow revealed significant inefficiencies in daily interactions. Players navigate through multiple screens to access inventory, while collections and garage customization exist in separate sections despite serving similar purposes. Social features remain isolated, requiring users to exit current screens to interact with friends or check online status.",
       layout: "contained",
     },
+
     {
       type: "heading",
-      content: "Streamlining User Flows",
+      content: "Streamlined Navigation",
       layout: "contained",
     },
     {
       type: "image",
       content: rlRevisedFlow,
-      layout: "full-width",
     },
     {
       type: "paragraph",
-      content:
-        "Revised user flows eliminated unnecessary steps and grouped related features. For example, Rocket Pass and Challenges were combined to create a cohesive experience, and social overlays were made persistent for easier access.",
+      content: "The redesigned flow eliminates redundant paths and consolidates related features. Rocket Pass and Challenges now work together in a unified progression system, while persistent social overlays enable quick access to friends and party features. Training modules provide direct access to specific skills, reducing the steps needed for focused practice.",
       layout: "contained",
     },
+
     {
       type: "heading",
-      content: "A Cohesive and Intuitive Main Menu",
+      content: "Interface Refinement",
       layout: "contained",
     },
     {
       type: "image",
       content: rlMenuComparison,
-      layout: "half-width",
     },
     {
       type: "paragraph",
-      content:
-        "The main menu was redesigned for simplicity and efficiency. Persistent friend overlays were added, redundant buttons were removed, and a darker theme with better button placement improved accessibility.",
+      content: "The main menu overhaul introduces a vertical tab system optimized for mobile ergonomics. The darker theme improves visual hierarchy, while a persistent friends list enables seamless social interaction. Core features like game mode selection and player statistics now require fewer taps to access.",
       layout: "contained",
     },
     {
+      type: "paragraph",
+      content: "Navigation improvements extend beyond layout changes. The removal of redundant screens like separate collections and loadout views streamlines the customization process. Clear button labeling and intuitive iconography reduce cognitive load, while the hamburger menu provides organized access to auxiliary features.",
+      layout: "contained",
+    },
+
+    {
       type: "heading",
-      content: "Fostering Community Engagement",
+      content: "Social Enhancement",
       layout: "contained",
     },
     {
       type: "image",
       content: rlFriendsList,
-      layout: "half-width",
     },
     {
       type: "paragraph",
-      content:
-        "Social features were overhauled to encourage player interaction. Friend invites were streamlined, and online friends became persistently visible, making it easier to connect and play.",
+      content: "The revamped social interface prioritizes player connections and quick interactions. Direct invite buttons eliminate extra navigation steps, while the persistent friend list shows real-time player status. The streamlined design removes clutter by integrating party management directly into the main interface, encouraging more spontaneous multiplayer sessions.",
       layout: "contained",
     },
+
     {
       type: "heading",
-      content: "Empowering Players Through Training and Customization",
+      content: "Training & Customization",
       layout: "contained",
     },
     {
-        type: "image",
-        content: rlTrainingGarage,
-        layout: "half-width",
-      },
+      type: "image",
+      content: rlTrainingGarage,
+    },
     {
       type: "paragraph",
-      content:
-        "Training modules were redesigned to focus on specific skills, while the garage and loadout screens became more interactive and visually engaging.",
+      content: "Training receives a focused redesign to support targeted skill development. Players can now select specific techniques to practice, with clear progression tracking and immediate access to relevant drills. The garage interface combines car selection and customization into a single, interactive view that showcases player creativity while reducing navigation complexity.",
       layout: "contained",
     },
+
     {
       type: "heading",
-      content: "Results and Impact",
+      content: "Impact & Learning",
+      layout: "contained",
+    },
+    {
+      type: "image",
+      content: finalScreens, // Final key screens showcase
+    },
+    {
+      type: "paragraph",
+      content: "The refreshed interface significantly reduces the steps needed for core actions while enhancing feature discovery and social engagement. Unified progression systems and streamlined customization tools create a more cohesive experience that supports both casual and competitive play styles.",
       layout: "contained",
     },
     {
       type: "paragraph",
-      content:
-        "The refresh resulted in a more intuitive and engaging user experience. Players could navigate features with fewer taps, social interactions were seamless, and the aesthetic enhancements added to the game's overall appeal.",
+      content: "This project highlighted the importance of balancing feature accessibility with interface simplicity in mobile gaming. Future iterations could explore deeper social integration through clan systems and expanded training analytics to further support player growth and community building.",
       layout: "contained",
     },
-    {
-      type: "heading",
-      content: "Reflection and Takeaways",
-      layout: "contained",
-    },
-    {
-      type: "paragraph",
-      content:
-        "This project taught me the importance of balancing functionality with visual appeal and considering diverse player needs. It reinforced my belief that great UX can transform even the most dynamic experiences.",
-      layout: "contained",
-    },
+
     {
       type: "spacer",
       content: "",
@@ -171,5 +174,5 @@ export const rocketLeagueSideswipe: Project = {
       layout: "contained",
       className: "text-start"
     }
-  ],
+  ]
 };

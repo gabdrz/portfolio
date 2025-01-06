@@ -170,9 +170,9 @@ export const rocketLeagueSideswipe: Project = {
     },
     {
       type: "paragraph",
-      content: "Want to see how it would work? **[View the high-fidelity prototype on Figma](https://www.figma.com/proto/6GM8lKFnH1U7eKUbvMucs6/Rocket-League-Sideswipe-UI-Refresh?node-id=98-1255&p=f&t=J1DssHG42tmO9X7R-1&scaling=scale-down-width&content-scaling=fixed&page-id=2%3A56&starting-point-node-id=98%3A1255)**",
+      content: "Interested in how it all comes together? **[Take a look at the high-fidelity prototype on Figma](https://www.figma.com/proto/6GM8lKFnH1U7eKUbvMucs6/Rocket-League-Sideswipe-UI-Refresh?node-id=98-1255&p=f&t=J1DssHG42tmO9X7R-1&scaling=scale-down-width&content-scaling=fixed&page-id=2%3A56&starting-point-node-id=98%3A1255)**",
       layout: "contained",
-      className: "text-start"
+      className: "font-bold text-start"
     }
   ]
 };
