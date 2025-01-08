@@ -3,19 +3,29 @@ import gsap from 'gsap';
 
 interface BackgroundProps {
   onAnimationComplete?: () => void;
+  fromColor?: string;
+  toColor?: string;
+  containerRef?: React.RefObject<HTMLDivElement>;
 }
 
-const Background = ({ onAnimationComplete }: BackgroundProps) => {
+const Background = ({ 
+  onAnimationComplete,
+  fromColor = '#0d1115',
+  toColor = '#1a2632',
+  containerRef
+}: BackgroundProps) => {
   const backgroundRef = useRef<HTMLDivElement>(null);
   const gradientRef = useRef<HTMLDivElement>(null);
   const hasPlayedRef = useRef(false);
   const timelineRef = useRef<gsap.core.Timeline | null>(null);
+  const animationFrameRef = useRef<number>();
   
   // Stabilize the animation complete callback
   const handleAnimationComplete = useCallback(() => {
     onAnimationComplete?.();
   }, [onAnimationComplete]);
 
+  // Initial load animation
   useEffect(() => {
     const background = backgroundRef.current;
     const gradient = gradientRef.current;
@@ -55,18 +65,67 @@ const Background = ({ onAnimationComplete }: BackgroundProps) => {
     }
 
     return () => {
-      // Only kill the timeline if the component is truly being unmounted
-      // We can check this by seeing if the refs are still valid
       if (!backgroundRef.current && !gradientRef.current) {
         timelineRef.current?.kill();
         timelineRef.current = null;
       }
     };
-  }, []); // Empty dependency array since we manage everything with refs
+  }, [handleAnimationComplete]);
+
+  // Scroll-based background animation
+  useEffect(() => {
+    if (!containerRef?.current || !backgroundRef.current) return;
+
+    const content = containerRef.current;
+    const background = backgroundRef.current;
+
+    const updateGradient = () => {
+      const scrollHeight = content.scrollHeight;
+      const clientHeight = content.clientHeight;
+      const maxScroll = scrollHeight - clientHeight;
+      const scrollTop = content.scrollTop;
+      const scrollRatio = maxScroll > 0 ? scrollTop / maxScroll : 0;
+      
+      // Calculate gradient stops based on scroll position
+      const midpoint = (1 - scrollRatio) * 100;
+      const offset = 20; // Larger offset for smoother blend
+      const topStop = Math.max(0, midpoint - offset);
+      const bottomStop = Math.min(100, midpoint + offset);
+
+      background.style.background = `
+        linear-gradient(
+          to bottom,
+          ${fromColor} 0%,
+          ${fromColor} ${topStop}%,
+          ${toColor} ${bottomStop}%,
+          ${toColor} 100%
+        )
+      `;
+    };
+
+    const handleScroll = () => {
+      if (animationFrameRef.current) {
+        cancelAnimationFrame(animationFrameRef.current);
+      }
+      animationFrameRef.current = requestAnimationFrame(updateGradient);
+    };
+
+    content.addEventListener('scroll', handleScroll);
+    
+    // Initial gradient setup
+    updateGradient();
+
+    return () => {
+      content.removeEventListener('scroll', handleScroll);
+      if (animationFrameRef.current) {
+        cancelAnimationFrame(animationFrameRef.current);
+      }
+    };
+  }, [containerRef, fromColor, toColor]);
 
   return (
     <>
-      {/* Base background color */}
+      {/* Base background with gradient */}
       <div 
         ref={backgroundRef}
         className="fixed inset-0 bg-[#0d1115] z-[-2]" 
