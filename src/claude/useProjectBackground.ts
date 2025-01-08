@@ -1,70 +1,38 @@
-// src/hooks/useProjectBackground.ts
 import { useEffect, useRef } from 'react';
+import { useBackgroundStore } from '../store/backgroundStore';
 
 interface UseProjectBackgroundProps {
   fromColor: string;
   toColor: string;
   contentRef: React.RefObject<HTMLDivElement>;
   containerRef: React.RefObject<HTMLDivElement>;
-  backgroundRef: React.RefObject<HTMLDivElement>;
 }
 
 export const useProjectBackground = ({
   fromColor,
   toColor,
   contentRef,
-  containerRef,
-  backgroundRef,
+  containerRef
 }: UseProjectBackgroundProps) => {
   const animationFrame = useRef<number>();
+  const { setColors } = useBackgroundStore();
 
   useEffect(() => {
-    if (!contentRef.current || !containerRef.current || !backgroundRef.current) return;
+    if (!contentRef.current || !containerRef.current) return;
 
     const content = contentRef.current;
-    const background = backgroundRef.current;
-
-    // Initial background (fully "fromColor")
-    background.style.background = `
-      linear-gradient(
-        to bottom,
-        ${fromColor} 0%,
-        ${fromColor} 100%
-      )
-    `;
+    setColors(fromColor, toColor);
 
     const updateGradient = () => {
-      const scrollHeight = content.scrollHeight || 0;
-      const clientHeight = content.clientHeight || 0;
+      const scrollHeight = content.scrollHeight;
+      const clientHeight = content.clientHeight;
       const maxScroll = scrollHeight - clientHeight;
       const scrollTop = content.scrollTop;
-
-      // scrollRatio: how far we've scrolled (0 at top, 1 at bottom)
       const scrollRatio = maxScroll > 0 ? scrollTop / maxScroll : 0;
-
-      // Reverse the ratio so the gradient travels “up” as you scroll down
-      const reversedRatio = 1 - scrollRatio;
-
-      /**
-       * Choose a “midpoint” and define a larger blend region for a smoother, more modern feel.
-       * Example: offset of ~20% for a broad blend band.
-       */
-      const midpoint = reversedRatio * 100;
-      const offset = 20; // Increase for a bigger, smoother blend
-
-      const topStop = Math.max(0, midpoint - offset);
-      const bottomStop = Math.min(100, midpoint + offset);
-
-      // Set a smooth gradient from fromColor → toColor with wide transitions
-      background.style.background = `
-        linear-gradient(
-          to bottom,
-          ${fromColor} 0%,
-          ${fromColor} ${topStop}%,
-          ${toColor} ${bottomStop}%,
-          ${toColor} 100%
-        )
-      `;
+      
+      if (scrollRatio > 0) {
+        setColors(fromColor, toColor);
+      }
     };
 
     const onScroll = () => {
@@ -75,9 +43,7 @@ export const useProjectBackground = ({
     };
 
     content.addEventListener('scroll', onScroll);
-
-    // Run an initial update
-    setTimeout(updateGradient, 50);
+    updateGradient();
 
     return () => {
       if (animationFrame.current) {
@@ -85,5 +51,5 @@ export const useProjectBackground = ({
       }
       content.removeEventListener('scroll', onScroll);
     };
-  }, [fromColor, toColor, contentRef, containerRef, backgroundRef]);
+  }, [fromColor, toColor, contentRef, containerRef, setColors]);
 };

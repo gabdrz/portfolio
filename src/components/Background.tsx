@@ -1,139 +1,215 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-import React, { useRef, useEffect, useCallback } from 'react';
-import gsap from 'gsap';
+import React, { useRef, useEffect, useCallback } from "react";
+import gsap from "gsap";
+import { useBackgroundStore } from "../store/backgroundStore";
 
 interface BackgroundProps {
   onAnimationComplete?: () => void;
-  fromColor?: string;
-  toColor?: string;
   containerRef?: React.RefObject<HTMLDivElement>;
 }
 
-const Background = ({ 
-  onAnimationComplete,
-  fromColor = '#0d1115',
-  toColor = '#1a2632',
-  containerRef
-}: BackgroundProps) => {
+const Background = ({ onAnimationComplete, containerRef }: BackgroundProps) => {
   const backgroundRef = useRef<HTMLDivElement>(null);
   const gradientRef = useRef<HTMLDivElement>(null);
   const hasPlayedRef = useRef(false);
   const timelineRef = useRef<gsap.core.Timeline | null>(null);
   const animationFrameRef = useRef<number>();
-  
-  // Stabilize the animation complete callback
-  const handleAnimationComplete = useCallback(() => {
-    onAnimationComplete?.();
-  }, [onAnimationComplete]);
 
-  // Initial load animation
+  const {
+    isProjectView,
+    isTransitioning,
+    getCurrentColors,
+    setTransitioning,
+    setTransitionProgress,
+    cardViewFromColor,
+    cardViewToColor,
+    projectViewFromColor,
+    projectViewToColor,
+  } = useBackgroundStore();
+
+  const { fromColor, toColor } = getCurrentColors();
+
+  const interpolateColor = useCallback(
+    (color1: string, color2: string, progress: number) => {
+      const parseHex = (hex: string) => parseInt(hex, 16);
+      const r1 = parseHex(color1.slice(1, 3));
+      const g1 = parseHex(color1.slice(3, 5));
+      const b1 = parseHex(color1.slice(5, 7));
+      const r2 = parseHex(color2.slice(1, 3));
+      const g2 = parseHex(color2.slice(3, 5));
+      const b2 = parseHex(color2.slice(5, 7));
+      const r = Math.round(r1 + (r2 - r1) * progress);
+      const g = Math.round(g1 + (g2 - g1) * progress);
+      const b = Math.round(b1 + (b2 - b1) * progress);
+      return `#${r.toString(16).padStart(2, "0")}${g
+        .toString(16)
+        .padStart(2, "0")}${b.toString(16).padStart(2, "0")}`;
+    },
+    []
+  );
+
+  const updateBackgroundGradient = useCallback(
+    (progress: number) => {
+      if (!backgroundRef.current) return;
+
+      const fromColorStart = isProjectView
+        ? cardViewFromColor
+        : projectViewFromColor;
+      const fromColorEnd = isProjectView
+        ? projectViewFromColor
+        : cardViewFromColor;
+      const toColorStart = isProjectView ? cardViewToColor : projectViewToColor;
+      const toColorEnd = isProjectView ? projectViewToColor : cardViewToColor;
+
+      const currentFromColor = interpolateColor(
+        fromColorStart,
+        fromColorEnd,
+        progress
+      );
+      const currentToColor = interpolateColor(
+        toColorStart,
+        toColorEnd,
+        progress
+      );
+
+      backgroundRef.current.style.background = `linear-gradient(to bottom, ${currentFromColor}, ${currentToColor})`;
+    },
+    [
+      isProjectView,
+      cardViewFromColor,
+      cardViewToColor,
+      projectViewFromColor,
+      projectViewToColor,
+      interpolateColor,
+    ]
+  );
+
   useEffect(() => {
     const background = backgroundRef.current;
     const gradient = gradientRef.current;
-    
+
     if (!background || !gradient || hasPlayedRef.current) return;
 
-    // Create timeline if it doesn't exist
     if (!timelineRef.current) {
       timelineRef.current = gsap.timeline({
-        onComplete: handleAnimationComplete,
-        paused: true
+        onComplete: onAnimationComplete,
+        paused: true,
       });
 
-      // Set initial states
-      gsap.set([background, gradient], {
-        opacity: 0
-      });
+      gsap.set([background, gradient], { opacity: 0 });
 
-      // Build animation sequence
       timelineRef.current
-        .to(background, {
-          opacity: 1,
-          duration: 0.6,
-          ease: "power2.out"
-        })
-        .to(gradient, {
-          opacity: 1,
-          duration: 0.8,
-          ease: "power2.inOut"
-        }, "-=0.3");
+        .to(background, { opacity: 1, duration: 0.6, ease: "power2.out" })
+        .to(
+          gradient,
+          { opacity: 1, duration: 0.8, ease: "power2.inOut" },
+          "-=0.3"
+        );
     }
 
-    // Play the animation only once
     if (!hasPlayedRef.current) {
       timelineRef.current.play();
       hasPlayedRef.current = true;
     }
+  }, [onAnimationComplete]);
 
-    return () => {
-      if (!backgroundRef.current && !gradientRef.current) {
-        timelineRef.current?.kill();
-        timelineRef.current = null;
-      }
-    };
-  }, [handleAnimationComplete]);
-
-  // Scroll-based background animation
   useEffect(() => {
-    if (!containerRef?.current || !backgroundRef.current) return;
+    if (!isTransitioning || !backgroundRef.current) return;
 
-    const content = containerRef.current;
-    const background = backgroundRef.current;
+    const duration = 0.6;
+    const ease = "power2.inOut";
 
-    const updateGradient = () => {
-      const scrollHeight = content.scrollHeight;
-      const clientHeight = content.clientHeight;
-      const maxScroll = scrollHeight - clientHeight;
-      const scrollTop = content.scrollTop;
-      const scrollRatio = maxScroll > 0 ? scrollTop / maxScroll : 0;
-      
-      // Calculate gradient stops based on scroll position
-      const midpoint = (1 - scrollRatio) * 100;
-      const offset = 20; // Larger offset for smoother blend
-      const topStop = Math.max(0, midpoint - offset);
-      const bottomStop = Math.min(100, midpoint + offset);
-
-      background.style.background = `
-        linear-gradient(
-          to bottom,
-          ${fromColor} 0%,
-          ${fromColor} ${topStop}%,
-          ${toColor} ${bottomStop}%,
-          ${toColor} 100%
-        )
-      `;
-    };
-
-    const handleScroll = () => {
-      if (animationFrameRef.current) {
-        cancelAnimationFrame(animationFrameRef.current);
+    gsap.to(
+      {},
+      {
+        duration,
+        ease,
+        onUpdate: function () {
+          const progress = this.progress();
+          updateBackgroundGradient(progress);
+          setTransitionProgress(progress);
+        },
+        onComplete: () => setTransitioning(false),
       }
-      animationFrameRef.current = requestAnimationFrame(updateGradient);
-    };
+    );
+  }, [
+    isTransitioning,
+    setTransitioning,
+    setTransitionProgress,
+    updateBackgroundGradient,
+  ]);
 
-    content.addEventListener('scroll', handleScroll);
-    
-    // Initial gradient setup
-    updateGradient();
+  useEffect(() => {
+    if (!isTransitioning || !backgroundRef.current) return;
+
+    const duration = 0.6;
+    const ease = "power2.inOut";
+
+    // Prevent scroll updates during transition
+    const disableScrollUpdate = () =>
+      isTransitioning ? null : updateBackgroundGradient;
+
+    gsap.to(
+      {},
+      {
+        duration,
+        ease,
+        onUpdate: function () {
+          const progress = this.progress();
+          updateBackgroundGradient(progress);
+          setTransitionProgress(progress);
+        },
+        onComplete: () => {
+          setTransitioning(false);
+        },
+      }
+    );
 
     return () => {
-      content.removeEventListener('scroll', handleScroll);
+      // Re-enable scroll updates after transition
+      disableScrollUpdate();
+    };
+  }, [
+    isTransitioning,
+    setTransitioning,
+    setTransitionProgress,
+    updateBackgroundGradient,
+  ]);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (isTransitioning) return; // Skip updates during transitions
+      if (animationFrameRef.current) {
+        cancelAnimationFrame(animationFrameRef.current);
+      }
+      animationFrameRef.current = requestAnimationFrame(
+        updateBackgroundGradient
+      );
+    };
+
+    if (containerRef?.current) {
+      containerRef.current.addEventListener("scroll", handleScroll);
+    }
+
+    return () => {
+      if (containerRef?.current) {
+        containerRef.current.removeEventListener("scroll", handleScroll);
+      }
       if (animationFrameRef.current) {
         cancelAnimationFrame(animationFrameRef.current);
       }
     };
-  }, [containerRef, fromColor, toColor]);
+  }, [containerRef, updateBackgroundGradient, isTransitioning]);
 
   return (
     <>
-      {/* Base background with gradient */}
-      <div 
+      <div
         ref={backgroundRef}
-        className="fixed inset-0 bg-[#0d1115] z-[-2]" 
+        className="fixed inset-0 z-[-2]"
+        style={{
+          background: `linear-gradient(to bottom, ${fromColor}, ${toColor})`,
+        }}
       />
-      
-      {/* Gradient overlay */}
-      <div 
+      <div
         ref={gradientRef}
         className="fixed inset-0 z-[-1]"
         style={{
@@ -148,7 +224,7 @@ const Background = ({
               rgba(56, 189, 248, 0.15),
               transparent 80%
             )
-          `
+          `,
         }}
       />
     </>

@@ -126,6 +126,8 @@ src/
 │   └── useViewportHeight.ts
 ├── index.css
 ├── main.tsx
+├── store
+│   └── backgroundStore.ts
 ├── types
 │   ├── cards.ts
 │   ├── images.d.ts
