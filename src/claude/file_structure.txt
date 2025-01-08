@@ -5,6 +5,41 @@ src/
 │   ├── images
 │   │   ├── profile.jpg
 │   │   └── projects
+│   │       ├── doctors-app
+│   │       │   ├── 1.png
+│   │       │   ├── 2.png
+│   │       │   ├── 3.png
+│   │       │   ├── Desktop Home Screen Default.png
+│   │       │   ├── Mobile Home Screen Default-1.png
+│   │       │   ├── Mobile Home Screen Default-10.png
+│   │       │   ├── Mobile Home Screen Default-11.png
+│   │       │   ├── Mobile Home Screen Default-12.png
+│   │       │   ├── Mobile Home Screen Default-13.png
+│   │       │   ├── Mobile Home Screen Default-14.png
+│   │       │   ├── Mobile Home Screen Default-15.png
+│   │       │   ├── Mobile Home Screen Default-16.png
+│   │       │   ├── Mobile Home Screen Default-17.png
+│   │       │   ├── Mobile Home Screen Default-18.png
+│   │       │   ├── Mobile Home Screen Default-19.png
+│   │       │   ├── Mobile Home Screen Default-2.png
+│   │       │   ├── Mobile Home Screen Default-20.png
+│   │       │   ├── Mobile Home Screen Default-21.png
+│   │       │   ├── Mobile Home Screen Default-22.png
+│   │       │   ├── Mobile Home Screen Default-3.png
+│   │       │   ├── Mobile Home Screen Default-4.png
+│   │       │   ├── Mobile Home Screen Default-5.png
+│   │       │   ├── Mobile Home Screen Default-6.png
+│   │       │   ├── Mobile Home Screen Default-7.png
+│   │       │   ├── Mobile Home Screen Default-8.png
+│   │       │   ├── Mobile Home Screen Default-9.png
+│   │       │   ├── Mobile Home Screen Default.png
+│   │       │   ├── booking-flow.png
+│   │       │   ├── confirmation-screen.png
+│   │       │   ├── david-persona.png
+│   │       │   ├── doctor-profiles.png
+│   │       │   ├── initial-interface.png
+│   │       │   ├── pain-points.png
+│   │       │   └── quick-actions-dashboard.png
 │   │       ├── icon_afb.png
 │   │       ├── icon_cm.png
 │   │       ├── icon_da.png
@@ -26,6 +61,7 @@ src/
 ├── claude
 ├── claude.py
 ├── components
+│   ├── Background.tsx
 │   ├── CardContent.tsx
 │   ├── CardItem.tsx
 │   ├── Cards.tsx
@@ -77,6 +113,7 @@ src/
 │   ├── useCardAnimations.ts
 │   ├── useCardsLayout.ts
 │   ├── useHoverAnimation.ts
+│   ├── useInitialLoad.ts
 │   ├── useIsMobile.ts
 │   ├── useNavItem.ts
 │   ├── useProjectAnimations.ts
