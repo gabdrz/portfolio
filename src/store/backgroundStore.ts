@@ -6,7 +6,8 @@ interface BackgroundState {
   fromColor: string;
   toColor: string;
 
-  // Transition state
+  // Progress state
+  progress: number;
   isTransitioning: boolean;
   transitionProgress: number;
 
@@ -26,6 +27,7 @@ interface BackgroundState {
   setColors: (fromColor: string, toColor: string) => void;
   setTransitioning: (isTransitioning: boolean) => void;
   setTransitionProgress: (progress: number) => void;
+  updateBackgroundGradient: (progress: number) => void;
   beginTransition: (
     toProjectView: boolean,
     newFromColor: string,
@@ -38,6 +40,7 @@ export const useBackgroundStore = create<BackgroundState>((set, get) => ({
   isProjectView: false,
   fromColor: '#0d1115',
   toColor: '#1a2632',
+  progress: 0,
   isTransitioning: false,
   transitionProgress: 0,
 
@@ -47,21 +50,36 @@ export const useBackgroundStore = create<BackgroundState>((set, get) => ({
   projectViewFromColor: '#0d1115',
   projectViewToColor: '#1a2632',
 
-  // Get current colors based on view state
+  // Get current colors based on view state and progress
   getCurrentColors: () => {
     const state = get();
-    return state.isTransitioning
-      ? { fromColor: state.fromColor, toColor: state.toColor }
-      : state.isProjectView
-      ? { fromColor: state.projectViewFromColor, toColor: state.projectViewToColor }
-      : { fromColor: state.cardViewFromColor, toColor: state.cardViewToColor };
+    
+    // During transitions, use transition colors
+    if (state.isTransitioning) {
+      return { fromColor: state.fromColor, toColor: state.toColor };
+    }
+    
+    // In project view, use project colors
+    if (state.isProjectView) {
+      return { 
+        fromColor: state.projectViewFromColor, 
+        toColor: state.projectViewToColor 
+      };
+    }
+    
+    // In card view, use card colors
+    return { 
+      fromColor: state.cardViewFromColor, 
+      toColor: state.cardViewToColor 
+    };
   },
 
-  // Setters
+  // Set the current view mode
   setProjectView: (isProjectView) => set({ isProjectView }),
 
+  // Set colors for the current view
   setColors: (fromColor, toColor) => {
-    // Validate colors
+    // Validate color format
     if (!/^#[0-9A-F]{6}$/i.test(fromColor) || !/^#[0-9A-F]{6}$/i.test(toColor)) {
       console.warn('Invalid color format provided.');
       return;
@@ -76,8 +94,10 @@ export const useBackgroundStore = create<BackgroundState>((set, get) => ({
     }));
   },
 
+  // Set transition state
   setTransitioning: (isTransitioning) => set({ isTransitioning }),
 
+  // Update transition progress
   setTransitionProgress: (progress) => {
     if (progress < 0 || progress > 1) {
       console.warn('Transition progress must be between 0 and 1.');
@@ -86,7 +106,30 @@ export const useBackgroundStore = create<BackgroundState>((set, get) => ({
     set({ transitionProgress: progress });
   },
 
-  // Transition handler
+  // Update background gradient based on scroll or card position
+  updateBackgroundGradient: (progress) => {
+    if (progress < 0 || progress > 1) {
+      console.warn('Background progress must be between 0 and 1.');
+      return;
+    }
+    
+    set((state) => {
+      // Only update if not transitioning
+      if (state.isTransitioning) return state;
+
+      return {
+        progress,
+        fromColor: state.isProjectView 
+          ? state.projectViewFromColor 
+          : state.cardViewFromColor,
+        toColor: state.isProjectView 
+          ? state.projectViewToColor 
+          : state.cardViewToColor
+      };
+    });
+  },
+
+  // Handle view transitions
   beginTransition: (toProjectView, newFromColor, newToColor) => {
     // Validate colors
     if (!/^#[0-9A-F]{6}$/i.test(newFromColor) || !/^#[0-9A-F]{6}$/i.test(newToColor)) {
@@ -101,8 +144,14 @@ export const useBackgroundStore = create<BackgroundState>((set, get) => ({
       fromColor: state.fromColor,
       toColor: state.toColor,
       ...(toProjectView
-        ? { projectViewFromColor: newFromColor, projectViewToColor: newToColor }
-        : { cardViewFromColor: newFromColor, cardViewToColor: newToColor }),
+        ? { 
+            projectViewFromColor: newFromColor, 
+            projectViewToColor: newToColor 
+          }
+        : { 
+            cardViewFromColor: newFromColor, 
+            cardViewToColor: newToColor 
+          }),
     }));
   },
 }));

@@ -177,7 +177,7 @@ export const doctorsAppointment: Project = {
       type: "paragraph",
       content: "View the interactive prototypes: **[Mobile Version](https://www.figma.com/proto/UFTebgyj9gTqed08OTPy2s/Voice-Assistant-for-Doctor's-Appointments?page-id=1%3A3&node-id=61-11599&p=f&viewport=428%2C408%2C0.08&t=tchE2LNb08Rw01nA-1&scaling=min-zoom&content-scaling=fixed&starting-point-node-id=61%3A11599&show-proto-sidebar=1)** | **[Desktop Version](https://www.figma.com/proto/UFTebgyj9gTqed08OTPy2s/Voice-Assistant-for-Doctor's-Appointments?page-id=1%3A3&node-id=101-7297&p=f&viewport=428%2C408%2C0.08&t=tchE2LNb08Rw01nA-1&scaling=min-zoom&content-scaling=fixed&starting-point-node-id=101%3A7297&show-proto-sidebar=1)**",
       layout: "contained",
-      className: "text-start"
+      className: "font-bold text-start"
     }
   ],
 };

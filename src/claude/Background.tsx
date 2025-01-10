@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useRef, useEffect, useCallback } from 'react';
 import gsap from 'gsap';
 import { useBackgroundStore } from '../store/backgroundStore';
@@ -46,20 +47,56 @@ const Background = ({ onAnimationComplete, containerRef }: BackgroundProps) => {
   );
 
   const updateBackgroundGradient = useCallback(
-    (progress: number) => {
-      if (!backgroundRef.current) return;
+    (progress?: number) => {
+      if (!backgroundRef.current || !containerRef?.current) return;
 
-      const fromColorStart = isProjectView ? cardViewFromColor : projectViewFromColor;
-      const fromColorEnd = isProjectView ? projectViewFromColor : cardViewFromColor;
+      // Calculate progress from scroll if not provided
+      let calculatedProgress = progress;
+      if (typeof progress === 'undefined') {
+        const container = containerRef.current;
+        const scrollTop = container.scrollTop;
+        const scrollHeight = container.scrollHeight;
+        const clientHeight = container.clientHeight;
+        const maxScroll = scrollHeight - clientHeight;
+        
+        // Normalize progress to be between 0 and 1
+        calculatedProgress = maxScroll > 0 ? (scrollTop / maxScroll) : 0;
+        
+        // Add some parallax effect by slowing down the progress
+        calculatedProgress *= 0.5;
+      }
+
+      const fromColorStart = isProjectView
+        ? cardViewFromColor
+        : projectViewFromColor;
+      const fromColorEnd = isProjectView
+        ? projectViewFromColor
+        : cardViewFromColor;
       const toColorStart = isProjectView ? cardViewToColor : projectViewToColor;
       const toColorEnd = isProjectView ? projectViewToColor : cardViewToColor;
 
-      const currentFromColor = interpolateColor(fromColorStart, fromColorEnd, progress);
-      const currentToColor = interpolateColor(toColorStart, toColorEnd, progress);
+      const currentFromColor = interpolateColor(
+        fromColorStart,
+        fromColorEnd,
+        calculatedProgress
+      );
+      const currentToColor = interpolateColor(
+        toColorStart,
+        toColorEnd,
+        calculatedProgress
+      );
 
       backgroundRef.current.style.background = `linear-gradient(to bottom, ${currentFromColor}, ${currentToColor})`;
     },
-    [isProjectView, cardViewFromColor, cardViewToColor, projectViewFromColor, projectViewToColor, interpolateColor]
+    [
+      isProjectView,
+      cardViewFromColor,
+      cardViewToColor,
+      projectViewFromColor,
+      projectViewToColor,
+      interpolateColor,
+      containerRef
+    ]
   );
 
   useEffect(() => {
@@ -105,58 +142,56 @@ const Background = ({ onAnimationComplete, containerRef }: BackgroundProps) => {
     });
   }, [isTransitioning, setTransitioning, setTransitionProgress, updateBackgroundGradient]);
 
-  useEffect(() => {
-    if (!isTransitioning || !backgroundRef.current) return;
-  
-    const duration = 0.6;
-    const ease = 'power2.inOut';
-  
-    // Prevent scroll updates during transition
-    const disableScrollUpdate = () => (isTransitioning ? null : updateBackgroundGradient);
-  
-    gsap.to({}, {
-      duration,
-      ease,
-      onUpdate: function () {
-        const progress = this.progress();
-        updateBackgroundGradient(progress);
-        setTransitionProgress(progress);
-      },
-      onComplete: () => {
-        setTransitioning(false);
-      },
-    });
-  
-    return () => {
-      // Re-enable scroll updates after transition
-      disableScrollUpdate();
-    };
-  }, [isTransitioning, setTransitioning, setTransitionProgress, updateBackgroundGradient]);
-  
-  useEffect(() => {
-    const handleScroll = () => {
-      if (isTransitioning) return; // Skip updates during transitions
-      if (animationFrameRef.current) {
-        cancelAnimationFrame(animationFrameRef.current);
-      }
-      animationFrameRef.current = requestAnimationFrame(updateBackgroundGradient);
-    };
-  
-    if (containerRef?.current) {
-      containerRef.current.addEventListener('scroll', handleScroll);
+ useEffect(() => {
+  if (!isTransitioning || !backgroundRef.current) return;
+
+  const duration = 0.6;
+  const ease = 'power2.inOut';
+
+  // Prevent scroll updates during transition
+  const disableScrollUpdate = () => (isTransitioning ? null : updateBackgroundGradient);
+
+  gsap.to({}, {
+    duration,
+    ease,
+    onUpdate: function () {
+      const progress = this.progress();
+      updateBackgroundGradient(progress);
+      setTransitionProgress(progress);
+    },
+    onComplete: () => {
+      setTransitioning(false);
+    },
+  });
+
+  return () => {
+    // Re-enable scroll updates after transition
+    disableScrollUpdate();
+  };
+}, [isTransitioning, setTransitioning, setTransitionProgress, updateBackgroundGradient]);
+
+useEffect(() => {
+  const handleScroll = () => {
+    if (isTransitioning) return; // Skip updates during transitions
+    if (animationFrameRef.current) {
+      cancelAnimationFrame(animationFrameRef.current);
     }
-  
-    return () => {
-      if (containerRef?.current) {
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-        containerRef.current.removeEventListener('scroll', handleScroll);
-      }
-      if (animationFrameRef.current) {
-        cancelAnimationFrame(animationFrameRef.current);
-      }
-    };
-  }, [containerRef, updateBackgroundGradient, isTransitioning]);
-  
+    animationFrameRef.current = requestAnimationFrame(updateBackgroundGradient);
+  };
+
+  if (containerRef?.current) {
+    containerRef.current.addEventListener('scroll', handleScroll);
+  }
+
+  return () => {
+    if (containerRef?.current) {
+      containerRef.current.removeEventListener('scroll', handleScroll);
+    }
+    if (animationFrameRef.current) {
+      cancelAnimationFrame(animationFrameRef.current);
+    }
+  };
+}, [containerRef, updateBackgroundGradient, isTransitioning]);
 
   return (
     <>

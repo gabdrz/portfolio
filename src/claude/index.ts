@@ -25,3 +25,13 @@ export { default as quickActions } from './doctors-app/quick-actions-dashboard.p
 export { default as bookingFlow } from './doctors-app/booking-flow.png';
 export { default as doctorProfiles } from './doctors-app/doctor-profiles.png';
 export { default as confirmationScreen } from './doctors-app/confirmation-screen.png';
+
+
+// Seat Reservation Web Images Imports
+export { default as userPainPoints } from './seat-web/user-pain-points.png';
+export { default as researchFindings } from './seat-web/research-findings.png';
+export { default as sitemapStructure } from './seat-web/sitemap-structure.png';
+export { default as wireframeScreens } from './seat-web/wireframe-screens.png';
+export { default as bookingProcess } from './seat-web/booking-process.png';
+export { default as usabilityResults } from './seat-web/usability-results.png';
+export { default as finalScreensSW } from './seat-web/final-screens-sw.png';

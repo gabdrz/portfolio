@@ -49,14 +49,29 @@ src/
 │   │       ├── icon_rl.png
 │   │       ├── icon_wip.png
 │   │       ├── index.ts
-│   │       └── rocket-league
-│   │           ├── challenges-summary.png
-│   │           ├── final-screens.png
-│   │           ├── friends-list-comparison.png
-│   │           ├── initial-user-flow.png
-│   │           ├── main-menu-comparison.png
-│   │           ├── revised-user-flow.png
-│   │           └── training-garage-features.png
+│   │       ├── rocket-league
+│   │       │   ├── challenges-summary.png
+│   │       │   ├── final-screens.png
+│   │       │   ├── friends-list-comparison.png
+│   │       │   ├── initial-user-flow.png
+│   │       │   ├── main-menu-comparison.png
+│   │       │   ├── revised-user-flow.png
+│   │       │   └── training-garage-features.png
+│   │       └── seat-web
+│   │           ├── Desktop - 19.png
+│   │           ├── Desktop Homescreen.png
+│   │           ├── Mobile Homescreen.png
+│   │           ├── booking-process.png
+│   │           ├── final-screens-sw.png
+│   │           ├── iPhone 14 & 15 Pro Max - 11.png
+│   │           ├── iPhone 14 & 15 Pro Max - 6.png
+│   │           ├── iPhone 14 & 15 Pro Max - 8.png
+│   │           ├── iPhone 14 & 15 Pro Max - 9.png
+│   │           ├── research-findings.png
+│   │           ├── sitemap-structure.png
+│   │           ├── usability-results.png
+│   │           ├── user-pain-points.png
+│   │           └── wireframe-screens.png
 │   └── react.svg
 ├── claude
 ├── claude.py
@@ -110,6 +125,7 @@ src/
 │   ├── animations
 │   │   └── useSharedAnimation.ts
 │   ├── useActiveCard.ts
+│   ├── useBackgroundProgress.ts
 │   ├── useCardAnimations.ts
 │   ├── useCardsLayout.ts
 │   ├── useHoverAnimation.ts
