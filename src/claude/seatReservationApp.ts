@@ -145,9 +145,9 @@ export const seatReservationApp: Project = {
     },
     {
       type: "paragraph",
-      content: "View the complete experience: **[Interactive Prototype](https://www.figma.com/proto/cQ2gE04NhcsXgidMoftnV3/Movie-Theater-Seat-Reservation-App-Concept?page-id=1%3A3011&node-id=1-4236&p=f&viewport=618%2C647%2C0.14&t=X1jckClJx52NIvk8-1&scaling=min-zoom&content-scaling=fixed)**",
+      content: "Want to see it in action? **[View the interactive prototype here](https://www.figma.com/proto/cQ2gE04NhcsXgidMoftnV3/Movie-Theater-Seat-Reservation-App-Concept?page-id=1%3A3011&node-id=1-4236&p=f&viewport=618%2C647%2C0.14&t=X1jckClJx52NIvk8-1&scaling=min-zoom&content-scaling=fixed)**.",
       layout: "contained",
-      className: "text-start"
+      className: "font-bold text-start"
     }
   ],
 };

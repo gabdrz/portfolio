@@ -5,7 +5,7 @@ export const portfolioWebsite: Project = {
   name: "Portfolio Website Redesign",
   type: "Software Development",
   timeline: "Jan 2024 - Feb 2024",
-  status: "Completed",
+  status: "Active",
   githubUrl: "https://github.com/example/portfolio",
   liveUrl: "https://example.com/portfolio",
   cardOverview: "First professional web presence.",

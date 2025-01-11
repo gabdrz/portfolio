@@ -44,3 +44,10 @@ export { default as seatSelection } from './seat-app/seat-selection.png';
 export { default as bookingProcessSA } from './seat-app/booking-process.png';
 export { default as interfaceIterations } from './seat-app/interface-iterations.png';
 export { default as finalScreensSA } from './seat-app/final-screens.png';
+
+// Car Maintenance App Images Imports
+export { default as carMaintenanceLogin } from './car-app/login-screen.png';
+export { default as carMaintenanceDashboard } from './car-app/dashboard-screen.png';
+export { default as carMaintenanceHistory } from './car-app/history-screen.png';
+export { default as carMaintenanceCreate } from './car-app/create-screen.png';
+export { default as carMaintenanceEdit } from './car-app/edit-screen.png';
