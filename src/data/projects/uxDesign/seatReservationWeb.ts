@@ -145,7 +145,7 @@ export const seatReservationWeb: Project = {
     },
     {
       type: "paragraph",
-      content: "View the interactive prototypes: **[Mobile Version](https://www.figma.com/proto/cQ2gE04NhcsXgidMoftnV3/Movie-Theater-Seat-Reservation-App-Concept?page-id=2%3A30773&node-id=190-9668&p=f&viewport=618%2C647%2C0.15&t=t0LO5kcOigJoa098-1&scaling=scale-down&content-scaling=fixed&starting-point-node-id=190%3A9668&show-proto-sidebar=1)** | **[Desktop Version](https://www.figma.com/proto/cQ2gE04NhcsXgidMoftnV3/Movie-Theater-Seat-Reservation-App-Concept?page-id=2%3A30773&node-id=2-30774&p=f&viewport=618%2C647%2C0.15&t=t0LO5kcOigJoa098-1&scaling=scale-down&content-scaling=fixed&starting-point-node-id=2%3A30774&show-proto-sidebar=1)**",
+      content: "Ready to explore? View the prototypes for **[Mobile](https://www.figma.com/proto/cQ2gE04NhcsXgidMoftnV3/Movie-Theater-Seat-Reservation-App-Concept?page-id=2%3A30773&node-id=190-9668&p=f&viewport=618%2C647%2C0.15&t=t0LO5kcOigJoa098-1&scaling=scale-down&content-scaling=fixed&starting-point-node-id=190%3A9668&show-proto-sidebar=1)** and **[Desktop](https://www.figma.com/proto/cQ2gE04NhcsXgidMoftnV3/Movie-Theater-Seat-Reservation-App-Concept?page-id=2%3A30773&node-id=2-30774&p=f&viewport=618%2C647%2C0.15&t=t0LO5kcOigJoa098-1&scaling=scale-down&content-scaling=fixed&starting-point-node-id=2%3A30774&show-proto-sidebar=1)**.",
       layout: "contained",
       className: "font-bold text-start"
     }
