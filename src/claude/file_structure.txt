@@ -57,6 +57,21 @@ src/
 │   │       │   ├── main-menu-comparison.png
 │   │       │   ├── revised-user-flow.png
 │   │       │   └── training-garage-features.png
+│   │       ├── seat-app
+│   │       │   ├── Breakdown screen 1.png
+│   │       │   ├── Checkout screen-1.png
+│   │       │   ├── Checkout screen.png
+│   │       │   ├── Home screen 5.png
+│   │       │   ├── Movie details.png
+│   │       │   ├── Movie tickets screen.png
+│   │       │   ├── Seat selection screen.png
+│   │       │   ├── booking-process.png
+│   │       │   ├── carlos-persona.png
+│   │       │   ├── final-screens.png
+│   │       │   ├── interface-iterations.png
+│   │       │   ├── navigation-flow.png
+│   │       │   ├── research-findings.png
+│   │       │   └── seat-selection.png
 │   │       └── seat-web
 │   │           ├── Desktop - 19.png
 │   │           ├── Desktop Homescreen.png

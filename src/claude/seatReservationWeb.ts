@@ -2,10 +2,10 @@ import { Project } from "../types";
 import {
   seatWebIcon,
   userPainPoints,
-  researchFindings,
+  researchFindingsSW,
   sitemapStructure,
   wireframeScreens,
-  bookingProcess,
+  bookingProcessSW,
   usabilityResults,
   finalScreensSW,
 } from "../../../assets/images/projects";
@@ -61,7 +61,7 @@ export const seatReservationWeb: Project = {
     },
     {
       type: "image",
-      content: researchFindings, // Visualization of user research data and Jamie's persona profile
+      content: researchFindingsSW, // Visualization of user research data and Jamie's persona profile
     },
     {
       type: "paragraph",
@@ -103,7 +103,7 @@ export const seatReservationWeb: Project = {
     },
     {
       type: "image",
-      content: bookingProcess, // Visualization of the seat selection and booking flow with key interaction points
+      content: bookingProcessSW, // Visualization of the seat selection and booking flow with key interaction points
     },
     {
       type: "paragraph",

@@ -5,6 +5,7 @@ import { Project } from './types';
 import { rocketLeagueSideswipe } from './uxDesign/rocketLeagueSideswipe';
 import { doctorsAppointment } from './uxDesign/doctorsAppointment';
 import { seatReservationWeb } from './uxDesign/seatReservationWeb';
+import { seatReservationApp } from './uxDesign/seatReservationApp'
 
 // Software Dev Projects
 import { portfolioWebsite } from './softwareDev/portfolioWebsite';
@@ -21,7 +22,7 @@ export const projectsData: ProjectsData = {
    rocketLeagueSideswipe,
    doctorsAppointment,
    seatReservationWeb,
-   workInProgress
+   seatReservationApp
  ],
  softwareDev: [
    portfolioWebsite,
