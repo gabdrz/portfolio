@@ -45,6 +45,9 @@ export { default as bookingProcessSA } from './seat-app/booking-process.png';
 export { default as interfaceIterations } from './seat-app/interface-iterations.png';
 export { default as finalScreensSA } from './seat-app/final-screens.png';
 
+// Portfolio Website Images Imports
+export { default as development } from './portfolio/development.png';
+
 // Car Maintenance App Images Imports
 export { default as carMaintenanceLogin } from './car-app/login-screen.png';
 export { default as carMaintenanceDashboard } from './car-app/dashboard-screen.png';

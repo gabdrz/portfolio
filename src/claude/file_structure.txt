@@ -66,6 +66,8 @@ src/
 │   │       ├── icon_rl.png
 │   │       ├── icon_wip.png
 │   │       ├── index.ts
+│   │       ├── portfolio
+│   │       │   └── development.png
 │   │       ├── rocket-league
 │   │       │   ├── challenges-summary.png
 │   │       │   ├── final-screens.png

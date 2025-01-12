@@ -1,5 +1,5 @@
 import { Project } from "../types";
-import { portfolioIcon } from "../../../assets/images/projects";
+import { portfolioIcon, development } from "../../../assets/images/projects";
 
 export const portfolioWebsite: Project = {
   name: "Portfolio Website Redesign",
@@ -28,9 +28,26 @@ export const portfolioWebsite: Project = {
     },
     {
       type: "paragraph",
-      content: "The portfolio website is built with React and TypeScript, implementing a vertical card-scrolling interface. The core architecture consists of a Cards component managing multiple card types (ContentCard, HeaderCard, LinksCard, ProjectCard) within a scrollable container. A Zustand-based background store (backgroundStore.ts) controls gradient transitions based on scroll position and active cards. Navigation uses both React Router and a custom side navigation system (SideNav) displaying scroll position indicators. The project view system renders content through the ProjectView component, breaking down content into typed blocks (headings, paragraphs, images, galleries) based on structured project data. Animation handling is managed through GSAP, with custom hooks controlling scroll physics (useScrollBehavior), card transitions (useCardAnimations), loading sequences (useInitialLoad), and project header behavior (useProjectHeader). The application implements responsive design through Tailwind CSS, with distinct mobile and desktop layouts. Touch interaction is handled through custom event handlers for both card scrolling and navigation. File operations utilize a window.fs.readFile API for managing various file types (images, PDFs, documents). The type system is built in TypeScript with comprehensive definitions for cards, projects, and UI components. External libraries integrate additional functionality: recharts for data visualization, lucide-react for iconography, with support for SVG, markdown, and HTML content rendering. The application structure follows a modular pattern, separating components, hooks, utilities, and state management. Build processes use Vite, while styling combines Tailwind CSS with GSAP-powered animations. Performance optimizations include debounced scroll handlers, hardware-accelerated animations, and lifecycle management. Error handling and loading states are implemented throughout the component hierarchy. The file structure organizes code into distinct directories: components for UI elements, hooks for shared behaviors, store for state management, types for TypeScript definitions, and utils for shared functions. Each project content type (UX Design, Software Development) maintains separate data files with consistent type structures, allowing for standardized rendering across different project categories.",
-      layout: "contained"
+      content:
+        "The portfolio website is built with React, TypeScript and Vite, implementing a vertical card-scrolling interface. The architecture consists of an App component routing between two primary views: Cards and ProjectView. The Cards component manages a scrollable container of four card types (ContentCard, HeaderCard, LinksCard, ProjectCard), each serving distinct content purposes. State management uses Zustand through backgroundStore.ts, controlling gradient transitions based on scroll position and active cards. The Background component handles color transitions and animations through GSAP, with separate states for card view and project view. Navigation uses React Router for project routing and a custom SideNav system displaying scroll indicators. Project content rendering occurs through ProjectView, which breaks down content into typed blocks (Block interface) including headings, paragraphs, images, galleries, quotes, and spacers. The component structure is organized into cards/, nav/, and project/ subdirectories, with project/blocks/ containing individual block type components. Animation control uses GSAP throughout the application, managed through custom hooks: useScrollBehavior handles scroll physics with momentum and snap points, useCardAnimations manages card transitions, useInitialLoad controls loading sequences, and useProjectHeader handles header behavior. Additional hooks manage viewport calculations (useViewportHeight), device detection (useTouchDevice), and smooth scrolling (useSmoothScroll). The application implements separate mobile and desktop layouts through Tailwind CSS, with responsive breakpoints at 768px. Touch and mouse interaction use dedicated event handlers in eventHandlers.ts, managing scroll behavior, drag interactions, and momentum scrolling. File operations utilize window.fs.readFile for loading assets. TypeScript interfaces define clear contracts for cards, projects, and UI components in types/. External library integration includes recharts for charts, lucide-react for icons, with configurations for rendering SVG, markdown, and HTML content. Asset management occurs in assets/, containing project images and documents. Data structure in data/ separates projects into UX Design and Software Development categories, each with typed project definitions. The hooks/ directory contains 16 specialized hooks managing animations, scroll behavior, touch interactions, and component lifecycles. Utils/ provides shared functions for event handling, image processing, scroll calculations, and navigation helpers. Error handling implements React error boundaries with fallback UI states. The build process uses Vite with TypeScript, while styling combines Tailwind CSS utilities with GSAP animations. All animations use GSAP's timeline feature for orchestration, with hardware acceleration enabled through transform properties. Project content is structured through a Block type system, allowing standardized rendering across different project types while maintaining type safety",
+      layout: "contained",
     },
+    {
+      type: "heading",
+      content: "Development Workflow",
+      layout: "contained",
+    },
+    {
+      type: "image",
+      content: development,
+      layout: "contained",
+    },
+    {
+      type: "paragraph",
+      content:
+        "Development follows a structured workflow centered around problem decomposition and iterative solutions. A custom Python script manages project documentation by generating a comprehensive file structure tree and organizing readable files for AI-assisted development. This approach enables systematic analysis of the codebase and efficient problem-solving through a ticket-based system. Each development task is tracked through history, current, and pending states, allowing for focused progression through complex features while maintaining clear documentation of implementation decisions. Additionally, the project leverages GitHub for version control, collaborative development, and deployment to GitHub Pages, ensuring seamless updates and a consistent live environment. This methodical approach has proven particularly effective for managing the portfolio's numerous interconnected components, from the scrolling system to the state management architecture.",
+      layout: "contained",
+    },    
     {
       type: "spacer",
       content: "",
@@ -38,9 +55,10 @@ export const portfolioWebsite: Project = {
     },
     {
       type: "paragraph",
-      content: "Want to see more? **[Go back to Card View here](back-to-cardview)**.",
+      content:
+        "Want to see more? **[Go back to Card View here](back-to-cardview)**.",
       layout: "contained",
-      className: "font-bold text-start"
-    }
+      className: "font-bold text-start",
+    },
   ],
 };
