@@ -71,6 +71,7 @@ src/
 │   │       ├── rocket-league
 │   │       │   ├── challenges-summary.png
 │   │       │   ├── final-screens.png
+│   │       │   ├── finalsScreens.png
 │   │       │   ├── friends-list-comparison.png
 │   │       │   ├── initial-user-flow.png
 │   │       │   ├── main-menu-comparison.png

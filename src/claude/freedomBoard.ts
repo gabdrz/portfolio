@@ -104,6 +104,11 @@ export const freedomBoard: Project = {
       layout: "contained",
     },
     {
+      type: "paragraph",
+      content: "While Instagram integration initially used Instagrapi for automated posting, recent issues have arisen due to the account used for API access being banned. Instagram flagged the account for suspicious activity, leading to notifications and disruptions in the distribution pipeline. This has rendered the API outdated for the project, necessitating exploration of alternative methods or platforms for seamless content delivery.",
+      layout: "contained",
+    },    
+    {
       type: "heading",
       content: "Future Development",
       layout: "contained",
