@@ -29,7 +29,7 @@ export const ProjectContent: React.FC<ProjectContentProps> = ({
 
   const components = {
     heading: ProjectHeading,
-    paragraph: (props: any) => <ProjectParagraph {...props} onClose={onClose} />,
+    paragraph: (props: unknown) => <ProjectParagraph {...props} onClose={onClose} />,
     image: ProjectImage,
     gallery: ProjectGallery,
     quote: ProjectQuote,

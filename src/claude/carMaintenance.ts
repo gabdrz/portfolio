@@ -14,7 +14,7 @@ export const carMaintenance: Project = {
   timeline: "Feb 2024 - Apr 2024",
   status: "Paused",
   githubUrl: "https://github.com/example/car-maintenance",
-  cardOverview: "Smart tracking and maintenance alerts.",
+  cardOverview: "App for tracking vehicle maintenance and alerts.",
   theme: {
     gradient: {
       from: "#1F2D3A",

@@ -16,7 +16,7 @@ export const seatReservationWeb: Project = {
   timeline: "November 2023 to December 2023",
   status: "Completed",
   liveUrl: "https://example.com/seat-reservation",
-  cardOverview: "Web-based seat booking interface for cinema venues",
+  cardOverview: "Cinema booking interface focused on usability.",
   heroImage: seatWebIcon, // Project hero image showing the main interface with seat selection screen
   theme: {
     gradient: {

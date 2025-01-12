@@ -51,6 +51,12 @@ src/
 │   │       │   ├── initial-interface.png
 │   │       │   ├── pain-points.png
 │   │       │   └── quick-actions-dashboard.png
+│   │       ├── freedom-board
+│   │       │   ├── console-dashboard.png
+│   │       │   ├── data-architecture.png
+│   │       │   ├── future-interface.png
+│   │       │   ├── template-generation.png
+│   │       │   └── workflow.png
 │   │       ├── icon_afb.png
 │   │       ├── icon_cm.png
 │   │       ├── icon_da.png
@@ -140,12 +146,11 @@ src/
 │       │   ├── carMaintenance.ts
 │       │   ├── freedomBoard.ts
 │       │   └── portfolioWebsite.ts
-│       ├── uxDesign
-│       │   ├── doctorsAppointment.ts
-│       │   ├── rocketLeagueSideswipe.ts
-│       │   ├── seatReservationApp.ts
-│       │   └── seatReservationWeb.ts
-│       └── workInProgress.ts
+│       └── uxDesign
+│           ├── doctorsAppointment.ts
+│           ├── rocketLeagueSideswipe.ts
+│           ├── seatReservationApp.ts
+│           └── seatReservationWeb.ts
 ├── file_structure.txt
 ├── hooks
 │   ├── animations

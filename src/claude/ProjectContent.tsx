@@ -1,19 +1,20 @@
-// src/components/project/ProjectContent.tsx
 import React from 'react';
 import { Block, ProjectData } from '../../types/cards';
-import * as ProjectBlocks from './blocks';
+import { ProjectHeading, ProjectParagraph, ProjectImage, ProjectGallery, ProjectQuote, ProjectSpacer } from './blocks';
 import { ProjectTitleBlock } from './blocks/ProjectTitleBlock';
 
 interface ProjectContentProps {
   block: Block;
   isFirstBlock: boolean;
   projectData?: ProjectData;
+  onClose: () => void;
 }
 
 export const ProjectContent: React.FC<ProjectContentProps> = ({ 
   block, 
   isFirstBlock,
-  projectData
+  projectData,
+  onClose
 }) => {
   if (!projectData) return null;
 
@@ -26,26 +27,13 @@ export const ProjectContent: React.FC<ProjectContentProps> = ({
     );
   }
 
-  // Special handling for hero image
-  if (block.type === 'image' && block.content === projectData.heroImage) {
-    return (
-      <div className="max-w-2xl mx-auto mb-8">
-        <img 
-          src={block.content} 
-          alt=""
-          className="w-full h-auto rounded-lg shadow-xl"
-        />
-      </div>
-    );
-  }
-
   const components = {
-    heading: ProjectBlocks.ProjectHeading,
-    paragraph: ProjectBlocks.ProjectParagraph,
-    image: ProjectBlocks.ProjectImage,
-    gallery: ProjectBlocks.ProjectGallery,
-    quote: ProjectBlocks.ProjectQuote,
-    spacer: ProjectBlocks.ProjectSpacer
+    heading: ProjectHeading,
+    paragraph: (props: unknown) => <ProjectParagraph {...props} onClose={onClose} />,
+    image: ProjectImage,
+    gallery: ProjectGallery,
+    quote: ProjectQuote,
+    spacer: ProjectSpacer
   };
 
   const Component = components[block.type];

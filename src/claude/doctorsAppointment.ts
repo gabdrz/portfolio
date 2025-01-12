@@ -16,7 +16,7 @@ export const doctorsAppointment: Project = {
   timeline: "January 2023",
   status: "Completed",
   liveUrl: "https://example.com/doctor-app",
-  cardOverview: "Voice-assisted medical appointment scheduling interface with accessibility focus.",
+  cardOverview: "Concept design for an accessible appointment app.",
   heroImage: doctorAppIcon,
   theme: {
     gradient: {

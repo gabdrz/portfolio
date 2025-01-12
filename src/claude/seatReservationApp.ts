@@ -16,7 +16,7 @@ export const seatReservationApp: Project = {
   timeline: "August 2023 - October 2023",
   status: "Completed",
   liveUrl: "https://example.com/seat-reservation-app",
-  cardOverview: "Mobile cinema booking experience with intuitive seat selection.",
+  cardOverview: "Efficient mobile seat selection experience.",
   heroImage: seatAppIcon,
   theme: {
     gradient: {

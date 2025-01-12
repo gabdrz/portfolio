@@ -51,3 +51,10 @@ export { default as carMaintenanceDashboard } from './car-app/dashboard-screen.p
 export { default as carMaintenanceHistory } from './car-app/history-screen.png';
 export { default as carMaintenanceCreate } from './car-app/create-screen.png';
 export { default as carMaintenanceEdit } from './car-app/edit-screen.png';
+
+// Freedom Board Images Imports
+export { default as workflow } from './freedom-board/workflow.png';
+export { default as consoleDashboard } from './freedom-board/console-dashboard.png';
+export { default as dataArchitecture } from './freedom-board/data-architecture.png';
+export { default as templateGeneration } from './freedom-board/template-generation.png';
+export { default as futureInterface } from './freedom-board/future-interface.png';

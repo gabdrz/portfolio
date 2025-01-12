@@ -1,5 +1,5 @@
 import { Project } from "../types";
-import { workInProgressIcon } from "../../../assets/images/projects";
+import { portfolioIcon } from "../../../assets/images/projects";
 
 export const portfolioWebsite: Project = {
   name: "Portfolio Website Redesign",
@@ -24,7 +24,7 @@ export const portfolioWebsite: Project = {
     },
     {
       type: "image",
-      content: workInProgressIcon,
+      content: portfolioIcon,
     },
     {
       type: "paragraph",

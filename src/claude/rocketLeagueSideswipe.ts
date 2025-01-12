@@ -18,7 +18,7 @@ export const rocketLeagueSideswipe: Project = {
   timeline: "Jan 2024 - Mar 2024",
   status: "Completed",
   liveUrl: "https://example.com/rocket-league",
-  cardOverview: "Enhanced interface and feature expansion.",
+  cardOverview: "Improved flow and feature accessibility.",
   heroImage: rocketLeagueIcon,
   theme: {
     gradient: {

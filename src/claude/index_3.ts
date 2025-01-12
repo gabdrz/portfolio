@@ -6,13 +6,11 @@ import { rocketLeagueSideswipe } from './uxDesign/rocketLeagueSideswipe';
 import { doctorsAppointment } from './uxDesign/doctorsAppointment';
 import { seatReservationWeb } from './uxDesign/seatReservationWeb';
 import { seatReservationApp } from './uxDesign/seatReservationApp';
-import { carMaintenance } from './softwareDev/carMaintenance';
 
 // Software Dev Projects
 import { portfolioWebsite } from './softwareDev/portfolioWebsite';
-
-import { workInProgress } from './workInProgress';
-
+import { carMaintenance } from './softwareDev/carMaintenance';
+import { freedomBoard } from './softwareDev/freedomBoard';
 export interface ProjectsData {
  uxDesign: Project[];
  softwareDev: Project[];
@@ -28,6 +26,6 @@ export const projectsData: ProjectsData = {
  softwareDev: [
    portfolioWebsite,
    carMaintenance,
-   workInProgress
+   freedomBoard
  ]
 };
