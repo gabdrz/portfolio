@@ -155,6 +155,13 @@ const SideNav = ({ cards, containerRef, activeIndex }: SideNavProps) => {
     touchStartRef.current = null;
   };
 
+  const handleNavClick = useCallback((e: React.MouseEvent) => {
+    if (isExpanded) {
+      setIsExpanded(false);
+      e.stopPropagation(); // Prevent scroll if just closing nav
+    }
+  }, [isExpanded]);
+
   const handleMouseEnter = useCallback(
     (index: number) => {
       setIsExpanded(true);
@@ -183,6 +190,7 @@ const SideNav = ({ cards, containerRef, activeIndex }: SideNavProps) => {
         ref={navRef}
         className="fixed right-0 md:right-6 top-1/2 -translate-y-1/2 z-50 select-none touch-none overflow-hidden"
         onMouseLeave={handleMouseLeave}
+        onClick={handleNavClick} 
       >
         <div className="flex flex-col items-end gap-0">
           {cards.map((card, index) => (

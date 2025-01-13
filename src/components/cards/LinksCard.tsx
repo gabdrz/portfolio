@@ -9,7 +9,7 @@ interface LinksCardProps {
 
 export const LinksCard = forwardRef<HTMLDivElement, LinksCardProps>(
   ({ card }, ref) => {
-    const { layout, links } = card;
+    const { links } = card;
     const emailRef = useRef<HTMLAnchorElement>(null);
     const githubRef = useRef<HTMLAnchorElement>(null);
     const linkedinRef = useRef<HTMLAnchorElement>(null);
@@ -34,18 +34,14 @@ export const LinksCard = forwardRef<HTMLDivElement, LinksCardProps>(
         className="flex w-full h-full items-center justify-center p-8 select-none touch-none will-change-transform"
       >
         <div
-          className={`flex ${
-            layout === "vertical"
-              ? "flex-col space-y-6"
-              : "flex-row space-x-10 md:space-x-12"
-          } items-center justify-center w-full`}
+          className={`flex flex-col space-y-6 items-center justify-center w-full`}
         >
           <a
             ref={emailRef}
             href={`mailto:${links.email}`}
             className="text-sm md:text-base text-[#CCDAE5]"
           >
-            Email
+            {links.email}
           </a>
           <a
             ref={githubRef}
@@ -54,7 +50,7 @@ export const LinksCard = forwardRef<HTMLDivElement, LinksCardProps>(
             rel="noopener noreferrer"
             className="text-sm md:text-base text-[#CCDAE5]"
           >
-            GitHub
+            GitHub.com/gabdrz
           </a>
           <a
             ref={linkedinRef}
@@ -63,7 +59,7 @@ export const LinksCard = forwardRef<HTMLDivElement, LinksCardProps>(
             rel="noopener noreferrer"
             className="text-sm md:text-base text-[#CCDAE5]"
           >
-            LinkedIn
+            LinkedIn.com/gabriel-zafra
           </a>
           <a
             ref={resumeRef}
@@ -72,7 +68,7 @@ export const LinksCard = forwardRef<HTMLDivElement, LinksCardProps>(
             rel="noopener noreferrer"
             className="text-sm md:text-base text-[#CCDAE5]"
           >
-            Resume
+            Resume.pdf
           </a>
         </div>
       </div>

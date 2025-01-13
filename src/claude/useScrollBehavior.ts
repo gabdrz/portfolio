@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-// src/hooks/useScrollBehavior.ts
 import { RefObject, useEffect, useRef } from "react";
 import gsap from "gsap";
 import { useTouchDevice } from "./useTouchDevice";
@@ -42,7 +41,10 @@ export const useScrollBehavior = (
     const getSnapIndex = (scrollTop: number, delta: number) => {
       const currentIndex = Math.round(scrollTop / cardHeight);
       const nextIndex = currentIndex + Math.sign(delta);
-      const maxIndex = Math.floor(container.scrollHeight / cardHeight) - 3;
+      const contentHeight = container.scrollHeight;
+      const viewportHeight = container.clientHeight;
+      const maxScrollTop = contentHeight - viewportHeight;
+      const maxIndex = Math.round(maxScrollTop / cardHeight);
       return Math.max(0, Math.min(nextIndex, maxIndex));
     };
 
