@@ -12,7 +12,7 @@ export const freedomBoard: Project = {
   name: "Automated Freedom Board",
   type: "Software Development",
   timeline: "Apr 2024 - Ongoing",
-  status: "In Progress",
+  status: "Paused",
   githubUrl: "https://github.com/example/freedom-board",
   cardOverview: "Streamlined message board system.",
   theme: {
@@ -122,5 +122,16 @@ export const freedomBoard: Project = {
       content: "The project's next phase focuses on developing a web interface for easier management, removing Photoshop dependency through a custom template system, and implementing cloud deployment. These improvements will make the system more accessible to other communities.",
       layout: "contained",
     },
+    {
+      type: "spacer",
+      content: "",
+      layout: "contained",
+    },
+    {
+      type: "paragraph",
+      content: "Explore the **[project on GitHub](https://github.com/gabdrz/Automated-Freedom-Board)**.",
+      layout: "contained",
+      className: "font-bold text-start"
+    }
   ],
 };
