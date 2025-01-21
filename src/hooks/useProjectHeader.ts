@@ -1,47 +1,45 @@
 // src/hooks/useProjectHeader.ts
-import { useState, useEffect } from 'react';
+import { useState, useEffect, RefObject } from 'react';
+
+interface UseProjectHeaderResult {
+  showHeaderTitle: boolean;
+}
 
 export const useProjectHeader = (
-  contentRef: React.RefObject<HTMLDivElement>,
-  headerRef: React.RefObject<HTMLDivElement>
-) => {
-  const [headerHeight, setHeaderHeight] = useState<number>(0);
+  contentRef: RefObject<HTMLDivElement>,
+  headerRef: RefObject<HTMLDivElement>,
+  threshold: number = 100
+): UseProjectHeaderResult => {
   const [showHeaderTitle, setShowHeaderTitle] = useState(false);
 
   useEffect(() => {
-    if (!headerRef.current) return;
-
-    const updateHeaderHeight = () => {
-      if (headerRef.current) {
-        setHeaderHeight(headerRef.current.getBoundingClientRect().height);
-      }
-    };
+    if (!contentRef.current || !headerRef.current) return;
 
     const content = contentRef.current;
 
     const handleScroll = () => {
       if (!content) return;
+
       const titleBlock = content.querySelector('[data-block="title"]');
-      if (titleBlock) {
-        const titleBottom = titleBlock.getBoundingClientRect().bottom;
-        setShowHeaderTitle(titleBottom < headerHeight);
-      }
+      if (!titleBlock) return;
+
+      const titleRect = titleBlock.getBoundingClientRect();
+      const shouldShowHeader = titleRect.bottom < threshold;
+
+      // Directly update state without debouncing
+      setShowHeaderTitle(shouldShowHeader);
     };
 
-    updateHeaderHeight();
-    window.addEventListener('resize', updateHeaderHeight);
-    
-    if (content) {
-      content.addEventListener('scroll', handleScroll);
-    }
+    // Use passive scroll listener for better performance
+    content.addEventListener('scroll', handleScroll, { passive: true });
+
+    // Initial check
+    handleScroll();
 
     return () => {
-      window.removeEventListener('resize', updateHeaderHeight);
-      if (content) {
-        content.removeEventListener('scroll', handleScroll);
-      }
+      content.removeEventListener('scroll', handleScroll);
     };
-  }, [headerHeight, headerRef, contentRef]);
+  }, [contentRef, headerRef, threshold]);
 
-  return { headerHeight, showHeaderTitle };
+  return { showHeaderTitle };
 };
