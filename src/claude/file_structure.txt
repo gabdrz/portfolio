@@ -122,11 +122,6 @@ src/
 │   │   ├── LinksCard.tsx
 │   │   ├── ProjectCard.tsx
 │   │   └── index.ts
-│   ├── nav
-│   │   ├── NavDot.tsx
-│   │   ├── NavItem.tsx
-│   │   ├── NavLabel.tsx
-│   │   └── SideNav.tsx
 │   └── project
 │       ├── ProjectContent.tsx
 │       ├── ProjectHeader.tsx
@@ -158,14 +153,12 @@ src/
 ├── hooks
 │   ├── animations
 │   │   └── useSharedAnimation.ts
-│   ├── useActiveCard.ts
 │   ├── useBackgroundProgress.ts
 │   ├── useCardAnimations.ts
 │   ├── useCardsLayout.ts
 │   ├── useHoverAnimation.ts
 │   ├── useInitialLoad.ts
 │   ├── useIsMobile.ts
-│   ├── useNavItem.ts
 │   ├── useProjectAnimations.ts
 │   ├── useProjectBackground.ts
 │   ├── useProjectHeader.ts
@@ -185,7 +178,5 @@ src/
 ├── utils
 │   ├── eventHandlers.ts
 │   ├── imageUtils.ts
-│   ├── navTouchUtils.ts
-│   ├── navUtils.ts
 │   └── scrollUtils.ts
 └── vite-env.d.ts

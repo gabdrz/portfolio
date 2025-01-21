@@ -3,12 +3,10 @@ import { Outlet, useLocation } from 'react-router-dom';
 import { useIsMobile } from '../hooks/useIsMobile';
 import { useScrollBehavior } from '../hooks/useScrollBehavior';
 import { useCardAnimations } from '../hooks/useCardAnimations';
-import { useActiveCard } from '../hooks/useActiveCard';
 import { useCardsLayout } from '../hooks/useCardsLayout';
 import { useInitialLoad } from '../hooks/useInitialLoad';
 import { CardContent } from './CardContent';
 import { cards } from '../data/cards';
-import SideNav from './nav/SideNav';
 import Background from './Background';
 import { useBackgroundStore } from '../store/backgroundStore';
 import gsap from 'gsap';
@@ -64,7 +62,6 @@ export const Cards: React.FC = () => {
   
   useScrollBehavior(containerRef);
   useCardAnimations(containerRef);
-  const activeIndex = useActiveCard({ containerRef, cards, isMobile });
   
   const { containerStyle, containerClasses, cardItemClasses } = useCardsLayout({
     isMobile,
@@ -120,12 +117,6 @@ export const Cards: React.FC = () => {
 
           <div className="w-full h-1/3" />
         </div>
-
-        <SideNav 
-          cards={cards} 
-          containerRef={containerRef}
-          activeIndex={activeIndex}
-        />
       </div>
 
       <Outlet />
